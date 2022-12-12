@@ -1,0 +1,17 @@
+./.gradle
+./build
+./emoji
+./sinon-1.0-all.jar
+./gradle
+./gradlew
+./gradlew.bat
+/.idea/
+/.
+/.gradle/
+/build/
+/emoji/
+/gradle/wrapper/
+/gradlew
+/gradlew.bat
+/sinon-1.0-all.jar
+/src/main/java/wtf/triplapeeck/sinon/backend/Secrets.java
