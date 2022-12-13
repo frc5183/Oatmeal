@@ -11,6 +11,7 @@ import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
 import wtf.triplapeeck.sinon.backend.storable.StorableFactory;
 import wtf.triplapeeck.sinon.backend.storable.UserStorable;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 public abstract class Command {
@@ -47,6 +48,17 @@ public abstract class Command {
     public int taggedUserListLength(@NotNull DataCarriage carriage) {
         return carriage.message.getMentionedUsers().size();
     }
+    public int taggedChannelListLength(@NotNull DataCarriage carriage) {
+        return carriage.message.getMentionedChannels().size();
+    }
+    public boolean ensureTaggedChannelListNotEmpty(@NotNull DataCarriage carriage) {
+        if (!carriage.message.getMentionedChannels().isEmpty()) {
+            return true;
+        } else {
+            carriage.channel.sendMessage("You must tag a channel").queue();
+            return false;
+        }
+    }
     public boolean ensureTaggedUserListNotEmpty(@NotNull DataCarriage carriage) {
         if (!carriage.message.getMentionedUsers().isEmpty()) {
             return true;
@@ -56,6 +68,14 @@ public abstract class Command {
         }
     }
 
+    public boolean ensureOnlyOneTaggedChannel(@NotNull DataCarriage carriage) {
+        if (taggedChannelListLength(carriage)==1) {
+            return true;
+        } else {
+            carriage.channel.sendMessage("You must tag only one channel").queue();
+            return false;
+        }
+    }
     public boolean ensureOnlyOneTaggedUser(@NotNull DataCarriage carriage) {
         if (taggedUserListLength(carriage)==1) {
             return true;
@@ -142,10 +162,46 @@ public abstract class Command {
     }
 
 
-
-
+    public boolean isFirstArgument(@NotNull DataCarriage carriage) {
+        try {
+            return (carriage.args[1] != "" && carriage.args[1] != null);
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+    }
+    public boolean isSecondArgument(@NotNull DataCarriage carriage) {
+        try {
+            return (isFirstArgument(carriage) && carriage.args[2] != "" && carriage.args[2] != null);
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+    }
+    public boolean ensureFirstArgument(@NotNull DataCarriage carriage) {
+        if (isFirstArgument(carriage)) {
+            return true;
+        } else {
+            carriage.channel.sendMessage("You have to include at least 1 argument").queue();
+            return false;
+        }
+    }
+    public boolean ensureSecondArgument(@NotNull DataCarriage carriage) {
+        if (isSecondArgument(carriage)) {
+            return true;
+        } else {
+            carriage.channel.sendMessage("You have to include at least 2 arguments").queue();
+            return false;
+        }
+    }
     public boolean isAdministrator(@NotNull DataCarriage carriage) {
         return carriage.message.getMember().hasPermission(Permission.ADMINISTRATOR);
+    }
+    public boolean ensureAdministrator(@NotNull DataCarriage carriage) {
+        if (isAdministrator(carriage)) {
+            return true;
+        } else {
+            carriage.channel.sendMessage("You must be administrator to use this command").queue();
+            return false;
+        }
     }
     public boolean canBan(@NotNull DataCarriage carriage) {
         return carriage.message.getMember().hasPermission(Permission.BAN_MEMBERS);

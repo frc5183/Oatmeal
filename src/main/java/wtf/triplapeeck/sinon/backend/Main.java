@@ -4,9 +4,9 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import wtf.triplapeeck.sinon.backend.commands.currency.Balance;
 import wtf.triplapeeck.sinon.backend.commands.*;
+import wtf.triplapeeck.sinon.backend.commands.essential.*;
 import wtf.triplapeeck.sinon.backend.commands.games.cards.PrintDeck;
 import wtf.triplapeeck.sinon.backend.commands.games.cards.TestHand;
-import wtf.triplapeeck.sinon.backend.commands.essential.Help;
 import wtf.triplapeeck.sinon.backend.commands.games.cards.blackjack.*;
 import wtf.triplapeeck.sinon.backend.commands.miscellaneous.Ping;
 import wtf.triplapeeck.sinon.backend.commands.sinon.admin.SetAdmin;
@@ -55,6 +55,11 @@ public class Main {
         commandHandler.addCommand(new Split());
         commandHandler.addCommand(new Stand());
         commandHandler.addCommand(new GetBlackjackTable());
+        commandHandler.addCommand(new NewCustom());
+        commandHandler.addCommand(new RemoveCustom());
+        commandHandler.addCommand(new SetStarboard());
+        commandHandler.addCommand(new RemoveStarboard());
+        commandHandler.addCommand(new SetStarboardLimit());
     }
 
 

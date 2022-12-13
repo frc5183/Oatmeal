@@ -3,8 +3,30 @@ package wtf.triplapeeck.sinon.backend.storable;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.errors.ClosedStorableError;
 
-public class GuildStorable extends Storable {
+import java.util.concurrent.ConcurrentHashMap;
 
+
+public class GuildStorable extends Storable {
+    private ConcurrentHashMap<String, String> customCommandList = new ConcurrentHashMap<String, String>();
+
+    private long starboardChannelID=0;
+
+    private int starboardLimit=2;
+    public synchronized void setStarboardChannelID(Long id) {
+        starboardChannelID=id;
+    }
+    public synchronized int getStarboardLimit() {
+        return starboardLimit;
+    }
+    public synchronized void setStarboardLimit(int val) {
+        starboardLimit=val;
+    }
+    public synchronized Long getStarboardChannelId() {
+        return starboardChannelID;
+    }
+    public synchronized ConcurrentHashMap<String, String> getCustomCommandList() {
+        return customCommandList;
+    }
     private boolean currencyEnabled=true;
     public synchronized boolean getCurrencyEnabled() throws ClosedStorableError {
         if (closed) {throw new ClosedStorableError();}

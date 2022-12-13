@@ -23,11 +23,11 @@ public class ChannelStorable extends Storable {
     private transient boolean tableInsuring=false;
 
     public synchronized boolean isTableInsuring() {
-        return tableRecruiting;
+        return tableInsuring;
     }
 
     public synchronized void setTableInsuring(boolean val) {
-        tableRecruiting=val;
+        tableInsuring=val;
     }
     public synchronized Table getTable() throws UsedTableException {
         if (!tableHeld) {

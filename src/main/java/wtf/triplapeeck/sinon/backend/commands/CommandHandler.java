@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
+import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
 import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
 import wtf.triplapeeck.sinon.backend.runnable.TableUpdate;
@@ -12,6 +13,8 @@ import wtf.triplapeeck.sinon.backend.storable.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CommandHandler {
     ArrayList<Command> commandList = new ArrayList<>();
@@ -34,14 +37,24 @@ public class CommandHandler {
         HandleMessage(event, carriage);
         if (carriage.args[level].startsWith(prefix)) {
             String command = carriage.args[0].replace(prefix, "");
+            AtomicBoolean caught= new AtomicBoolean(false);
             commandList.forEach(c -> {
                 if (c.getName().equals(command)) {
+                    caught.set(true);
                     c.handler(event, carriage, listener);
                 }
             });
+
+            if (!caught.get()) {
+                String customCommand = carriage.guildStorable.getCustomCommandList().get(carriage.args[level].substring(prefix.length()));
+                if (customCommand!=null) {
+                    carriage.channel.sendMessage(customCommand).queue();
+                }
+            }
             Clean(carriage);
 
         } else {
+
             Clean(carriage);
         }
 
@@ -50,6 +63,11 @@ public class CommandHandler {
         carriage.api=api;
         carriage.commandsList=commandList;
         carriage.args = event.getMessage().getContentRaw().split("\\s+");
+        try {
+            carriage.textAfterSubcommand = event.getMessage().getContentRaw().substring(2+carriage.args[0].length() + carriage.args[1].length());
+        } catch (IndexOutOfBoundsException e) {
+            carriage.textAfterSubcommand = null;
+        }
         carriage.random=mainRandomizer;
         carriage.user = event.getAuthor();
         carriage.guild = event.getGuild();

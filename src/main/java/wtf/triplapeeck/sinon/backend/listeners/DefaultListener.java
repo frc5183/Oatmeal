@@ -3,12 +3,15 @@ package wtf.triplapeeck.sinon.backend.listeners;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
+import wtf.triplapeeck.sinon.backend.events.GuildEmojiEvent;
 
 import static wtf.triplapeeck.sinon.backend.Main.commandHandler;
+import static wtf.triplapeeck.sinon.backend.Main.threadManager;
 
 public class DefaultListener extends ListenerAdapter
 {
@@ -35,10 +38,11 @@ public class DefaultListener extends ListenerAdapter
     public void onReady(@NotNull ReadyEvent event) {
         Logger.customLog("Listener", "Ready!");
         api=Main.api;
-        waiter =Main.threadManager;
+        waiter = threadManager;
         Logger.customLog("Listener", "Starting ThreadManager");
         waiter.start();
     }
+    @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
         Logger.customLog("Listener", "Message Received");
         while (!isActive) {
@@ -46,5 +50,11 @@ public class DefaultListener extends ListenerAdapter
         commandHandler.handle(event, api, waiter);
     }
 
-
+    @Override
+    public void onGuildMessageReactionAdd(@NotNull GuildMessageReactionAddEvent event) {
+        Logger.customLog("Listener", "Reaction Event Received");
+        while (!isActive) {
+        }
+        threadManager.addTask(new Thread(new GuildEmojiEvent(event)));
+    }
 }

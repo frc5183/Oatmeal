@@ -14,6 +14,7 @@ import java.util.Random;
 public class DataCarriage {
     public ArrayList<Command> commandsList;
     public String[] args;
+    public String textAfterSubcommand;
     public Random random;
     public User user;
     public Guild guild;
