@@ -1,7 +1,7 @@
 package wtf.triplapeeck.sinon.backend.commands.currency;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
 import wtf.triplapeeck.sinon.backend.Page;
@@ -10,12 +10,12 @@ import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
 
 public class Balance extends Command {
     @Override
-    public void handler(GuildMessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
+    public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
 
         carriage.channel.sendMessage("You have " + carriage.memberStorable.getRak() + " rak in this server.").queue();
     }
     @Override
-    public java.lang.@NotNull String getDocumentation() {
+    public @NotNull String getDocumentation() {
         return "Returns the user's current balance in rak" +
                 "\nUsage: s!rak";
     }

@@ -1,6 +1,6 @@
 package wtf.triplapeeck.sinon.backend.runnable;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
 import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
@@ -15,7 +15,11 @@ import java.math.BigInteger;
 
 import static wtf.triplapeeck.sinon.backend.storable.StorableManager.getChannel;
 
-public class JoinTable implements Runnable {
+public class JoinTable implements NamedRunnable {
+    String name = "JOINTABLE";
+    public String getName() {
+        return name;
+    }
 
     private long channelId;
     private String memberID;
@@ -93,8 +97,9 @@ public class JoinTable implements Runnable {
             channel.sendMessage("That is not a valid bet. It must be an integer.").queue();
             table.RemoveSpotGroup(player);
         }
-        channelStorable.relinquishTable();
+                channelStorable.relinquishTable();
         channelStorable.relinquishAccess();
+
         Logger.customLog("JoinTable","Table Relinquished. Finished. ");
     }
 }

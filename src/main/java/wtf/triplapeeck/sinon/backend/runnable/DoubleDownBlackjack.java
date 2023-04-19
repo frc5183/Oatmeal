@@ -1,6 +1,6 @@
 package wtf.triplapeeck.sinon.backend.runnable;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
 import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
@@ -12,7 +12,11 @@ import wtf.triplapeeck.sinon.backend.storable.ChannelStorable;
 
 import static wtf.triplapeeck.sinon.backend.storable.StorableManager.getChannel;
 
-public class DoubleDownBlackjack implements Runnable {
+public class DoubleDownBlackjack implements NamedRunnable {
+    String name = "DOUBLEDOWNBLACKJACK";
+    public String getName() {
+        return name;
+    }
     private long ChannelID;
     private String MemberID;
     private boolean secondHand=false;
@@ -80,7 +84,7 @@ public class DoubleDownBlackjack implements Runnable {
             }
         }
         channelStorable.relinquishTable();
-        channelStorable.relinquishAccess();
+
         Logger.customLog("DoubleDown", "Table Relinquished. Finished.");
     }
 }

@@ -17,8 +17,10 @@ public abstract class Storable {
     public synchronized void setFactory(StorableFactory factory1) throws ClosedStorableError {
         if (closed) {throw new ClosedStorableError();}
         factory=factory1;
+        idLong=id.longValue();
     }
     private BigInteger id;
+    private transient long idLong;
     protected transient FileRW file = null;
     public synchronized void setFileRW(FileRW file1) throws ClosedStorableError {
         if (closed) {throw new ClosedStorableError();}
@@ -32,6 +34,10 @@ public abstract class Storable {
     public synchronized BigInteger getID() throws ClosedStorableError {
         if (closed) {throw new ClosedStorableError();}
         return id;
+    }
+    public synchronized long getIDLong() {
+        Logger.customLog("CHANNELSTORABLE","IdLONG");
+        return idLong;
     }
 
     public abstract void Save();

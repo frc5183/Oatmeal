@@ -1,6 +1,6 @@
 package wtf.triplapeeck.sinon.backend.runnable;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
 import wtf.triplapeeck.sinon.backend.errors.UsedTableException;
@@ -13,7 +13,11 @@ import static wtf.triplapeeck.sinon.backend.games.cards.PlayingCard.Face.TEN;
 import static wtf.triplapeeck.sinon.backend.games.cards.PlayingCard.Suit.SPADES;
 import static wtf.triplapeeck.sinon.backend.storable.StorableManager.getChannel;
 
-public class Insuring implements Runnable {
+public class Insuring implements NamedRunnable {
+    String name = "INSURING";
+    public String getName() {
+        return name;
+    }
     private long ChannelID;
     Table table;
     public Insuring(long ChannelID) {
@@ -65,8 +69,9 @@ public class Insuring implements Runnable {
             channel.sendMessage("Dealer does not have a blackjack. Insurance Bets have been lost.\nThe Dealer's " + table.dealer.hand.toString()).queue();
             table.state= TableState.PLAYING;
         }
-        channelStorable.relinquishTable();
+                channelStorable.relinquishTable();
         channelStorable.relinquishAccess();
+
         channelStorable.setTableInsuring(false);
         Logger.customLog("FinishInsuring", "Table Relinquished. Finished.");
     }

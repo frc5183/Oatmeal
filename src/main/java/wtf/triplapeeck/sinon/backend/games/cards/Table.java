@@ -2,7 +2,7 @@ package wtf.triplapeeck.sinon.backend.games.cards;
 
 
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
 import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
@@ -171,7 +171,7 @@ public class Table {
             ChannelStorable channelStorable = StorableManager.getChannel(id);
             channelStorable.setTableInsuring(true);
             channelStorable.relinquishAccess();
-            Main.threadManager.addTask(new Thread(new Waiting(15, new Thread(new Insuring(id)))));
+            Main.threadManager.addTask(new Waiting(15, new Insuring(id)));
         } else if (dealer.hand.hand.get(0).sameValue(new PlayingCard(SPADES,TEN))) {
             Logger.customLog("Table", "Initial Deal: No Insurance, Checking for blackjack");
             PlayingCard secondCard = dealer.hand.hand.get(1);

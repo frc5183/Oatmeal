@@ -1,6 +1,6 @@
 package wtf.triplapeeck.sinon.backend.runnable;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
 import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
@@ -12,7 +12,11 @@ import wtf.triplapeeck.sinon.backend.storable.ChannelStorable;
 
 import static wtf.triplapeeck.sinon.backend.storable.StorableManager.getChannel;
 
-public class GetTable implements Runnable {
+public class GetTable implements NamedRunnable {
+    String name = "GETTABLE";
+    public String getName() {
+        return name;
+    }
     private long ChannelID;
 
     Table table;
@@ -64,8 +68,9 @@ public class GetTable implements Runnable {
             outText = outTextPlayer(outText, table.player4);
             channel.sendMessage(outText).queue();
         }
-        channelStorable.relinquishTable();
+                channelStorable.relinquishTable();
         channelStorable.relinquishAccess();
+
         Logger.customLog("GetTable", "Table Relinquished. Finished.");
     }
     private String outTextPlayer(String outText, SpotGroup player) {

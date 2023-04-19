@@ -1,7 +1,7 @@
-package wtf.triplapeeck.sinon.backend.commands.sinon.trip;
+package wtf.triplapeeck.sinon.backend.commands.sinon.owner;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
 import wtf.triplapeeck.sinon.backend.Logger;
@@ -11,8 +11,8 @@ import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
 import wtf.triplapeeck.sinon.backend.runnable.Waiting;
 
 public class RebootSinon extends Command {
-    public void handler(GuildMessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
-        if (ensureIsTrip(carriage)){
+    public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
+        if (ensureIsOwner(carriage)){
             Logger.basicLog(Logger.Level.INFO, "Sinon-Reboot Initiated.");
             listener.requestToEnd();
 
@@ -29,7 +29,7 @@ public class RebootSinon extends Command {
 
 
     }
-    public java.lang.@NotNull String getDocumentation() { return "Used by Trip-kun to reboot Sinon's code. Often used to push updates." +
+    public @NotNull String getDocumentation() { return "Used by Trip-kun to reboot Sinon's code. Often used to push updates." +
             "\nUsage: s!reboot";}
     public @NotNull String getName() {
         return "reboot";
@@ -37,11 +37,11 @@ public class RebootSinon extends Command {
 
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
-        return isTrip(carriage);
+        return isOwner(carriage);
     }
 
 
     public RebootSinon() {
-        Page.TripOnly.addCommand(this);
+        Page.SinonOwner.addCommand(this);
     }
 }

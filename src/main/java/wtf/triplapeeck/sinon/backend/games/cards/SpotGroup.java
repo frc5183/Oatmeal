@@ -1,6 +1,6 @@
 package wtf.triplapeeck.sinon.backend.games.cards;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
 import wtf.triplapeeck.sinon.backend.storable.MemberStorable;

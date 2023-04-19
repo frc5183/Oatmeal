@@ -1,7 +1,7 @@
 package wtf.triplapeeck.sinon.backend.commands.essential;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
 import wtf.triplapeeck.sinon.backend.Page;
@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Help extends Command {
     private final ArrayList<Page> pageList = Page.getPages();
-    public void handler(@NotNull GuildMessageReceivedEvent event, @NotNull DataCarriage carriage, ThreadManager listener) {
+    public void handler(@NotNull MessageReceivedEvent event, @NotNull DataCarriage carriage, ThreadManager listener) {
 
         try {
             AtomicBoolean commandFound= new AtomicBoolean(false);
@@ -45,17 +45,32 @@ public class Help extends Command {
                     } else {
                         carriage.channel.sendMessage("This Page is reserved only for Sinon's Admins").queue();
                     }
+                } else if (page==Page.Currency) {
+                    if (carriage.guildStorable.getCurrencyEnabled()) {
+                        listCommands(carriage, g, page);
+                    } else {
+                        carriage.channel.sendMessage("Currency is disabled in your server.").queue();
+                    }
+                } else if (page.getCommandList(carriage).size()==0) {
+                   carriage.channel.sendMessage("There are no commands in this category in this server.").queue();
                 } else {
                     listCommands(carriage, g, page);
                 }
 
             }
                     catch (IndexOutOfBoundsException e) {
+
                     carriage.channel.sendMessage("No page with number \"" + s + "\" was found.").queue();
                 }
 
              catch (NumberFormatException e) {
                 carriage.commandsList.forEach(c -> {
+                    if (s.equals(c.getName())) {
+                        carriage.channel.sendMessage(c.getDocumentation()).queue();
+                        commandFound.set(true);
+                    }
+                });
+                Page.CustomPage.getCommandList(carriage).forEach(c -> {
                     if (s.equals(c.getName())) {
                         carriage.channel.sendMessage(c.getDocumentation()).queue();
                         commandFound.set(true);
@@ -84,6 +99,15 @@ public class Help extends Command {
                     if (carriage.userStorable.isAdmin()) {
                         list.set(list + "\n" + atomicInteger.get() + " " + c.getName());
                     }
+                } else if (c==Page.CustomPage) {
+                    if (c.getCommandList(carriage).size()>0) {
+                        list.set(list + "\n" + atomicInteger.get() + " " + c.getName());
+                    }
+                 } else if (c==Page.Currency) {
+                  if (carriage.guildStorable.getCurrencyEnabled()) {
+                      list.set(list + "\n" + atomicInteger.get() + " " + c.getName());
+
+                  }
                 } else {
                     list.set(list + "\n" + atomicInteger.get() + " " + c.getName());
                 }
@@ -97,7 +121,7 @@ public class Help extends Command {
 
     private void listCommands(@NotNull DataCarriage carriage, int g, @NotNull Page page) {
         AtomicReference<String> list = new AtomicReference<>(page.getName() + ":");
-        pageList.get(g).getCommandList().forEach(c -> {
+        pageList.get(g).getCommandList(carriage).forEach(c -> {
             if (c.hasPermission(carriage, carriage.user))
             {
                 list.set(list + "\n" + c.getName());

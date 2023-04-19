@@ -3,8 +3,8 @@ package wtf.triplapeeck.sinon.backend;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import wtf.triplapeeck.sinon.backend.commands.Command;
 import wtf.triplapeeck.sinon.backend.storable.*;
 
@@ -19,6 +19,7 @@ public class DataCarriage {
     public User user;
     public Guild guild;
     public MessageChannel channel;
+
     public UserStorable userStorable;
     public GuildStorable guildStorable;
     public ChannelStorable channelStorable;

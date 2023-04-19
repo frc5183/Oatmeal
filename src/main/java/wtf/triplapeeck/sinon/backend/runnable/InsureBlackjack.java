@@ -1,5 +1,5 @@
 package wtf.triplapeeck.sinon.backend.runnable;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
 import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
@@ -11,7 +11,11 @@ import wtf.triplapeeck.sinon.backend.storable.ChannelStorable;
 
 import static wtf.triplapeeck.sinon.backend.storable.StorableManager.getChannel;
 
-public class InsureBlackjack implements Runnable {
+public class InsureBlackjack implements NamedRunnable {
+    String name = "INSUREBLACKJACK";
+    public String getName() {
+        return name;
+    }
 
     private final long channelId;
     private final String memberID;

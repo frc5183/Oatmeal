@@ -9,6 +9,7 @@ import wtf.triplapeeck.sinon.backend.games.cards.Table;
 public class ChannelStorable extends Storable {
     private Table table;
     private transient boolean tableHeld=false;
+    private transient int tableCount;
 
     private transient boolean tableRecruiting=false;
 
@@ -31,11 +32,19 @@ public class ChannelStorable extends Storable {
     }
     public synchronized Table getTable() throws UsedTableException {
         if (!tableHeld) {
+            tableCount++;
+            Logger.customLog("TableUpdate2", String.valueOf( tableCount));
             tableHeld=true;
             return table;
         } else {
             throw new UsedTableException();
         }
+    }
+    public synchronized boolean isTableHeld() {
+        return tableHeld;
+    }
+    public synchronized int tableCount() {
+        return tableCount;
     }
     public synchronized void setTable(Table tbl) throws ValidTableException {
         if (table!=null) { throw new ValidTableException();}
@@ -47,26 +56,34 @@ public class ChannelStorable extends Storable {
     }
 
     public synchronized void relinquishTable() {
+        tableCount--;
+        Logger.customLog("CHANNELSTORABLE","Table relinquished");
         tableHeld=false;
     }
     @Override
-    public void Save() {
-        factory.saveStorable(this);
+    public synchronized void Save() {
+
         if (accessCount==0) {
-            StorableManager.removeChannel(getID().longValue());
+            StorableManager.removeChannel(getIDLong());
+            factory.saveStorable(this);
+            Logger.customLog("CHANNELStorable","Saving with count: " + accessCount);
+            Logger.customLog("CHANNELStorable","removed with count: " + accessCount);
             closed=true;
+        } else {
+            Logger.customLog("CHANNELStorable","Did NOT save because count is: " + accessCount);
         }
+
     }
     public synchronized void requestAccess() throws ClosedStorableError {
-        Logger.customLog("Storable","Access Requested");
-        if (closed) {throw new ClosedStorableError();}
         accessCount++;
+        Logger.customLog("CHANNELStorable","Access Requested. New Count: "+ accessCount);
+        if (closed) {throw new ClosedStorableError();}
     }
 
     public synchronized void relinquishAccess() {
-        Logger.customLog("Storable","Access Relinquished");
-        if (closed) {throw new ClosedStorableError();}
         accessCount--;
+        Logger.customLog("CHANNELStorable","Access Relinquished. New Count: "+ accessCount);
+        if (closed) {throw new ClosedStorableError();}
         Save();
     }
 }

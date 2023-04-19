@@ -15,7 +15,7 @@ public class StorableManager {
     private static Hashtable<Long, UserStorable> userList = new Hashtable<>();
 
     private static Hashtable<Long, TriviaStorable> triviaList = new Hashtable<>();
-
+    private static Hashtable<Long, GenericStorable> genericList = new Hashtable<>();
 
     public static synchronized ChannelStorable getChannel(Long id) {
         ChannelStorable channelStorable = channelList.get(id);
@@ -27,8 +27,12 @@ public class StorableManager {
         channelStorable.requestAccess();
         return channelStorable;
     }
-    public static synchronized void removeChannel(Long id) {
+    public static void removeChannel(Long id) {
+
+        Logger.customLog("CHANNELStorable","Stalled");
+
         channelList.remove(id);
+
     }
 
 
@@ -84,7 +88,20 @@ public class StorableManager {
         triviaStorable.requestAccess();
         return triviaStorable;
     }
+
     public static synchronized void removeTrivia(Long id) {
         triviaList.remove(id);
+    }
+    public static synchronized GenericStorable getGeneric(Long id) {
+        GenericStorable genericStorable = genericList.get(id);
+        if (genericStorable==null) {
+            genericStorable= new StorableFactory(id).genericStorable();
+            genericList.put(id, genericStorable);
+        }
+        genericStorable.requestAccess();
+        return genericStorable;
+    }
+    public static synchronized void removeGeneric(Long id) {
+        genericList.remove(id);
     }
 }

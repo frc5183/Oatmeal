@@ -9,6 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GuildStorable extends Storable {
     private ConcurrentHashMap<String, String> customCommandList = new ConcurrentHashMap<String, String>();
 
+    private ConcurrentHashMap<Long, Long> starboardLink = new ConcurrentHashMap<>();
+
+
     private long starboardChannelID=0;
 
     private int starboardLimit=2;
@@ -27,6 +30,8 @@ public class GuildStorable extends Storable {
     public synchronized ConcurrentHashMap<String, String> getCustomCommandList() {
         return customCommandList;
     }
+
+    public synchronized ConcurrentHashMap<Long, Long> getStarboardLink() {return starboardLink;}
     private boolean currencyEnabled=true;
     public synchronized boolean getCurrencyEnabled() throws ClosedStorableError {
         if (closed) {throw new ClosedStorableError();}
@@ -56,15 +61,13 @@ public class GuildStorable extends Storable {
         }
     }
     public synchronized void requestAccess() throws ClosedStorableError {
-        Logger.customLog("Storable","Access Requested");
+        Logger.customLog("GUILDStorable","Access Requested. New Count: "+ ++accessCount);
         if (closed) {throw new ClosedStorableError();}
-        accessCount++;
     }
 
     public synchronized void relinquishAccess() {
-        Logger.customLog("Storable","Access Relinquished");
+        Logger.customLog("GUILDStorable","Access Relinquished. New Count: "+ --accessCount);
         if (closed) {throw new ClosedStorableError();}
-        accessCount--;
         Save();
     }
 }

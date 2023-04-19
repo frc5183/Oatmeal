@@ -1,14 +1,16 @@
 package wtf.triplapeeck.sinon.backend.listeners;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.events.ReadyEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
-import wtf.triplapeeck.sinon.backend.events.GuildEmojiEvent;
+import wtf.triplapeeck.sinon.backend.events.GuildEmojiAddEvent;
+import wtf.triplapeeck.sinon.backend.events.GuildEmojiRemoveEvent;
 
 import static wtf.triplapeeck.sinon.backend.Main.commandHandler;
 import static wtf.triplapeeck.sinon.backend.Main.threadManager;
@@ -42,19 +44,27 @@ public class DefaultListener extends ListenerAdapter
         Logger.customLog("Listener", "Starting ThreadManager");
         waiter.start();
     }
-    @Override
-    public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Logger.customLog("Listener", "Message Received");
         while (!isActive) {
         }
+        Logger.customLog("Listener", "Message Pre");
         commandHandler.handle(event, api, waiter);
+        Logger.customLog("Listener", "Message Post");
     }
 
     @Override
-    public void onGuildMessageReactionAdd(@NotNull GuildMessageReactionAddEvent event) {
+    public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
         Logger.customLog("Listener", "Reaction Event Received");
         while (!isActive) {
         }
-        threadManager.addTask(new Thread(new GuildEmojiEvent(event)));
+        threadManager.addTask(new GuildEmojiAddEvent(event));
+    }
+
+    public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
+        Logger.customLog("Listener", "Reaction Event Received");
+        while (!isActive) {
+        }
+        threadManager.addTask(new GuildEmojiRemoveEvent(event));
     }
 }

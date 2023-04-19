@@ -17,15 +17,13 @@ public class TriviaStorable extends Storable {
         }
     }
     public synchronized void requestAccess() throws ClosedStorableError {
-        Logger.customLog("Storable","Access Requested");
+        Logger.customLog("TriviaStorable","Access Requested. New Count: "+ ++accessCount);
         if (closed) {throw new ClosedStorableError();}
-        accessCount++;
     }
 
     public synchronized void relinquishAccess() {
-        Logger.customLog("Storable","Access Relinquished");
+        Logger.customLog("TriviaStorable","Access Relinquished. New Count: "+ --accessCount);
         if (closed) {throw new ClosedStorableError();}
-        accessCount--;
         Save();
     }
 }

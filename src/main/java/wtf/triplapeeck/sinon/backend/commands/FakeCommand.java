@@ -4,34 +4,32 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
-import wtf.triplapeeck.sinon.backend.Page;
-import wtf.triplapeeck.sinon.backend.runnable.Waiting;
 import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
 
-public class Test extends Command
-{
+public class FakeCommand extends Command {
+    private String name;
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
-        listener.addTask(new Waiting(15, null));
+
     }
 
-
+    @NotNull
     @Override
-    public @NotNull String getDocumentation() {
-        return "TESTONLY";
+    public String getDocumentation() {
+        return "s!" + name + " is a custom command within this server!"
+                +"\nUsage: s!" + name;
     }
 
     @Override
     public @NotNull String getName() {
-        return "test";
+        return name;
     }
 
     @Override
-    public boolean hasPermission(DataCarriage carriage, User user) {
+    public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return true;
     }
-
-    public Test() {
-        Page.TripOnly.addCommand(this);
+    public FakeCommand(String fakeName) {
+        name=fakeName;
     }
 }

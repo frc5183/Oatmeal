@@ -1,6 +1,6 @@
 package wtf.triplapeeck.sinon.backend.runnable;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
 import wtf.triplapeeck.sinon.backend.errors.UsedTableException;
@@ -9,7 +9,11 @@ import wtf.triplapeeck.sinon.backend.games.cards.Table;
 import wtf.triplapeeck.sinon.backend.storable.ChannelStorable;
 import wtf.triplapeeck.sinon.backend.storable.StorableManager;
 
-public class NewTable implements Runnable {
+public class NewTable implements NamedRunnable {
+    String name = "NEWTABLE";
+    public String getName() {
+        return name;
+    }
     private long id;
     Table table;
     ChannelStorable channelStorable;
@@ -47,8 +51,9 @@ public class NewTable implements Runnable {
             TextChannel channel = Main.api.getTextChannelById(id);
             channel.sendMessage("A Table Already Exists!").queue();
         }
-        channelStorable.relinquishTable();
+                channelStorable.relinquishTable();
         channelStorable.relinquishAccess();
+
         Logger.customLog("NewTable","Table Relinquished. Finished. ");
     }
 }

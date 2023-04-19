@@ -1,6 +1,6 @@
 package wtf.triplapeeck.sinon.backend.runnable;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
 import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
@@ -12,7 +12,11 @@ import wtf.triplapeeck.sinon.backend.storable.ChannelStorable;
 
 import static wtf.triplapeeck.sinon.backend.storable.StorableManager.getChannel;
 
-public class HitBlackjack implements Runnable {
+public class HitBlackjack implements NamedRunnable {
+    String name = "HITBLACKJACK";
+    public String getName() {
+        return name;
+    }
     private long ChannelID;
     private String MemberID;
     private boolean secondHand=false;
@@ -70,16 +74,21 @@ public class HitBlackjack implements Runnable {
                     if (player.spot2==null) {throw new InvalidCardActionException("You don't have a second hand");}
 
                     player.spot2.Hit(table.shoe, table);
+
                     channel.sendMessage(Main.api.retrieveUserById(player.userId).complete().getAsMention() + "'s " + player.spot2.hand.toString()).queue();
+                    table.Update();
                 } else {
 
                     player.spot1.Hit(table.shoe, table);
+
                     channel.sendMessage(Main.api.retrieveUserById(player.userId).complete().getAsMention() + "'s " + player.spot1.hand.toString()).queue();
+                    table.Update();
                 }
 
             }
             catch (InvalidCardActionException e) {
                 channel.sendMessage(e.getMessage()).queue();
+
             }
         }
         channelStorable.relinquishTable();

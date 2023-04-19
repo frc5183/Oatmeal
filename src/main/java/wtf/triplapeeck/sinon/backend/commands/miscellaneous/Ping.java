@@ -1,7 +1,7 @@
 package wtf.triplapeeck.sinon.backend.commands.miscellaneous;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
 import wtf.triplapeeck.sinon.backend.Page;
@@ -10,7 +10,7 @@ import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
 
 public class Ping extends Command {
     @Override
-    public void handler(GuildMessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
+    public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         try {
             carriage.channel.sendMessage("Pong!: '" + carriage.message.getContentRaw().substring(7) + "'").queue(); // Important to call .queue() on the RestAction returned by sendMessage(...)
         } catch (StringIndexOutOfBoundsException e) {

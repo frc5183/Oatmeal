@@ -2,7 +2,7 @@ package wtf.triplapeeck.sinon.backend.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
 import wtf.triplapeeck.sinon.backend.Logger;
@@ -15,7 +15,7 @@ import javax.xml.crypto.Data;
 import java.util.List;
 
 public abstract class Command {
-    public abstract void handler(GuildMessageReceivedEvent event, DataCarriage carriage, ThreadManager listener);
+    public abstract void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener);
 
     public abstract @NotNull java.lang.String getDocumentation();
     public abstract @NotNull String getName();
@@ -46,13 +46,16 @@ public abstract class Command {
     }
 
     public int taggedUserListLength(@NotNull DataCarriage carriage) {
-        return carriage.message.getMentionedUsers().size();
+        return carriage.message.getMentions().getUsers().size();
+    }
+    public int taggedMemberListLength(@NotNull DataCarriage carriage) {
+        return carriage.message.getMentions().getMembers().size();
     }
     public int taggedChannelListLength(@NotNull DataCarriage carriage) {
-        return carriage.message.getMentionedChannels().size();
+        return carriage.message.getMentions().getChannels().size();
     }
     public boolean ensureTaggedChannelListNotEmpty(@NotNull DataCarriage carriage) {
-        if (!carriage.message.getMentionedChannels().isEmpty()) {
+        if (!carriage.message.getMentions().getChannels().isEmpty()) {
             return true;
         } else {
             carriage.channel.sendMessage("You must tag a channel").queue();
@@ -60,14 +63,21 @@ public abstract class Command {
         }
     }
     public boolean ensureTaggedUserListNotEmpty(@NotNull DataCarriage carriage) {
-        if (!carriage.message.getMentionedUsers().isEmpty()) {
+        if (!carriage.message.getMentions().getUsers().isEmpty()) {
             return true;
         } else {
             carriage.channel.sendMessage("You must tag someone").queue();
             return false;
         }
     }
-
+    public boolean ensureTaggedMemberListNotEmpty(@NotNull DataCarriage carriage) {
+        if (!carriage.message.getMentions().getMembers().isEmpty()) {
+            return true;
+        } else {
+            carriage.channel.sendMessage("You must tag someone.").queue();
+            return false;
+        }
+    }
     public boolean ensureOnlyOneTaggedChannel(@NotNull DataCarriage carriage) {
         if (taggedChannelListLength(carriage)==1) {
             return true;
@@ -84,9 +94,16 @@ public abstract class Command {
             return false;
         }
     }
-
+    public boolean ensureOnlyOneTaggedMember(@NotNull DataCarriage carriage) {
+        if (taggedMemberListLength(carriage)==1) {
+            return true;
+        } else {
+            carriage.channel.sendMessage("You must tag only one person").queue();
+            return false;
+        }
+    }
     public boolean ensureOnlyOneTaggedIsNotTrip(@NotNull DataCarriage carriage) {
-        if (carriage.message.getMentionedUsers().get(0).getIdLong()!=222517551257747456L)
+        if (carriage.message.getMentions().getUsers().get(0).getIdLong()!=222517551257747456L)
             return true;
         else {
             carriage.channel.sendMessage("You cannot target Trip-kun with this command.").queue();
@@ -94,7 +111,7 @@ public abstract class Command {
         }
     }
     public boolean getOwnerStatusOfOnlyOneTagged(@NotNull DataCarriage carriage) {
-        List<User> userList = carriage.message.getMentionedUsers();
+        List<User> userList = carriage.message.getMentions().getUsers();
         User user = userList.get(0);
         StorableFactory dsUsr = new StorableFactory(user.getIdLong());
         UserStorable usUsr = dsUsr.userStorable();
@@ -205,6 +222,14 @@ public abstract class Command {
     }
     public boolean canBan(@NotNull DataCarriage carriage) {
         return carriage.message.getMember().hasPermission(Permission.BAN_MEMBERS);
+    }
+    public boolean ensureBan(@NotNull DataCarriage carriage) {
+        if (canBan(carriage)) {
+            return true;
+        } else {
+            carriage.channel.sendMessage("You must have the ban members permission to use this command.").queue();
+            return false;
+        }
     }
     public boolean canKick(@NotNull DataCarriage carriage) {
         return carriage.message.getMember().hasPermission(Permission.KICK_MEMBERS);

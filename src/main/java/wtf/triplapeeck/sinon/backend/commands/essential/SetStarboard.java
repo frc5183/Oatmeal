@@ -1,7 +1,7 @@
 package wtf.triplapeeck.sinon.backend.commands.essential;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
 import wtf.triplapeeck.sinon.backend.Page;
@@ -11,9 +11,9 @@ import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
 public class SetStarboard extends Command {
 
     @Override
-    public void handler(GuildMessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
+    public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureAdministrator(carriage) && ensureTaggedChannelListNotEmpty(carriage) && ensureOnlyOneTaggedChannel(carriage)) {
-            Long id = carriage.message.getMentionedChannels().get(0).getIdLong();
+            Long id = carriage.message.getMentions().getChannels().get(0).getIdLong();
             carriage.guildStorable.setStarboardChannelID(id);
             carriage.channel.sendMessage("The starboard will post in " + carriage.guild.getTextChannelById(id).getAsMention()).queue();
         }

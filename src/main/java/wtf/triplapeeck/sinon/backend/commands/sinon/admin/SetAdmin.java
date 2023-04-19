@@ -1,7 +1,7 @@
 package wtf.triplapeeck.sinon.backend.commands.sinon.admin;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
 import wtf.triplapeeck.sinon.backend.Page;
@@ -14,7 +14,7 @@ import wtf.triplapeeck.sinon.backend.storable.UserStorable;
 import java.util.List;
 
 public class SetAdmin extends Command {
-    public void handler(GuildMessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
+    public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (
                 ensureIsOwner(carriage) &&
                 ensureTaggedUserListNotEmpty(carriage) &&
@@ -24,7 +24,7 @@ public class SetAdmin extends Command {
         ) {
 
 
-            List<User> userList = carriage.message.getMentionedUsers();
+            List<User> userList = carriage.message.getMentions().getUsers();
             User user = userList.get(0);
             StorableFactory dsUsr = new StorableFactory(user.getIdLong());
             UserStorable usUsr = dsUsr.userStorable();
@@ -35,7 +35,7 @@ public class SetAdmin extends Command {
 
         }
     }
-    public java.lang.@NotNull String getDocumentation() { return "Used By Sinon's Owners to set the admin status of users" +
+    public @NotNull String getDocumentation() { return "Used By Sinon's Owners to set the admin status of users" +
             "\n Usage: s!setadmin [Tagged Users (Just 1)]";}
     public @NotNull String getName() {
         return "setadmin";

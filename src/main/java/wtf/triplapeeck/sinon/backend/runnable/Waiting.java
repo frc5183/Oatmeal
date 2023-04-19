@@ -1,23 +1,27 @@
 package wtf.triplapeeck.sinon.backend.runnable;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
 import wtf.triplapeeck.sinon.backend.Logger;
 import wtf.triplapeeck.sinon.backend.Main;
 import wtf.triplapeeck.sinon.backend.Utils;
 
-import javax.annotation.Nullable;
 
 import static java.lang.Thread.sleep;
 
-public class Waiting implements Runnable {
+public class Waiting implements NamedRunnable {
+    String name = "WAITING";
+    public String getName() {
+        return name;
+    }
     private DataCarriage carriage;
-    Thread task;
+    NamedRunnable task;
     private long timed;
     public Waiting(@NotNull long time) {
         timed=time;
     }
-    public Waiting(@NotNull long time, @Nullable Thread endTask) {timed=time; task=endTask;
+    public Waiting(@NotNull long time, @Nullable NamedRunnable endTask) {timed=time; task=endTask;
     }
     @Override
     public void run() {

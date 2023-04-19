@@ -1,7 +1,7 @@
 package wtf.triplapeeck.sinon.backend.commands;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
 import wtf.triplapeeck.sinon.backend.Logger;
@@ -14,7 +14,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CommandHandler {
     ArrayList<Command> commandList = new ArrayList<>();
@@ -28,13 +27,15 @@ public class CommandHandler {
         commandList.add(command);
     }
 
-    public void handle(@NotNull GuildMessageReceivedEvent event, @NotNull JDA api, ThreadManager listener) {
+    public void handle(@NotNull MessageReceivedEvent event, @NotNull JDA api, ThreadManager listener) {
         DataCarriage carriage;
         carriage = new DataCarriage();
         if ( event.getAuthor().getIdLong()==564635010917859332L) {return;}
-
+        Logger.customLog("Listener", "Prepare");
         Prepare(event, api, carriage);
+        Logger.customLog("Listener", "HandleMessage");
         HandleMessage(event, carriage);
+        Logger.customLog("Listener", "Main");
         if (carriage.args[level].startsWith(prefix)) {
             String command = carriage.args[0].replace(prefix, "");
             AtomicBoolean caught= new AtomicBoolean(false);
@@ -51,15 +52,17 @@ public class CommandHandler {
                     carriage.channel.sendMessage(customCommand).queue();
                 }
             }
+            Logger.customLog("Listener", "Message Clean");
             Clean(carriage);
 
         } else {
-
+            Logger.customLog("Listener", "Message Clean");
             Clean(carriage);
         }
 
     }
-    private void Prepare(@NotNull GuildMessageReceivedEvent event, JDA api, @NotNull DataCarriage carriage) {
+    private void Prepare(@NotNull MessageReceivedEvent event, JDA api, @NotNull DataCarriage carriage) {
+
         carriage.api=api;
         carriage.commandsList=commandList;
         carriage.args = event.getMessage().getContentRaw().split("\\s+");
@@ -77,9 +80,11 @@ public class CommandHandler {
         carriage.guildStorable = StorableManager.getGuild(carriage.guild.getIdLong());
         carriage.channelStorable = StorableManager.getChannel(carriage.channel.getIdLong());
         carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guild.getIdLong());
-
+        GenericStorable gs = StorableManager.getGeneric(0L);
+        gs.getKnownUserList().put(carriage.user.getIdLong(), carriage.user.getIdLong());
+        gs.relinquishAccess();
     }
-    private void HandleMessage(GuildMessageReceivedEvent event, DataCarriage carriage) {
+    private void HandleMessage(MessageReceivedEvent event, DataCarriage carriage) {
         carriage.memberStorable.setMessageCount(carriage.memberStorable.getMessageCount()+1);
         carriage.message = event.getMessage();
         double lucky5int=mainRandomizer.nextInt(25)-12.5;
@@ -89,19 +94,21 @@ public class CommandHandler {
             carriage.memberStorable.setRak(carriage.memberStorable.getRak().add(BigInteger.valueOf(lucky5rak)));
             if (carriage.userStorable.getCurrencyPreference()) {
                 carriage.channel.sendMessage("Here, have " + lucky5rak + " rak. Enjoy!" +
-                        "\n*To opt out of Random RAK gain notification use the command s!opt out RAK (NOT YET FUNCTIONAL. DAMAGE FROM BUBBLES IS STILL BEING REPAIRED.* )").queue();
+                        "\n*To opt out of Random RAK gain notification use the command s!rakmessage disable)").queue();
             }
             carriage.memberStorable.setMessageCount(0);
         }
 
     }
     private void Clean(DataCarriage carriage) {
-        Main.threadManager.addTask(new Thread(new TableUpdate(carriage.channel.getIdLong())));
-
+        Logger.customLog("Listener", "Pre Table Update");
+        Main.threadManager.addTask(new TableUpdate(carriage.channel.getIdLong()));
+        Logger.customLog("Listener", "Post Table Update");
         carriage.userStorable.relinquishAccess();
         carriage.memberStorable.relinquishAccess();
         carriage.channelStorable.relinquishAccess();
         carriage.guildStorable.relinquishAccess();
+        Logger.customLog("Listener", "Finished");
     }
 
 }

@@ -100,6 +100,13 @@ public class StorableFactory {
         return ts;
 
     }
+    public GenericStorable genericStorable() {
+        GenericStorable gs = json.fromJson(data, GenericStorable.class);
+        gs.setFileRW(file);
+        gs.setFactory(this);
+        return gs;
+
+    }
     public synchronized void saveStorable(Storable s) {
         try {
         file.writeAll(json.toJson(s));

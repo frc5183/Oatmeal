@@ -1,17 +1,23 @@
 package wtf.triplapeeck.sinon.backend.storable;
 
 import wtf.triplapeeck.sinon.backend.Logger;
+import wtf.triplapeeck.sinon.backend.commands.miscellaneous.Remind;
 import wtf.triplapeeck.sinon.backend.errors.ClosedStorableError;
 
 import java.math.BigInteger;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserStorable extends Storable {
+    private ConcurrentHashMap<Long, Remind.Reminder> reminderList = new ConcurrentHashMap<>();
     private boolean isOwner=false;
     private boolean isAdmin=false;
     private boolean currencyPreference=true;
     public synchronized boolean getCurrencyPreference() throws ClosedStorableError {
         if (closed) {throw new ClosedStorableError();}
         return currencyPreference;
+    }
+    public synchronized ConcurrentHashMap<Long, Remind.Reminder> getReminderList() {
+        return reminderList;
     }
     public synchronized  void setCurrencyPreference(boolean val) throws ClosedStorableError {
         if (closed) {throw new ClosedStorableError();}
@@ -45,15 +51,13 @@ public class UserStorable extends Storable {
         }
     }
     public synchronized void requestAccess() throws ClosedStorableError {
-        Logger.customLog("Storable","Access Requested");
+        Logger.customLog("Storable","Access Requested. New Count: "+ ++accessCount);
         if (closed) {throw new ClosedStorableError();}
-        accessCount++;
     }
 
     public synchronized void relinquishAccess() {
-        Logger.customLog("Storable","Access Relinquished");
+        Logger.customLog("Storable","Access Relinquished. New Count: "+ --accessCount);
         if (closed) {throw new ClosedStorableError();}
-        accessCount--;
         Save();
     }
 }

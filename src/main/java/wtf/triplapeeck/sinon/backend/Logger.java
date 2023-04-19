@@ -21,11 +21,11 @@ public class Logger {
         }
     }
     private static synchronized void print(String str) {
-        System.out.println(str);
+        //System.out.println(str);
     }
 
     public static synchronized void basicLog(@NotNull Level level, @NotNull String message) {
-        print("[" + level.toString() + "] " + message);
+        print("[" + level + "] " + message);
     }
     public static synchronized void customLog(@NotNull String name, @NotNull String message) {
         print("[" + name + "] " + message);

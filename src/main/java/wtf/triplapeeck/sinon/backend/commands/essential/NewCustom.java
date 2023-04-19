@@ -1,7 +1,7 @@
 package wtf.triplapeeck.sinon.backend.commands.essential;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.sinon.backend.DataCarriage;
 import wtf.triplapeeck.sinon.backend.Page;
@@ -10,7 +10,7 @@ import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
 
 public class NewCustom extends Command {
     @Override
-    public void handler(@NotNull GuildMessageReceivedEvent event, @NotNull DataCarriage carriage, ThreadManager listener) {
+    public void handler(@NotNull MessageReceivedEvent event, @NotNull DataCarriage carriage, ThreadManager listener) {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage) && ensureSecondArgument(carriage)) {
             String name = carriage.args[1];
             String content = carriage.textAfterSubcommand;
