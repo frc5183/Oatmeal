@@ -12,7 +12,7 @@ public class BanEntity {
     private @NotNull long startTimestamp;
     private @Nullable long endTimestamp;
     private @NotNull boolean active;
-    private @NotNull boolean isPermenant;
+    private @NotNull boolean isPermanent;
 
     public BanEntity(UserEntity user, String reason, long endTimestamp) {
         this.user = user;
@@ -28,5 +28,51 @@ public class BanEntity {
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
         this.endTimestamp = endTimestamp;
         this.active = active;
+    }
+
+    @NotNull
+    public UserEntity getUser() {
+        return user;
+    }
+
+    @NotNull
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(@NotNull String reason) {
+        this.reason = reason;
+    }
+
+    public long getStartTimestamp() {
+        return startTimestamp;
+    }
+
+    public void setStartTimestamp(long startTimestamp) {
+        this.startTimestamp = startTimestamp;
+    }
+
+    public long getEndTimestamp() {
+        return endTimestamp;
+    }
+
+    public void setEndTimestamp(long endTimestamp) {
+        this.endTimestamp = endTimestamp;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isPermanent() {
+        return isPermanent;
+    }
+
+    public void setPermanent(boolean permanent) {
+        isPermanent = permanent;
     }
 }
