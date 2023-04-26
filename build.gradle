@@ -9,6 +9,24 @@ task getHomeDir {
     }
 }
 
+/* AN ATTEMPT TO READ TOKEN FROM A .ENV FILE THOUGH GRADLE
+task getTOKEN() {
+    doLast {
+        file('.env').readLines().each() {
+            if (!it.isEmpty() && !it.startsWith("#")) {
+                def pos = it.indexOf("=")
+                def key = it.substring(0, pos)
+                def value = it.substring(pos + 1)
+    
+                if (System.getenv(key) == null) {
+                    environment key, value
+                }
+            }
+        }
+    }
+}
+tasks.run.dependsOn(getTOKEN) */
+
 mainClassName = 'wtf.triplapeeck.oatmeal.Main'
 group 'wtf.triplapeeck'
 version '1.0'
