@@ -17,16 +17,12 @@ import wtf.triplapeeck.oatmeal.runnable.Heartbeat;
 import wtf.triplapeeck.oatmeal.storable.StorableFactory;
 import wtf.triplapeeck.oatmeal.storable.TriviaStorable;
 import wtf.triplapeeck.oatmeal.commands.currency.Balance;
-import wtf.triplapeeck.oatmeal.commands.*;
-import wtf.triplapeeck.oatmeal.commands.essential.*;
-import wtf.triplapeeck.oatmeal.commands.games.cards.blackjack.*;
 import wtf.triplapeeck.oatmeal.commands.sinon.admin.SetAdmin;
 import wtf.triplapeeck.oatmeal.commands.sinon.owner.Count;
 import wtf.triplapeeck.oatmeal.commands.sinon.owner.SetOwner;
 import wtf.triplapeeck.oatmeal.commands.sinon.owner.SetStatus;
-import wtf.triplapeeck.oatmeal.commands.sinon.owner.RebootSinon;
+import wtf.triplapeeck.oatmeal.commands.sinon.owner.RebootOatmeal;
 import wtf.triplapeeck.oatmeal.commands.sinon.trip.RebootVirgo;
-import wtf.triplapeeck.oatmeal.listeners.*;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -55,7 +51,7 @@ public class Main {
         commandHandler.addCommand(new SetAdmin());
         commandHandler.addCommand(new SetOwner());
         commandHandler.addCommand(new RebootVirgo());
-        commandHandler.addCommand(new RebootSinon());
+        commandHandler.addCommand(new RebootOatmeal());
         commandHandler.addCommand(new TestHand());
         //commandHandler.addCommand(new Test());
         commandHandler.addCommand(new CreateBlackjackTable());
