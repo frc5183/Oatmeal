@@ -6,6 +6,10 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import wtf.triplapeeck.oatmeal.commands.Command;
+import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
+import wtf.triplapeeck.oatmeal.storable.GuildStorable;
+import wtf.triplapeeck.oatmeal.storable.MemberStorable;
+import wtf.triplapeeck.oatmeal.storable.UserStorable;
 import wtf.triplapeeck.oatmeal.storable.*;
 
 import java.util.ArrayList;
