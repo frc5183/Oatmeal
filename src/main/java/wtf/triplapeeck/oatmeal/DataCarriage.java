@@ -10,7 +10,7 @@ import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
 import wtf.triplapeeck.oatmeal.storable.GuildStorable;
 import wtf.triplapeeck.oatmeal.storable.MemberStorable;
 import wtf.triplapeeck.oatmeal.storable.UserStorable;
-import wtf.triplapeeck.sinon.backend.storable.*;
+import wtf.triplapeeck.oatmeal.storable.*;
 
 import java.util.ArrayList;
 import java.util.Random;
