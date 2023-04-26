@@ -1,7 +1,7 @@
-package wtf.triplapeeck.sinon.backend.games.cards;
+package wtf.triplapeeck.oatmeal.cards;
 
 import org.jetbrains.annotations.NotNull;
-import wtf.triplapeeck.sinon.backend.Logger;
+import wtf.triplapeeck.oatmeal.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;

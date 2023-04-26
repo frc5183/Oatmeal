@@ -1,4 +1,4 @@
-package wtf.triplapeeck.sinon.backend;
+package wtf.triplapeeck.oatmeal;
 
 public class Utils {
     public static long threadSeconds(long t) {

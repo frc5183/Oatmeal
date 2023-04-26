@@ -1,4 +1,4 @@
-package wtf.triplapeeck.sinon.backend;
+package wtf.triplapeeck.oatmeal;
 
 import org.jetbrains.annotations.NotNull;
 

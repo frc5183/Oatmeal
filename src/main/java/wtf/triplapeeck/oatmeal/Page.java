@@ -1,6 +1,6 @@
-package wtf.triplapeeck.sinon.backend;
+package wtf.triplapeeck.oatmeal;
 
-import wtf.triplapeeck.sinon.backend.commands.Command;
+import wtf.triplapeeck.oatmeal.commands.Command;
 
 import java.util.ArrayList;
 

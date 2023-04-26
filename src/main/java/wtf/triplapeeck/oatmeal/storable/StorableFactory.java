@@ -1,12 +1,8 @@
-package wtf.triplapeeck.sinon.backend.storable;
+package wtf.triplapeeck.oatmeal.storable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import wtf.triplapeeck.sinon.backend.FileRW;
-import wtf.triplapeeck.sinon.backend.storable.ChannelStorable;
-import wtf.triplapeeck.sinon.backend.storable.GuildStorable;
-import wtf.triplapeeck.sinon.backend.storable.Storable;
-import wtf.triplapeeck.sinon.backend.storable.UserStorable;
+import wtf.triplapeeck.oatmeal.FileRW;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

@@ -1,17 +1,17 @@
-package wtf.triplapeeck.sinon.backend.runnable;
+package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.Main;
-import wtf.triplapeeck.sinon.backend.errors.UsedTableException;
-import wtf.triplapeeck.sinon.backend.games.cards.PlayingCard;
-import wtf.triplapeeck.sinon.backend.games.cards.Table;
-import wtf.triplapeeck.sinon.backend.games.cards.TableState;
-import wtf.triplapeeck.sinon.backend.storable.ChannelStorable;
+import wtf.triplapeeck.oatmeal.cards.Table;
+import wtf.triplapeeck.oatmeal.errors.UsedTableException;
+import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
+import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.cards.PlayingCard;
+import wtf.triplapeeck.oatmeal.cards.TableState;
 
-import static wtf.triplapeeck.sinon.backend.games.cards.PlayingCard.Face.TEN;
-import static wtf.triplapeeck.sinon.backend.games.cards.PlayingCard.Suit.SPADES;
-import static wtf.triplapeeck.sinon.backend.storable.StorableManager.getChannel;
+import static wtf.triplapeeck.oatmeal.cards.PlayingCard.Face.TEN;
+import static wtf.triplapeeck.oatmeal.cards.PlayingCard.Suit.SPADES;
 
 public class Insuring implements NamedRunnable {
     String name = "INSURING";
@@ -25,7 +25,7 @@ public class Insuring implements NamedRunnable {
     }
     @Override
     public void run() {
-        ChannelStorable channelStorable = getChannel(ChannelID);
+        ChannelStorable channelStorable = StorableManager.getChannel(ChannelID);
         Logger.customLog("FinishInsuring","Starting. Waiting On Table.");
 
         TextChannel channel;

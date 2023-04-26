@@ -1,4 +1,4 @@
-package wtf.triplapeeck.sinon.backend.games.cards;
+package wtf.triplapeeck.oatmeal.cards;
 
 public enum TableState {
     RECRUITING,INSURING,PLAYING,INACTIVE

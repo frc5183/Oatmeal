@@ -1,10 +1,10 @@
-package wtf.triplapeeck.sinon.backend.games.cards;
+package wtf.triplapeeck.oatmeal.cards;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
-import wtf.triplapeeck.sinon.backend.storable.MemberStorable;
-import wtf.triplapeeck.sinon.backend.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
+import wtf.triplapeeck.oatmeal.storable.MemberStorable;
+import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.Logger;
 
 import java.math.BigInteger;
 
@@ -83,7 +83,7 @@ public class SpotGroup {
     public synchronized boolean isActive() {
         return (spot1!=null);
     }
-    public synchronized void setBet(BigInteger bet) throws InvalidCardActionException  {
+    public synchronized void setBet(BigInteger bet) throws InvalidCardActionException {
         Logger.customLog("SpotGroup", "Attempting To Set Bet");
         Logger.customLog("SpotGroup","Getting Member Storable");
         MemberStorable memberStorable = StorableManager.getMember(id);

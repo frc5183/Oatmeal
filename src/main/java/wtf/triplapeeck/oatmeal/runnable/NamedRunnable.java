@@ -1,4 +1,4 @@
-package wtf.triplapeeck.sinon.backend.runnable;
+package wtf.triplapeeck.oatmeal.runnable;
 
 public interface NamedRunnable extends Runnable {
     String name = "DEFAULT";

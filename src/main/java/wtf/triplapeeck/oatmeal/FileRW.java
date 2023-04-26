@@ -1,4 +1,4 @@
-package wtf.triplapeeck.sinon.backend;
+package wtf.triplapeeck.oatmeal;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

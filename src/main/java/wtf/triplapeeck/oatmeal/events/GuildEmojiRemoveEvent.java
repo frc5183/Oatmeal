@@ -1,13 +1,12 @@
-package wtf.triplapeeck.sinon.backend.events;
+package wtf.triplapeeck.oatmeal.events;
 
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
-import wtf.triplapeeck.sinon.backend.runnable.NamedRunnable;
-import wtf.triplapeeck.sinon.backend.storable.GuildStorable;
-import wtf.triplapeeck.sinon.backend.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.storable.GuildStorable;
+import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.runnable.NamedRunnable;
 
 import java.util.ArrayList;
 import java.util.Iterator;

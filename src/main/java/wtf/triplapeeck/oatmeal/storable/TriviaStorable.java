@@ -1,11 +1,7 @@
-package wtf.triplapeeck.sinon.backend.storable;
+package wtf.triplapeeck.oatmeal.storable;
 
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.Trivia;
-import wtf.triplapeeck.sinon.backend.errors.ClosedStorableError;
-
-import java.util.ArrayList;
-import java.util.List;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
 
 public class TriviaStorable extends Storable {
     @Override

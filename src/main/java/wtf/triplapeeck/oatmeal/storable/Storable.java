@@ -1,11 +1,10 @@
-package wtf.triplapeeck.sinon.backend.storable;
+package wtf.triplapeeck.oatmeal.storable;
 
-import wtf.triplapeeck.sinon.backend.FileRW;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.errors.ClosedStorableError;
+import wtf.triplapeeck.oatmeal.FileRW;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
 
 import java.math.BigInteger;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Storable {
 

@@ -1,11 +1,9 @@
-package wtf.triplapeeck.sinon.backend.games.cards;
+package wtf.triplapeeck.oatmeal.cards;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import wtf.triplapeeck.sinon.backend.DataCarriage;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
+import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
+import wtf.triplapeeck.oatmeal.Logger;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class Spot {

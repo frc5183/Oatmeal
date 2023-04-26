@@ -1,10 +1,10 @@
-package wtf.triplapeeck.sinon.backend.storable;
+package wtf.triplapeeck.oatmeal.storable;
 
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.errors.ClosedStorableError;
-import wtf.triplapeeck.sinon.backend.errors.UsedTableException;
-import wtf.triplapeeck.sinon.backend.errors.ValidTableException;
-import wtf.triplapeeck.sinon.backend.games.cards.Table;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
+import wtf.triplapeeck.oatmeal.errors.UsedTableException;
+import wtf.triplapeeck.oatmeal.errors.ValidTableException;
+import wtf.triplapeeck.oatmeal.cards.Table;
 
 public class ChannelStorable extends Storable {
     private Table table;

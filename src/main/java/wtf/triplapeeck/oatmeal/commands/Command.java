@@ -1,17 +1,16 @@
-package wtf.triplapeeck.sinon.backend.commands;
+package wtf.triplapeeck.oatmeal.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
-import wtf.triplapeeck.sinon.backend.DataCarriage;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.errors.UsedTableException;
-import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
-import wtf.triplapeeck.sinon.backend.storable.StorableFactory;
-import wtf.triplapeeck.sinon.backend.storable.UserStorable;
+import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
+import wtf.triplapeeck.oatmeal.storable.StorableFactory;
+import wtf.triplapeeck.oatmeal.storable.UserStorable;
+import wtf.triplapeeck.oatmeal.DataCarriage;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public abstract class Command {

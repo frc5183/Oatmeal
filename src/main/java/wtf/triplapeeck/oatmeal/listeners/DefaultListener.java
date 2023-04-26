@@ -1,4 +1,4 @@
-package wtf.triplapeeck.sinon.backend.listeners;
+package wtf.triplapeeck.oatmeal.listeners;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -7,13 +7,13 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.Main;
-import wtf.triplapeeck.sinon.backend.events.GuildEmojiAddEvent;
-import wtf.triplapeeck.sinon.backend.events.GuildEmojiRemoveEvent;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.events.GuildEmojiAddEvent;
+import wtf.triplapeeck.oatmeal.events.GuildEmojiRemoveEvent;
 
-import static wtf.triplapeeck.sinon.backend.Main.commandHandler;
-import static wtf.triplapeeck.sinon.backend.Main.threadManager;
+import static wtf.triplapeeck.oatmeal.Main.commandHandler;
+import static wtf.triplapeeck.oatmeal.Main.threadManager;
 
 public class DefaultListener extends ListenerAdapter
 {

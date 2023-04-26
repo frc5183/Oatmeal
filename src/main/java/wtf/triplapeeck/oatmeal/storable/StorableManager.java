@@ -1,9 +1,9 @@
-package wtf.triplapeeck.sinon.backend.storable;
+package wtf.triplapeeck.oatmeal.storable;
 
 
 
 
-import wtf.triplapeeck.sinon.backend.Logger;
+import wtf.triplapeeck.oatmeal.Logger;
 
 import java.util.Hashtable;
 

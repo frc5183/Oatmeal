@@ -1,11 +1,15 @@
-package wtf.triplapeeck.sinon.backend;
+package wtf.triplapeeck.oatmeal;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import wtf.triplapeeck.sinon.backend.commands.Command;
+import wtf.triplapeeck.oatmeal.commands.Command;
+import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
+import wtf.triplapeeck.oatmeal.storable.GuildStorable;
+import wtf.triplapeeck.oatmeal.storable.MemberStorable;
+import wtf.triplapeeck.oatmeal.storable.UserStorable;
 import wtf.triplapeeck.sinon.backend.storable.*;
 
 import java.util.ArrayList;

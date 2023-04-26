@@ -1,4 +1,4 @@
-package wtf.triplapeeck.sinon.backend.errors;
+package wtf.triplapeeck.oatmeal.errors;
 
 public class InvalidCardActionException extends Exception {
     private String msg;

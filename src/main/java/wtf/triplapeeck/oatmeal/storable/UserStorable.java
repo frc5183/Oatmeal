@@ -1,8 +1,8 @@
-package wtf.triplapeeck.sinon.backend.storable;
+package wtf.triplapeeck.oatmeal.storable;
 
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.commands.miscellaneous.Remind;
-import wtf.triplapeeck.sinon.backend.errors.ClosedStorableError;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
+import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
 
 import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;

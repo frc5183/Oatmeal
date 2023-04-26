@@ -1,13 +1,13 @@
-package wtf.triplapeeck.sinon.backend.runnable;
+package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.Main;
-import wtf.triplapeeck.sinon.backend.errors.UsedTableException;
-import wtf.triplapeeck.sinon.backend.errors.ValidTableException;
-import wtf.triplapeeck.sinon.backend.games.cards.Table;
-import wtf.triplapeeck.sinon.backend.storable.ChannelStorable;
-import wtf.triplapeeck.sinon.backend.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.cards.Table;
+import wtf.triplapeeck.oatmeal.errors.UsedTableException;
+import wtf.triplapeeck.oatmeal.errors.ValidTableException;
+import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
+import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.Main;
 
 public class NewTable implements NamedRunnable {
     String name = "NEWTABLE";

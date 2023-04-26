@@ -1,13 +1,15 @@
-package wtf.triplapeeck.sinon.backend.commands;
+package wtf.triplapeeck.oatmeal.commands;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
-import wtf.triplapeeck.sinon.backend.DataCarriage;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.Main;
-import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
-import wtf.triplapeeck.sinon.backend.runnable.TableUpdate;
+import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
+import wtf.triplapeeck.oatmeal.storable.GenericStorable;
+import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.DataCarriage;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.runnable.TableUpdate;
 import wtf.triplapeeck.sinon.backend.storable.*;
 
 import java.math.BigInteger;

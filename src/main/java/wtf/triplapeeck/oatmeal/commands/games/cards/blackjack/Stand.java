@@ -1,17 +1,14 @@
-package wtf.triplapeeck.sinon.backend.commands.games.cards.blackjack;
+package wtf.triplapeeck.oatmeal.commands.games.cards.blackjack;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
-import wtf.triplapeeck.sinon.backend.DataCarriage;
-import wtf.triplapeeck.sinon.backend.Main;
-import wtf.triplapeeck.sinon.backend.Page;
-import wtf.triplapeeck.sinon.backend.commands.Command;
-import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
-import wtf.triplapeeck.sinon.backend.runnable.DoubleDownBlackjack;
-import wtf.triplapeeck.sinon.backend.runnable.HitBlackjack;
-import wtf.triplapeeck.sinon.backend.runnable.InsureBlackjack;
-import wtf.triplapeeck.sinon.backend.runnable.StandBlackjack;
+import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
+import wtf.triplapeeck.oatmeal.DataCarriage;
+import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.Page;
+import wtf.triplapeeck.oatmeal.commands.Command;
+import wtf.triplapeeck.oatmeal.runnable.StandBlackjack;
 
 public class Stand extends Command {
     public Stand() {

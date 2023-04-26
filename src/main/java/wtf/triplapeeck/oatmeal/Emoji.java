@@ -1,6 +1,6 @@
-package wtf.triplapeeck.sinon.backend;
+package wtf.triplapeeck.oatmeal;
 
-import wtf.triplapeeck.sinon.backend.games.cards.PlayingCard;
+import wtf.triplapeeck.oatmeal.cards.PlayingCard;
 
 public class Emoji {
     public static String getEmoji(PlayingCard.Suit suit, PlayingCard.Face face) {

@@ -1,19 +1,14 @@
-package wtf.triplapeeck.sinon.backend.runnable;
+package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.Main;
-import wtf.triplapeeck.sinon.backend.errors.ClosedStorableError;
-import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
-import wtf.triplapeeck.sinon.backend.errors.UsedTableException;
-import wtf.triplapeeck.sinon.backend.games.cards.SpotGroup;
-import wtf.triplapeeck.sinon.backend.games.cards.Table;
-import wtf.triplapeeck.sinon.backend.games.cards.TableState;
-import wtf.triplapeeck.sinon.backend.storable.ChannelStorable;
-
-import java.sql.Time;
-
-import static wtf.triplapeeck.sinon.backend.storable.StorableManager.getChannel;
+import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
+import wtf.triplapeeck.oatmeal.errors.UsedTableException;
+import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
+import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.cards.Table;
+import wtf.triplapeeck.oatmeal.cards.TableState;
 
 public class TableUpdate implements NamedRunnable {
     String name = "TABLEUPDATE";
@@ -32,7 +27,7 @@ public class TableUpdate implements NamedRunnable {
         Logger.customLog("TableUpdate", "Starting. Waiting On Table.");
         ChannelStorable channelStorable = null;
         try {
-            channelStorable = getChannel(ChannelID);
+            channelStorable = StorableManager.getChannel(ChannelID);
             channelStorable.relinquishAccess();
         } catch (ClosedStorableError e) {
 
@@ -43,7 +38,7 @@ public class TableUpdate implements NamedRunnable {
             boolean complete = false;
 
             try {
-                    channelStorable = getChannel(ChannelID);
+                    channelStorable = StorableManager.getChannel(ChannelID);
                     table = channelStorable.getTable();
                     complete = true;
             } catch (UsedTableException ignored) {

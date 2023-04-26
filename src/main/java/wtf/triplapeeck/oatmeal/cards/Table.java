@@ -1,21 +1,21 @@
-package wtf.triplapeeck.sinon.backend.games.cards;
+package wtf.triplapeeck.oatmeal.cards;
 
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.Main;
-import wtf.triplapeeck.sinon.backend.errors.InvalidCardActionException;
-import wtf.triplapeeck.sinon.backend.runnable.Insuring;
-import wtf.triplapeeck.sinon.backend.runnable.Waiting;
-import wtf.triplapeeck.sinon.backend.storable.ChannelStorable;
-import wtf.triplapeeck.sinon.backend.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
+import wtf.triplapeeck.oatmeal.runnable.Waiting;
+import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
+import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.runnable.Insuring;
 
 import java.math.BigInteger;
 
-import static wtf.triplapeeck.sinon.backend.games.cards.PlayingCard.Face.TEN;
-import static wtf.triplapeeck.sinon.backend.games.cards.PlayingCard.Suit.SPADES;
-import static wtf.triplapeeck.sinon.backend.games.cards.TableState.*;
+import static wtf.triplapeeck.oatmeal.cards.PlayingCard.Face.TEN;
+import static wtf.triplapeeck.oatmeal.cards.PlayingCard.Suit.SPADES;
+import static wtf.triplapeeck.oatmeal.cards.TableState.*;
 
 
 public class Table {

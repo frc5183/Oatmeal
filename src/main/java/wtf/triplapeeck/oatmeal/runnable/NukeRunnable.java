@@ -1,12 +1,10 @@
-package wtf.triplapeeck.sinon.backend.runnable;
+package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
-import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.requests.RestAction;
-import wtf.triplapeeck.sinon.backend.Logger;
-import wtf.triplapeeck.sinon.backend.Main;
+import wtf.triplapeeck.oatmeal.Main;
 
 
 public class NukeRunnable implements NamedRunnable {

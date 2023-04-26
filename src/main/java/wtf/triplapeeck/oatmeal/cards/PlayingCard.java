@@ -1,6 +1,6 @@
-package wtf.triplapeeck.sinon.backend.games.cards;
+package wtf.triplapeeck.oatmeal.cards;
 
-import wtf.triplapeeck.sinon.backend.Emoji;
+import wtf.triplapeeck.oatmeal.Emoji;
 
 public class PlayingCard {
     private Suit suit;
