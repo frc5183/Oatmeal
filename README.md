@@ -9,3 +9,4 @@ This is the code repo for the Oatmeal discord bot in the 5183 Discord. You are w
 
 Gradle: 5.0+ (due to com.github.johnrengelman.shadow as of April 26, 2023)
 
+tst
