@@ -27,9 +27,13 @@ jar {
 }
 
 dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'junit:junit:4.13.1'
     implementation "net.dv8tion:JDA:$jdaVersion"
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.j256.ormlite:ormlite-core:4.48'
+    implementation 'com.j256.ormlite:ormlite-jdbc:6.1'
+
+
 }
 compileJava.options.encoding = 'UTF-8'
 sourceCompatibility = 17
