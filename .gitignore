@@ -15,3 +15,5 @@
 /gradlew.bat
 /sinon-1.0-all.jar
 /src/main/java/wtf/triplapeeck/oatmeal/backend/Secrets.java
+build.bat
+build.sh
