@@ -10,7 +10,7 @@ import java.util.Hashtable;
 public class StorableManager {
 
     private static Hashtable<Long, ChannelStorable> channelList= new Hashtable<>();
-    private static Hashtable<Long, GuildStorable> guildList= new Hashtable<>();
+    private static Hashtable<String, GuildStorable> guildList= new Hashtable<>();
     private static Hashtable<String, MemberStorable> memberList= new Hashtable<>();
     private static Hashtable<Long, UserStorable> userList = new Hashtable<>();
 
@@ -37,7 +37,7 @@ public class StorableManager {
 
 
 
-    public static synchronized GuildStorable getGuild(Long id) {
+    public static synchronized GuildStorable getGuild(String id) {
         GuildStorable guildStorable = guildList.get(id);
         if (guildStorable==null) {
             guildStorable= new StorableFactory(id).guildStorable();
@@ -47,9 +47,7 @@ public class StorableManager {
         guildStorable.requestAccess();
         return guildStorable;
     }
-    public static synchronized void removeGuild(Long id) {
-        guildList.remove(id);
-    }
+    public static synchronized void removeGuild(String id) {guildList.remove(id);}
 
     public static synchronized MemberStorable getMember(String id) {
         MemberStorable memberStorable = memberList.get(id);

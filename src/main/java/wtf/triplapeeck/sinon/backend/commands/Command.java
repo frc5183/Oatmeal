@@ -15,6 +15,15 @@ import javax.xml.crypto.Data;
 import java.util.List;
 
 public abstract class Command {
+    public boolean ensureGuild(DataCarriage carriage) {
+        if (carriage.guild==null) {
+            carriage.channel.sendMessage("This command is not available outside of a server.").queue();
+        }
+        return true;
+    }
+    public boolean isGuild(DataCarriage carriage) {
+        return carriage.guild != null;
+    }
     public abstract void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener);
 
     public abstract @NotNull java.lang.String getDocumentation();
@@ -210,6 +219,7 @@ public abstract class Command {
         }
     }
     public boolean isAdministrator(@NotNull DataCarriage carriage) {
+        if (!isGuild(carriage)) { return true;}
         return carriage.message.getMember().hasPermission(Permission.ADMINISTRATOR);
     }
     public boolean ensureAdministrator(@NotNull DataCarriage carriage) {
@@ -221,6 +231,7 @@ public abstract class Command {
         }
     }
     public boolean canBan(@NotNull DataCarriage carriage) {
+        if (!isGuild(carriage)) { return false;}
         return carriage.message.getMember().hasPermission(Permission.BAN_MEMBERS);
     }
     public boolean ensureBan(@NotNull DataCarriage carriage) {
@@ -232,6 +243,7 @@ public abstract class Command {
         }
     }
     public boolean canKick(@NotNull DataCarriage carriage) {
+        if (!isGuild(carriage)) { return false;}
         return carriage.message.getMember().hasPermission(Permission.KICK_MEMBERS);
     }
 }

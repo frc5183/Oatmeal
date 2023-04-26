@@ -27,7 +27,7 @@ public class GuildEmojiAddEvent implements NamedRunnable {
 
     @Override
     public void run() {
-        GuildStorable guildStorable = StorableManager.getGuild(event.getGuild().getIdLong());
+        GuildStorable guildStorable = StorableManager.getGuild(event.getGuild().getId());
         TextChannel starboard = event.getGuild().getTextChannelById(guildStorable.getStarboardChannelId());
         if (event.getReaction().getEmoji().getType()== Emoji.Type.CUSTOM) {
             guildStorable.relinquishAccess();

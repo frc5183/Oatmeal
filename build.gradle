@@ -11,7 +11,7 @@ task getHomeDir {
 mainClassName = 'wtf.triplapeeck.sinon.backend.Main'
 group 'wtf.triplapeeck'
 version '1.0'
-def jdaVersion = '4.2.0_168'
+def jdaVersion = '5.0.0-beta.3'
 sourceCompatibility = targetCompatibility = 1.8
 repositories {
     mavenCentral()
@@ -19,10 +19,10 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile "net.dv8tion:JDA:$jdaVersion"
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    implementation "net.dv8tion:JDA:$jdaVersion"
     implementation 'com.google.code.gson:gson:2.8.6'
 }
 compileJava.options.encoding = 'UTF-8'
-sourceCompatibility = JavaVersion.VERSION_14
-targetCompatibility = JavaVersion.VERSION_14
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17

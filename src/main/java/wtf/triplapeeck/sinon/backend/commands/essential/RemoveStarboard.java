@@ -11,7 +11,7 @@ import wtf.triplapeeck.sinon.backend.listeners.ThreadManager;
 public class RemoveStarboard extends Command {
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
-        if (ensureAdministrator(carriage)) {
+        if (ensureAdministrator(carriage) && ensureGuild(carriage)) {
             carriage.guildStorable.setStarboardChannelID(0L);
             carriage.channel.sendMessage("The starboard will no longer post").queue();
 
@@ -33,7 +33,7 @@ public class RemoveStarboard extends Command {
 
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
-        return isAdministrator(carriage);
+        return isAdministrator(carriage) && isGuild(carriage);
     }
 
     public RemoveStarboard() {

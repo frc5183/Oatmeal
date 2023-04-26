@@ -73,13 +73,20 @@ public class CommandHandler {
         }
         carriage.random=mainRandomizer;
         carriage.user = event.getAuthor();
-        carriage.guild = event.getGuild();
         carriage.channel = event.getChannel();
+        try {
+            carriage.guild = event.getGuild();
+            carriage.guildStorable = StorableManager.getGuild(carriage.guild.getId());
+        } catch (IllegalStateException e) {
+            carriage.guild=null;
+            carriage.guildStorable = StorableManager.getGuild(carriage.channel.getId()+"0000");
+        }
+
         carriage.message=event.getMessage();
         carriage.userStorable = StorableManager.getUser(carriage.user.getIdLong());
-        carriage.guildStorable = StorableManager.getGuild(carriage.guild.getIdLong());
+
         carriage.channelStorable = StorableManager.getChannel(carriage.channel.getIdLong());
-        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guild.getIdLong());
+        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildStorable.getID());
         GenericStorable gs = StorableManager.getGeneric(0L);
         gs.getKnownUserList().put(carriage.user.getIdLong(), carriage.user.getIdLong());
         gs.relinquishAccess();

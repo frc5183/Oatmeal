@@ -11,10 +11,8 @@ import wtf.triplapeeck.sinon.backend.Main;
 
 public class NukeRunnable implements NamedRunnable {
     long channel_id;
-    long guild_id;
     MessageChannel channel;
     int toClear;
-    ChannelType type;
     RestAction messageSend;
     @Override
     public String getName() {
@@ -23,7 +21,7 @@ public class NukeRunnable implements NamedRunnable {
 
     @Override
     public void run() {
-            channel = Main.api.getGuildById(guild_id).getChannelById(MessageChannel.class, String.valueOf(channel_id));
+            channel = Main.api.getChannelById(MessageChannel.class, String.valueOf(channel_id));
             try {
             Thread.sleep(2500);
         } catch (InterruptedException e) {
@@ -50,7 +48,6 @@ public class NukeRunnable implements NamedRunnable {
     }
     public NukeRunnable(long guildId, long channelId, int clear, RestAction messageToSend) {
         channel_id=channelId;
-        guild_id=guildId;
         toClear=clear;
         messageSend=messageToSend;
     }

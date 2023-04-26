@@ -16,7 +16,7 @@ public class Ban extends Command {
 
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (
-                ensureBan(carriage)
+                ensureBan(carriage) && ensureGuild(carriage)
         ) {
             if (taggedUserListLength(carriage) > 0) {
 
@@ -29,10 +29,16 @@ public class Ban extends Command {
                 }
             } else {
                 if (ensureFirstArgument(carriage)) {
-                    long userID = Long.parseLong(carriage.args[1]);
-                    User user = carriage.api.retrieveUserById(userID).complete();
-                    carriage.guild.ban(user, 0, TimeUnit.DAYS).queue();
-                    carriage.channel.sendMessage(user.getAsMention() + " is now banned.").queue();
+                    try {
+                        long userID = Long.parseLong(carriage.args[1]);
+                        User user = carriage.api.retrieveUserById(userID).complete();
+                        carriage.guild.ban(user, 0, TimeUnit.DAYS).queue();
+                        carriage.channel.sendMessage(user.getAsMention() + " is now banned.").queue();
+                    } catch (NumberFormatException e) {
+                        carriage.channel.sendMessage(carriage.args[1] + " is not a valid user id");
+                    }
+
+
                 }
             }
         }
@@ -45,7 +51,7 @@ public class Ban extends Command {
 
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
-        return canBan(carriage);
+        return canBan(carriage) && isGuild(carriage);
     }
 
     public Ban() {

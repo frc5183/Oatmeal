@@ -56,7 +56,7 @@ public class GuildStorable extends Storable {
     public void Save() {
         factory.saveStorable(this);
         if (accessCount==0) {
-            StorableManager.removeGuild(getID().longValue());
+            StorableManager.removeGuild(getID().toString());
             closed=true;
         }
     }

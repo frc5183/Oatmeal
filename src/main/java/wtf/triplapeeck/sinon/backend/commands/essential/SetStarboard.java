@@ -12,7 +12,7 @@ public class SetStarboard extends Command {
 
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
-        if (ensureAdministrator(carriage) && ensureTaggedChannelListNotEmpty(carriage) && ensureOnlyOneTaggedChannel(carriage)) {
+        if (ensureAdministrator(carriage) && ensureTaggedChannelListNotEmpty(carriage) && ensureOnlyOneTaggedChannel(carriage) && ensureGuild(carriage)) {
             Long id = carriage.message.getMentions().getChannels().get(0).getIdLong();
             carriage.guildStorable.setStarboardChannelID(id);
             carriage.channel.sendMessage("The starboard will post in " + carriage.guild.getTextChannelById(id).getAsMention()).queue();
@@ -34,7 +34,7 @@ public class SetStarboard extends Command {
 
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
-        return isAdministrator(carriage);
+        return isAdministrator(carriage) && isGuild(carriage);
     }
 
     public SetStarboard() {
