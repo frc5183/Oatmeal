@@ -9,7 +9,7 @@ import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 
-public class RebootSinon extends Command {
+public class RebootOatmeal extends Command {
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureIsOwner(carriage)){
             Logger.basicLog(Logger.Level.INFO, "Sinon-Reboot Initiated.");
@@ -40,7 +40,7 @@ public class RebootSinon extends Command {
     }
 
 
-    public RebootSinon() {
+    public RebootOatmeal() {
         Page.SinonOwner.addCommand(this);
     }
 }
