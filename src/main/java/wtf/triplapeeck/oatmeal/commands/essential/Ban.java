@@ -25,7 +25,7 @@ public class Ban extends Command {
                     List<User> userList = carriage.message.getMentions().getUsers();
                     User user = userList.get(0);
                     carriage.guild.ban(user, 0, TimeUnit.DAYS);
-                    carriage.channel.sendMessage(user.getAsMention() + " qis now banned.").queue();
+                    carriage.channel.sendMessage(user.getAsMention() + " is now banned.").queue();
                 }
             } else {
                 if (ensureFirstArgument(carriage)) {
