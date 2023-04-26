@@ -33,10 +33,11 @@ public class Main {
     public static JDA api;
     public static TriviaStorable ts;
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
+
     public static void main(String[] args) throws LoginException, InterruptedException, IOException {
         listener=new DefaultListener();
         threadManager=new ThreadManager();
-        api = JDABuilder.createDefault(Secrets.getToken())
+        api = JDABuilder.createDefault(System.getenv("TOKEN"))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(listener).build();
         api.awaitReady();

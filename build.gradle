@@ -8,11 +8,10 @@ task getHomeDir {
         println gradle.gradleHomeDir
     }
 }
-mainClassName = 'wtf.triplapeeck.sinon.backend.Main'
+mainClassName = 'wtf.triplapeeck.oatmeal.Main'
 group 'wtf.triplapeeck'
 version '1.0'
 def jdaVersion = '5.0.0-beta.3'
-sourceCompatibility = targetCompatibility = 1.8
 repositories {
     mavenCentral()
     jcenter()
