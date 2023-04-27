@@ -15,4 +15,4 @@ build.sh
 .env
 ./work/
 ./work
-./config.json
+/config.json

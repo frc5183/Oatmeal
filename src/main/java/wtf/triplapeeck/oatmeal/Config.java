@@ -15,7 +15,7 @@ public class Config {
     public static Config config;
     protected static GsonBuilder jsonBuilder = new GsonBuilder();
     protected static Gson json = jsonBuilder.create();
-    public String token  = null;
+    public String token  = "";
     public static FileRW fileRW;
 
     //DATABASE CONFIGURATION
@@ -44,7 +44,8 @@ public class Config {
             if (data==null || data.length()==0 || data.equals("null")) {
                 data = "{token:\"\"}";
             }
-            return json.fromJson(data, Config.class);
+            config = json.fromJson(data, Config.class);
+            return config;
         } catch (IOException e) {
             throw new Error("Config.json is inaccessible in the Current Working Directory");
         }
@@ -54,6 +55,7 @@ public class Config {
 
     public static synchronized void saveConfig() {
         try {
+
             fileRW.writeAll(json.toJson(config));
         } catch (IOException e) {
             Logger.basicLog(Logger.Level.WARN, e.toString());
