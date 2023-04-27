@@ -10,7 +10,6 @@
 /src/main/java/wtf/triplapeeck/oatmeal/backend/Secrets.java
 build.bat
 build.sh
-run.sh
 .vscode
 *.class
 .env
