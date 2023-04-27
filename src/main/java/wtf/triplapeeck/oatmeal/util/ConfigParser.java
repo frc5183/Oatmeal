@@ -19,7 +19,7 @@ public class ConfigParser {
                 return args[0];
             }
         }
-        if (!(System.getenv("TOKEN").equals("")) || System.getenv("TOKEN")!= null) {
+        if (System.getenv("TOKEN") != null) {
             return System.getenv("TOKEN");
         }
 
@@ -28,11 +28,11 @@ public class ConfigParser {
 
     public DatabaseConfiguration getDatabaseConfiguration() throws ArgumentException {
         if (
-                (System.getenv("DATABASE_ADDRESS").equals("") && Objects.equals(config.address, ""))
-                || (System.getenv("DATABASE_PORT").equals("") && config.port == 0)
-                || (System.getenv("DATABASE_USERNAME").equals("") && Objects.equals(config.username, "usr"))
-                || (System.getenv("DATABASE_PASSWORD").equals("") && Objects.equals(config.password, "pwd"))
-                || (System.getenv("DATABASE_NAME").equals("") && Objects.equals(config.database, "db"))
+                (System.getenv("TOKEN") != null && config.address.equals(""))
+                || (System.getenv("TOKEN") != null && config.port == 0)
+                || (System.getenv("TOKEN") != null && config.username.equals(""))
+                || (System.getenv("TOKEN") != null && config.password.equals(""))
+                || (System.getenv("TOKEN") != null && config.database.equals(""))
         ) throw new ArgumentException("Missing one or more database configurations.");
         String address=config.address;
         String username=config.username;
@@ -40,9 +40,9 @@ public class ConfigParser {
         String database=config.database;
         int port = config.port;
         if (address.equals("")) address=System.getenv("DATABASE_ADDRESS");
-        if (password.equals("pwd")) username=System.getenv("DATABASE_USERNAME");
-        if (username.equals("usr")) password=System.getenv("DATABASE_PASSWORD");
-        if (database.equals("db")) database=System.getenv("DATABASE_NAME");
+        if (password.equals("")) username=System.getenv("DATABASE_USERNAME");
+        if (username.equals("")) password=System.getenv("DATABASE_PASSWORD");
+        if (database.equals("")) database=System.getenv("DATABASE_NAME");
         if (port == 0) port = Integer.parseInt(System.getenv("DATABASE_PORT"));
         if (Integer.parseInt(System.getenv("DATABASE_PORT")) > 65535 || Integer.parseInt(System.getenv("DATABASE_PORT")) < 1) throw new ArgumentException("DATABASE_PORT is not a valid port number. (1-65535)");
         try {
