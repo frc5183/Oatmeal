@@ -27,4 +27,4 @@ mkdir -p "$WORKING_DIR"
 
 cd "$WORKING_DIR"
 
-java -jar $JAR_FILE $TOKEN
+java -jar "$JAR_FILE" "$TOKEN"
