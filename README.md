@@ -7,12 +7,18 @@ This is the code repo for the Oatmeal discord bot in the 5183 Discord. You are w
 </br>
 
 # Configure
-## Set the bot token (currently only for linux)
-Create a .env file in the same folder as the run.sh script with the following:
+## Set the bot token
+Set an environment variable `TOKEN="yourtokenhere"`
 
-    TOKEN="PUT_YOUR_TOKEN_HERE"
+OR
 
-obviously, you replace PUT_YOUR_TOKEN_HERE with your token (keeping the double quotes)
+Run the .jar with the token as your argument.
 
-TODO: include instructions for the windows script as well. preferably make it work the same way
-</br>
+## Set database credentials
+TODO
+
+# Build
+```
+gradlew shadowJar
+```
+Find the .jar in build/libs/oatmeal-(version)-all.jar
