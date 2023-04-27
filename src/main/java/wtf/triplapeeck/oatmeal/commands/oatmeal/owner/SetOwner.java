@@ -1,4 +1,4 @@
-package wtf.triplapeeck.oatmeal.commands.sinon.owner;
+package wtf.triplapeeck.oatmeal.commands.oatmeal.owner;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
