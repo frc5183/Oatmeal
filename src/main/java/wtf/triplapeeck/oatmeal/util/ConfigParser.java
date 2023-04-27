@@ -1,9 +1,9 @@
 package wtf.triplapeeck.oatmeal.util;
 
-import wtf.triplapeeck.oatmeal.errors.MissingTokenException;
+import wtf.triplapeeck.oatmeal.errors.ArgumentException;
 
 public class ConfigParser {
-    public static String getToken(String[] args) throws MissingTokenException {
+    public static String getToken(String[] args) throws ArgumentException {
         if (!(args[0].equals(""))) {
             return args[0];
         }
@@ -12,6 +12,6 @@ public class ConfigParser {
             return System.getenv("TOKEN");
         }
 
-        throw new MissingTokenException();
+        throw new ArgumentException("Missing Token");
     }
 }

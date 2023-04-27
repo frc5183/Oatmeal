@@ -11,18 +11,20 @@ import wtf.triplapeeck.oatmeal.commands.games.cards.TestHand;
 import wtf.triplapeeck.oatmeal.commands.games.cards.blackjack.*;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Ping;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
+import wtf.triplapeeck.oatmeal.errors.ArgumentException;
 import wtf.triplapeeck.oatmeal.listeners.DefaultListener;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.runnable.Heartbeat;
 import wtf.triplapeeck.oatmeal.storable.StorableFactory;
 import wtf.triplapeeck.oatmeal.storable.TriviaStorable;
 import wtf.triplapeeck.oatmeal.commands.currency.Balance;
-import wtf.triplapeeck.oatmeal.commands.sinon.admin.SetAdmin;
-import wtf.triplapeeck.oatmeal.commands.sinon.owner.Count;
-import wtf.triplapeeck.oatmeal.commands.sinon.owner.SetOwner;
-import wtf.triplapeeck.oatmeal.commands.sinon.owner.SetStatus;
-import wtf.triplapeeck.oatmeal.commands.sinon.owner.RebootOatmeal;
-import wtf.triplapeeck.oatmeal.commands.sinon.trip.RebootVirgo;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.admin.SetAdmin;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.Count;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetOwner;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetStatus;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.RebootOatmeal;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.trip.RebootVirgo;
+import wtf.triplapeeck.oatmeal.util.ConfigParser;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -35,10 +37,10 @@ public class Main {
     public static TriviaStorable ts;
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
 
-    public static void main(String[] args) throws LoginException, InterruptedException, IOException {
+    public static void main(String[] args) throws LoginException, InterruptedException, IOException, ArgumentException {
         listener=new DefaultListener();
         threadManager=new ThreadManager();
-        api = JDABuilder.createDefault(args[0])
+        api = JDABuilder.createDefault(ConfigParser.getToken(args))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(listener).build();
         api.awaitReady();
