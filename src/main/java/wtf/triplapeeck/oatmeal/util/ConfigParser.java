@@ -19,7 +19,7 @@ public class ConfigParser {
                 return args[0];
             }
         }
-        if (!(System.getenv("TOKEN").equals(""))) {
+        if (!(System.getenv("TOKEN").equals("")) || System.getenv("TOKEN")!= null) {
             return System.getenv("TOKEN");
         }
 
@@ -33,27 +33,17 @@ public class ConfigParser {
                 || (System.getenv("DATABASE_USERNAME").equals("") && Objects.equals(config.username, "usr"))
                 || (System.getenv("DATABASE_PASSWORD").equals("") && Objects.equals(config.password, "pwd"))
                 || (System.getenv("DATABASE_NAME").equals("") && Objects.equals(config.database, "db"))
-        ) throw new ArgumentException("Missing one or more database configurations. ");
+        ) throw new ArgumentException("Missing one or more database configurations.");
         String address=config.address;
         String username=config.username;
         String password=config.password;
         String database=config.database;
         int port = config.port;
-        if (Objects.equals(address, "")) {
-            address=System.getenv("DATABASE_ADDRESS");
-        }
-        if (Objects.equals(username, "usr")) {
-            username=System.getenv("DATABASE_USERNAME");
-        }
-        if (Objects.equals(password, "pwd")) {
-            password = System.getenv("DATABASE_PASSWORD");
-        }
-        if (Objects.equals(database, "db")) {
-            database=System.getenv("DATABASE_NAME");
-        }
-        if (port==0) {
-            port=Integer.parseInt(System.getenv("DATABASE_PORT"));
-        }
+        if (address.equals("")) address=System.getenv("DATABASE_ADDRESS");
+        if (password.equals("pwd")) username=System.getenv("DATABASE_USERNAME");
+        if (username.equals("usr")) password=System.getenv("DATABASE_PASSWORD");
+        if (database.equals("db")) database=System.getenv("DATABASE_NAME");
+        if (port == 0) port = Integer.parseInt(System.getenv("DATABASE_PORT"));
         if (Integer.parseInt(System.getenv("DATABASE_PORT")) > 65535 || Integer.parseInt(System.getenv("DATABASE_PORT")) < 1) throw new ArgumentException("DATABASE_PORT is not a valid port number. (1-65535)");
         try {
             return new DatabaseConfiguration(new MariaDbDatabaseType(), address, port, username, password, database);
