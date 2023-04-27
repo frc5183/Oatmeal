@@ -10,14 +10,15 @@ import java.util.Objects;
 public class ConfigParser {
     private static final Config config = Config.getConfig();
     public static String getToken(String[] args) throws ArgumentException {
-        if (config.token!=null) {
+        if (config.token!=null && !config.token.equals("")) {
             return config.token;
         }
         Config.saveConfig();
-        if (!(args[0].equals(""))) {
-            return args[0];
+        if (args.length>0) {
+            if (!(args[0].equals(""))) {
+                return args[0];
+            }
         }
-
         if (!(System.getenv("TOKEN").equals(""))) {
             return System.getenv("TOKEN");
         }

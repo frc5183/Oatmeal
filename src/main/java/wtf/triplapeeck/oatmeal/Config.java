@@ -27,7 +27,10 @@ public class Config {
 
 
     public static synchronized Config getConfig() {
-        if (config!=null) {return config;}
+
+        if (config!=null) {
+
+            return config;}
         String sPath = System.getProperty("user.dir") + "/config.json";
         Path path = Path.of(sPath);
         boolean fileExists = Files.exists(path);
@@ -37,10 +40,10 @@ public class Config {
             }
             fileRW = new FileRW(path);
             String data = fileRW.readAll();
-            if (data.length()==0) {
-                data = "{}";
-            }
 
+            if (data==null || data.length()==0 || data.equals("null")) {
+                data = "{token:\"\"}";
+            }
             return json.fromJson(data, Config.class);
         } catch (IOException e) {
             throw new Error("Config.json is inaccessible in the Current Working Directory");
