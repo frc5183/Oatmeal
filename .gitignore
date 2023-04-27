@@ -13,6 +13,6 @@ build.sh
 .vscode
 *.class
 .env
-./work/
+./work/*
 ./work
 /config.json
