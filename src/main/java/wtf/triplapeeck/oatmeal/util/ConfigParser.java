@@ -2,10 +2,18 @@ package wtf.triplapeeck.oatmeal.util;
 
 import com.j256.ormlite.db.DatabaseType;
 import com.j256.ormlite.jdbc.db.MariaDbDatabaseType;
+import wtf.triplapeeck.oatmeal.Config;
 import wtf.triplapeeck.oatmeal.errors.ArgumentException;
 
+import java.util.Objects;
+
 public class ConfigParser {
+    private static final Config config = Config.getConfig();
     public static String getToken(String[] args) throws ArgumentException {
+        if (config.token!=null) {
+            return config.token;
+        }
+        Config.saveConfig();
         if (!(args[0].equals(""))) {
             return args[0];
         }
@@ -18,10 +26,36 @@ public class ConfigParser {
     }
 
     public DatabaseConfiguration getDatabaseConfiguration() throws ArgumentException {
-        if (System.getenv("DATABASE_ADDRESS").equals("") || System.getenv("DATABASE_PORT").equals("") || System.getenv("DATABASE_USERNAME").equals("") || System.getenv("DATABASE_PASSWORD").equals("") || System.getenv("DATABASE_NAME").equals("")) throw new ArgumentException("Missing one or more database environment variables.");
+        if (
+                (System.getenv("DATABASE_ADDRESS").equals("") && Objects.equals(config.address, ""))
+                || (System.getenv("DATABASE_PORT").equals("") && config.port == 0)
+                || (System.getenv("DATABASE_USERNAME").equals("") && Objects.equals(config.username, "usr"))
+                || (System.getenv("DATABASE_PASSWORD").equals("") && Objects.equals(config.password, "pwd"))
+                || (System.getenv("DATABASE_NAME").equals("") && Objects.equals(config.database, "db"))
+        ) throw new ArgumentException("Missing one or more database configurations. ");
+        String address=config.address;
+        String username=config.username;
+        String password=config.password;
+        String database=config.database;
+        int port = config.port;
+        if (Objects.equals(address, "")) {
+            address=System.getenv("DATABASE_ADDRESS");
+        }
+        if (Objects.equals(username, "usr")) {
+            username=System.getenv("DATABASE_USERNAME");
+        }
+        if (Objects.equals(password, "pwd")) {
+            password = System.getenv("DATABASE_PASSWORD");
+        }
+        if (Objects.equals(database, "db")) {
+            database=System.getenv("DATABASE_NAME");
+        }
+        if (port==0) {
+            port=Integer.parseInt(System.getenv("DATABASE_PORT"));
+        }
         if (Integer.parseInt(System.getenv("DATABASE_PORT")) > 65535 || Integer.parseInt(System.getenv("DATABASE_PORT")) < 1) throw new ArgumentException("DATABASE_PORT is not a valid port number. (1-65535)");
         try {
-            return new DatabaseConfiguration(new MariaDbDatabaseType(), System.getenv("DATABASE_ADDRESS"), Integer.parseInt(System.getenv("DATABASE_PORT")), System.getenv("DATABASE_USERNAME"), System.getenv("DATABASE_PASSWORD"), System.getenv("DATABASE_NAME"));
+            return new DatabaseConfiguration(new MariaDbDatabaseType(), address, port, username, password, database);
         } catch (NumberFormatException e) {
             throw new ArgumentException("DATABASE_PORT is not an integer.");
         }
