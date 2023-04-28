@@ -1,32 +1,35 @@
 package wtf.triplapeeck.oatmeal.entities;
 
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.concurrent.ConcurrentHashMap;
 
-@DatabaseTable(tableName = "oatmeal_guild_configs")
+@Entity
+@Table(name = "oatmeal_guild_configs")
 public class GuildConfig {
-    @DatabaseField(canBeNull = false)
+    @Id
     private @NotNull final GuildEntity guild;
 
-    @DatabaseField(canBeNull = true)
+    @Column
     private @Nullable ConcurrentHashMap<String, String> customCommands;
 
-    @DatabaseField(canBeNull = true)
-    private @Nullable long starboardId;
+    @Column
+    private @Nullable Long starboardId;
 
-    @DatabaseField(canBeNull = true)
-    private @Nullable int starboardMin;
+    @Column
+    private @Nullable Integer starboardMin;
 
-    @DatabaseField(canBeNull = false)
-    private @NotNull boolean currencyEnabled;
+    @Column(nullable = false)
+    private @NotNull Boolean currencyEnabled;
 
-    @DatabaseField(canBeNull = false)
-    private @NotNull boolean testingEnabled;
+    @Column(nullable = false)
+    private @NotNull Boolean testingEnabled;
 
     public GuildConfig(@NotNull GuildEntity guild) {
         this.guild = guild;
@@ -48,35 +51,52 @@ public class GuildConfig {
         this.customCommands = customCommands;
     }
 
-    public synchronized long getStarboardId() {
+    public synchronized void addCustomCommand(@NotNull String name, @NotNull String description) {
+        if (customCommands == null) {
+            customCommands = new ConcurrentHashMap<>();
+        }
+        customCommands.put(name, description);
+    }
+
+    public synchronized void removeCustomCommand(@NotNull String name) {
+        if (customCommands!= null) {
+            customCommands.remove(name);
+        }
+    }
+
+    @Nullable
+    public synchronized Long getStarboardId() {
         return starboardId;
     }
 
-    public synchronized void setStarboardId(long starboardId) {
+    public synchronized void setStarboardId(@Nullable Long starboardId) {
         this.starboardId = starboardId;
     }
 
-    public synchronized int getStarboardMin() {
+    @Nullable
+    public synchronized Integer getStarboardMin() {
         return starboardMin;
     }
 
-    public synchronized void setStarboardMin(int starboardMin) {
+    public synchronized void setStarboardMin(@Nullable Integer starboardMin) {
         this.starboardMin = starboardMin;
     }
 
-    public synchronized boolean isCurrencyEnabled() {
+    @NotNull
+    public synchronized Boolean getCurrencyEnabled() {
         return currencyEnabled;
     }
 
-    public synchronized void setCurrencyEnabled(boolean currencyEnabled) {
+    public synchronized void setCurrencyEnabled(@NotNull Boolean currencyEnabled) {
         this.currencyEnabled = currencyEnabled;
     }
 
-    public synchronized boolean isTestingEnabled() {
+    @NotNull
+    public synchronized Boolean getTestingEnabled() {
         return testingEnabled;
     }
 
-    public synchronized void setTestingEnabled(boolean testingEnabled) {
+    public synchronized void setTestingEnabled(@NotNull Boolean testingEnabled) {
         this.testingEnabled = testingEnabled;
     }
 }
