@@ -32,7 +32,7 @@ public class CommandHandler {
     public void handle(@NotNull MessageReceivedEvent event, @NotNull JDA api, ThreadManager listener) {
         DataCarriage carriage;
         carriage = new DataCarriage();
-        if ( event.getAuthor().getIdLong()==564635010917859332L) {return;}
+        if ( event.getAuthor().getIdLong()==564635010917859332L) return;
         Logger.customLog("Listener", "Prepare");
         Prepare(event, api, carriage);
         Logger.customLog("Listener", "HandleMessage");
