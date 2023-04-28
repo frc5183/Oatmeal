@@ -3,6 +3,12 @@
 
 This is the code repo for the Oatmeal discord bot in the 5183 Discord. You are welcome to use this code for whatever but no you won't get the token unless we screw up, so don't ask.
 
+# Download
+Download a stable build from [here](https://github.com/frc5183/Oatmeal/releases).
+
+Download a bleeding edge build from [here](https://github.com/frc5183/Oatmeal/actions/workflows/build-gradle-jar.yml?query=is%3Acompleted).
+Click the most recent workflow run and download Oatmeal.jar found in the artifacts tab.
+
 # Configure
 ## Set the bot token
 Set an environment variable `TOKEN="yourtokenhere"`
@@ -13,19 +19,11 @@ Run the .jar with the token as your argument.
 
 OR
 
-Change the value 
-`token:"yourtokenhere"`
-in the generated config.json
+Change the value `token` in `config.json` to your token.
 
 ## Set database credentials
 Set the following environment variables accordingly: `DATABASE_ADDRESS`, `DATABASE_PORT`, `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NAME`
 Currently only supports MariaDB (and it's forks), however more are planned to be added in the future, including SQLite.
-
-# Download
-Download a stable build from [here](https://github.com/frc5183/Oatmeal/releases).
-
-Download a bleeding edge build from [here](https://github.com/frc5183/Oatmeal/actions/workflows/build-gradle-jar.yml?query=is%3Acompleted).
-Click the most recent workflow run and download Oatmeal.jar found in the artifacts tab.
 
 # Build
 ```
