@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.Utils;
+import wtf.triplapeeck.oatmeal.util.Utils;
 
 
 import static java.lang.Thread.sleep;

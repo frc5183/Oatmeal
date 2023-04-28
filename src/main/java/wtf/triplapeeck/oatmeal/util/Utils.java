@@ -1,4 +1,4 @@
-package wtf.triplapeeck.oatmeal;
+package wtf.triplapeeck.oatmeal.util;
 
 public class Utils {
     public static long threadSeconds(long t) {
