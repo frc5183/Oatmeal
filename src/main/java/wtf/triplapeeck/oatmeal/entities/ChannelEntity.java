@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 @javax.persistence.Table(name = "oatmeal_channels")
 public class ChannelEntity {
     @Id
-    public @NotNull final Long id;
+    public @NotNull String id;
 
     @Column
     public @Nullable Table table;
@@ -30,7 +30,7 @@ public class ChannelEntity {
     @Column(nullable = false)
     public @NotNull Boolean tableInsured;
 
-    public ChannelEntity(long id) {
+    public ChannelEntity(String id) {
         this.id = id;
         this.table = null;
         this.tableCount = 0;
@@ -40,7 +40,7 @@ public class ChannelEntity {
     }
 
     @NotNull
-    public synchronized Long getId() {
+    public synchronized String getId() {
         return id;
     }
 

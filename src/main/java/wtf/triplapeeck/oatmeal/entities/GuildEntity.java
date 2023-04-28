@@ -1,11 +1,13 @@
 package wtf.triplapeeck.oatmeal.entities;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Table(name = "oatmeal_guilds")
 public class GuildEntity {
@@ -13,13 +15,25 @@ public class GuildEntity {
     private @NotNull final String id;
 
     @Column(nullable = false)
-    private @NotNull GuildConfig config;
-
-    @Column(nullable = false)
     private @NotNull ArrayList<BanEntity> bans;
 
     @Column(nullable = false)
     private @NotNull ArrayList<MuteEntity> mutes;
+
+    @Column
+    private @Nullable ConcurrentHashMap<String, String> customCommands;
+
+    @Column
+    private @Nullable Long starboardId;
+
+    @Column
+    private @Nullable Integer starboardMin;
+
+    @Column(nullable = false)
+    private @NotNull Boolean currencyEnabled;
+
+    @Column(nullable = false)
+    private @NotNull Boolean testingEnabled;
 
     private transient int accessCount=0;
     public synchronized void request() {
@@ -33,22 +47,12 @@ public class GuildEntity {
     }
     public GuildEntity(@NotNull String guildId) {
         this.id = guildId;
-        this.config = new GuildConfig(this);
         this.bans = new ArrayList<>();
         this.mutes = new ArrayList<>();
     }
     @NotNull
     public synchronized String getId() {
         return id;
-    }
-
-    @NotNull
-    public synchronized GuildConfig getConfig() {
-        return config;
-    }
-
-    public synchronized void setConfig(@NotNull GuildConfig config) {
-        this.config = config;
     }
 
     @NotNull
@@ -83,5 +87,50 @@ public class GuildEntity {
 
     public synchronized void removeMute(@NotNull MuteEntity mute) {
         this.mutes.remove(mute);
+    }
+
+    @Nullable
+    public synchronized ConcurrentHashMap<String, String> getCustomCommands() {
+        return customCommands;
+    }
+
+    public synchronized void setCustomCommands(@Nullable ConcurrentHashMap<String, String> customCommands) {
+        this.customCommands = customCommands;
+    }
+
+    @Nullable
+    public synchronized Long getStarboardId() {
+        return starboardId;
+    }
+
+    public synchronized void setStarboardId(@Nullable Long starboardId) {
+        this.starboardId = starboardId;
+    }
+
+    @Nullable
+    public synchronized Integer getStarboardMin() {
+        return starboardMin;
+    }
+
+    public synchronized void setStarboardMin(@Nullable Integer starboardMin) {
+        this.starboardMin = starboardMin;
+    }
+
+    @NotNull
+    public synchronized Boolean getCurrencyEnabled() {
+        return currencyEnabled;
+    }
+
+    public synchronized void setCurrencyEnabled(@NotNull Boolean currencyEnabled) {
+        this.currencyEnabled = currencyEnabled;
+    }
+
+    @NotNull
+    public synchronized Boolean getTestingEnabled() {
+        return testingEnabled;
+    }
+
+    public synchronized void setTestingEnabled(@NotNull Boolean testingEnabled) {
+        this.testingEnabled = testingEnabled;
     }
 }

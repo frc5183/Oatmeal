@@ -4,10 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Entity
@@ -15,9 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserEntity {
     @Id()
     @Column(nullable = false)
-    public @NotNull Long id=0L;
+    public @NotNull String id;
 
-    @Column
+    @OneToMany
     private @Nullable ConcurrentHashMap<Long, Remind.Reminder> reminders;
 
     @Column(nullable = false)
@@ -36,12 +33,12 @@ public class UserEntity {
     public synchronized void release() {accessCount--;}
     public synchronized int getAccessCount() {return accessCount;}
 
-    public UserEntity(@NotNull Long userId) {
+    public UserEntity(@NotNull String userId) {
         this.id = userId;
     }
 
     @NotNull
-    public synchronized Long getId() {
+    public synchronized String getId() {
         return id;
     }
 
