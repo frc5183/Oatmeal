@@ -10,6 +10,12 @@ OR
 
 Run the .jar with the token as your argument.
 
+OR
+
+Changine the value 
+`token:"yourtokenhere"`
+in the generated config.json
+
 ## Set database credentials
 Set the following environment variables accordingly: `DATABASE_ADDRESS`, `DATABASE_PORT`, `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NAME`
 Currently only supports MariaDB (and it's forks), however more are planned to be added in the future, including SQLite.
