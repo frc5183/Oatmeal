@@ -1,5 +1,5 @@
 # Oatmeal
-
+![workflow](https://github.com/frc5183/oatmeal/actions/workflows/build-gradle.yml/badge.svg)
 This is the code repo for the Oatmeal discord bot in the 5183 Discord. You are welcome to use this code for whatever but no you won't get the token unless we screw up, so don't ask.
 
 # Configure
