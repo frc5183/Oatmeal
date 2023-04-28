@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @DatabaseTable(tableName = "oatmeal_users")
 public class UserEntity {
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, id = true)
     private @NotNull final long id;
 
     @DatabaseField(canBeNull = true)

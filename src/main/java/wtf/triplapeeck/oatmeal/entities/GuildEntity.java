@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 @DatabaseTable(tableName = "oatmeal_guilds")
 public class GuildEntity {
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, id = true)
     private @NotNull final long id;
 
     @DatabaseField(canBeNull = false)
