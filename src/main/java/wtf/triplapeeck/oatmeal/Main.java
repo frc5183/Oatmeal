@@ -5,25 +5,23 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import wtf.triplapeeck.oatmeal.commands.CommandHandler;
 import wtf.triplapeeck.oatmeal.commands.RakMessages;
+import wtf.triplapeeck.oatmeal.commands.currency.Balance;
 import wtf.triplapeeck.oatmeal.commands.essential.*;
 import wtf.triplapeeck.oatmeal.commands.games.cards.PrintDeck;
 import wtf.triplapeeck.oatmeal.commands.games.cards.TestHand;
 import wtf.triplapeeck.oatmeal.commands.games.cards.blackjack.*;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Ping;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
-import wtf.triplapeeck.oatmeal.errors.ArgumentException;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.admin.SetAdmin;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.Count;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.RebootOatmeal;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetOwner;
+import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetStatus;
 import wtf.triplapeeck.oatmeal.listeners.DefaultListener;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.runnable.Heartbeat;
 import wtf.triplapeeck.oatmeal.storable.StorableFactory;
 import wtf.triplapeeck.oatmeal.storable.TriviaStorable;
-import wtf.triplapeeck.oatmeal.commands.currency.Balance;
-import wtf.triplapeeck.oatmeal.commands.oatmeal.admin.SetAdmin;
-import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.Count;
-import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetOwner;
-import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetStatus;
-import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.RebootOatmeal;
-import wtf.triplapeeck.oatmeal.commands.oatmeal.trip.RebootVirgo;
 import wtf.triplapeeck.oatmeal.util.ConfigParser;
 
 import javax.security.auth.login.LoginException;
@@ -37,7 +35,7 @@ public class Main {
     public static TriviaStorable ts;
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
 
-    public static void main(String[] args) throws LoginException, InterruptedException, IOException, ArgumentException {
+    public static void main(String[] args) throws LoginException, InterruptedException, IOException {
         listener=new DefaultListener();
         threadManager=new ThreadManager();
         api = JDABuilder.createDefault(ConfigParser.getToken(args))
@@ -52,7 +50,6 @@ public class Main {
         commandHandler.addCommand(new PrintDeck());
         commandHandler.addCommand(new SetAdmin());
         commandHandler.addCommand(new SetOwner());
-        commandHandler.addCommand(new RebootVirgo());
         commandHandler.addCommand(new RebootOatmeal());
         commandHandler.addCommand(new TestHand());
         //commandHandler.addCommand(new Test());

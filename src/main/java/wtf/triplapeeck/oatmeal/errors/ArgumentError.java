@@ -1,8 +1,8 @@
 package wtf.triplapeeck.oatmeal.errors;
 
-public class ArgumentException extends Exception {
+public class ArgumentError extends Error {
     public String message;
-    public ArgumentException(String message) {
+    public ArgumentError(String message) {
         this.message = message;
     }
 

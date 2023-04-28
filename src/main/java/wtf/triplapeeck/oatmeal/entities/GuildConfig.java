@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @DatabaseTable(tableName = "oatmeal_guild_configs")
 public class GuildConfig {
     @DatabaseField(canBeNull = false)
-    private @NotNull GuildEntity guild;
+    private @NotNull final GuildEntity guild;
 
     @DatabaseField(canBeNull = true)
     private @Nullable ConcurrentHashMap<String, String> customCommands;
@@ -35,48 +35,48 @@ public class GuildConfig {
     }
 
     @NotNull
-    public GuildEntity getGuild() {
+    public synchronized GuildEntity getGuild() {
         return guild;
     }
 
     @Nullable
-    public ConcurrentHashMap<String, String> getCustomCommands() {
+    public synchronized ConcurrentHashMap<String, String> getCustomCommands() {
         return customCommands;
     }
 
-    public void setCustomCommands(@Nullable ConcurrentHashMap<String, String> customCommands) {
+    public synchronized void setCustomCommands(@Nullable ConcurrentHashMap<String, String> customCommands) {
         this.customCommands = customCommands;
     }
 
-    public long getStarboardId() {
+    public synchronized long getStarboardId() {
         return starboardId;
     }
 
-    public void setStarboardId(long starboardId) {
+    public synchronized void setStarboardId(long starboardId) {
         this.starboardId = starboardId;
     }
 
-    public int getStarboardMin() {
+    public synchronized int getStarboardMin() {
         return starboardMin;
     }
 
-    public void setStarboardMin(int starboardMin) {
+    public synchronized void setStarboardMin(int starboardMin) {
         this.starboardMin = starboardMin;
     }
 
-    public boolean isCurrencyEnabled() {
+    public synchronized boolean isCurrencyEnabled() {
         return currencyEnabled;
     }
 
-    public void setCurrencyEnabled(boolean currencyEnabled) {
+    public synchronized void setCurrencyEnabled(boolean currencyEnabled) {
         this.currencyEnabled = currencyEnabled;
     }
 
-    public boolean isTestingEnabled() {
+    public synchronized boolean isTestingEnabled() {
         return testingEnabled;
     }
 
-    public void setTestingEnabled(boolean testingEnabled) {
+    public synchronized void setTestingEnabled(boolean testingEnabled) {
         this.testingEnabled = testingEnabled;
     }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @DatabaseTable(tableName = "oatmeal_guilds")
 public class GuildEntity {
     @DatabaseField(canBeNull = false)
-    private @NotNull long id;
+    private @NotNull final long id;
 
     @DatabaseField(canBeNull = false)
     private @NotNull GuildConfig config;
@@ -25,5 +25,36 @@ public class GuildEntity {
         this.config = new GuildConfig(this);
         this.bans = new ArrayList<>();
         this.mutes = new ArrayList<>();
+    }
+
+    public synchronized long getId() {
+        return id;
+    }
+
+    @NotNull
+    public synchronized GuildConfig getConfig() {
+        return config;
+    }
+
+    public synchronized void setConfig(@NotNull GuildConfig config) {
+        this.config = config;
+    }
+
+    @NotNull
+    public synchronized ArrayList<BanEntity> getBans() {
+        return bans;
+    }
+
+    public synchronized void setBans(@NotNull ArrayList<BanEntity> bans) {
+        this.bans = bans;
+    }
+
+    @NotNull
+    public synchronized ArrayList<MuteEntity> getMutes() {
+        return mutes;
+    }
+
+    public synchronized void setMutes(@NotNull ArrayList<MuteEntity> mutes) {
+        this.mutes = mutes;
     }
 }

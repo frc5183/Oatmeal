@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class BanEntity {
-    private @NotNull UserEntity user;
+    private @NotNull final UserEntity user;
     private @NotNull String reason;
     private @NotNull long startTimestamp;
     private @Nullable long endTimestamp;
@@ -31,48 +31,48 @@ public class BanEntity {
     }
 
     @NotNull
-    public UserEntity getUser() {
+    public synchronized UserEntity getUser() {
         return user;
     }
 
     @NotNull
-    public String getReason() {
+    public synchronized String getReason() {
         return reason;
     }
 
-    public void setReason(@NotNull String reason) {
+    public synchronized void setReason(@NotNull String reason) {
         this.reason = reason;
     }
 
-    public long getStartTimestamp() {
+    public synchronized long getStartTimestamp() {
         return startTimestamp;
     }
 
-    public void setStartTimestamp(long startTimestamp) {
+    public synchronized void setStartTimestamp(long startTimestamp) {
         this.startTimestamp = startTimestamp;
     }
 
-    public long getEndTimestamp() {
+    public synchronized long getEndTimestamp() {
         return endTimestamp;
     }
 
-    public void setEndTimestamp(long endTimestamp) {
+    public synchronized void setEndTimestamp(long endTimestamp) {
         this.endTimestamp = endTimestamp;
     }
 
-    public boolean isActive() {
+    public synchronized boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public synchronized void setActive(boolean active) {
         this.active = active;
     }
 
-    public boolean isPermanent() {
+    public synchronized boolean isPermanent() {
         return isPermanent;
     }
 
-    public void setPermanent(boolean permanent) {
+    public synchronized void setPermanent(boolean permanent) {
         isPermanent = permanent;
     }
 }

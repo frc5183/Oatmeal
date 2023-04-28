@@ -21,9 +21,9 @@ public class Config {
     //DATABASE CONFIGURATION
     public String address="";
     public int port=0;
-    public String username="usr";
-    public String password="pwd";
-    public String database="db";
+    public String username="";
+    public String password="";
+    public String database="";
 
 
     public static synchronized Config getConfig() {
