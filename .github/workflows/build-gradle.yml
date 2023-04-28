@@ -1,6 +1,16 @@
 name: Build
 
-on: [push]
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'build.gradle'
+      - 'gradle/**'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'settings.gradle'
+      - 'src/**'
 
 jobs:
   build:

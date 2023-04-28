@@ -1,11 +1,21 @@
 name: Build Gradle Jar Project
 
-on: [push]
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'build.gradle'
+      - 'gradle/**'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'settings.gradle'
+      - 'src/**'
 
 jobs:
   build:
+    needs: [build-gradle]
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
