@@ -34,6 +34,7 @@ public class Main {
     public static JDA api;
     public static TriviaStorable ts;
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
+    public static EntityManager entityManager = new EntityManager();
 
     public static void main(String[] args) throws LoginException, InterruptedException, IOException {
         listener=new DefaultListener();
