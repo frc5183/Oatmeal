@@ -17,34 +17,29 @@ import java.sql.SQLException;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DatabaseUtil {
-    private final JdbcPooledConnectionSource conncectionSource;
-    private final ConfigParser.DatabaseConfiguration databaseConfiguration;
+    private static JdbcPooledConnectionSource conncectionSource;
+    private static ConfigParser.DatabaseConfiguration databaseConfiguration;
 
 
     // Daos
-    private final Dao<GuildEntity, Long> guildDao;
-    private final Dao<UserEntity, Long> userDao;
-    private final Dao<ChannelEntity, Long> channelDao;
-
-    // Caches
-    private final ConcurrentHashMap<Long, GuildEntity> guildCache = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Long, UserEntity> userCache = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Long, ChannelEntity> channelCache = new ConcurrentHashMap<>();
+    private static Dao<GuildEntity, Long> guildDao;
+    private static Dao<UserEntity, Long> userDao;
+    private static Dao<ChannelEntity, Long> channelDao;
 
     public DatabaseUtil() throws SQLException {
         // init database
-        this.databaseConfiguration = ConfigParser.getDatabaseConfiguration();
-        this.conncectionSource = new JdbcPooledConnectionSource("jdbc:mariadb://" + this.databaseConfiguration.getAddress() + ":" +this.databaseConfiguration.getPort() + "/" + this.databaseConfiguration.getDatabase() + "?user="+ this.databaseConfiguration.getUsername() + "&password=" + this.databaseConfiguration.getPassword(), this.databaseConfiguration.getType());
-        this.conncectionSource.setMaxConnectionsFree(this.databaseConfiguration.getMaxConnections());
+        databaseConfiguration = ConfigParser.getDatabaseConfiguration();
+        conncectionSource = new JdbcPooledConnectionSource("jdbc:mariadb://" + databaseConfiguration.getAddress() + ":" + databaseConfiguration.getPort() + "/" + databaseConfiguration.getDatabase() + "?user="+ databaseConfiguration.getUsername() + "&password=" + databaseConfiguration.getPassword(), databaseConfiguration.getType());
+        conncectionSource.setMaxConnectionsFree(databaseConfiguration.getMaxConnections());
 
         // init tables
-        TableUtils.createTableIfNotExists(this.conncectionSource, GuildEntity.class);
-        TableUtils.createTableIfNotExists(this.conncectionSource, UserEntity.class);
-        TableUtils.createTableIfNotExists(this.conncectionSource, ChannelEntity.class);
+        TableUtils.createTableIfNotExists(conncectionSource, GuildEntity.class);
+        TableUtils.createTableIfNotExists(conncectionSource, UserEntity.class);
+        TableUtils.createTableIfNotExists(conncectionSource, ChannelEntity.class);
         // init dao
-        this.guildDao = DaoManager.createDao(this.conncectionSource, GuildEntity.class);
-        this.userDao = DaoManager.createDao(this.conncectionSource, UserEntity.class);
-        this.channelDao = DaoManager.createDao(this.conncectionSource, ChannelEntity.class);
+        guildDao = DaoManager.createDao(conncectionSource, GuildEntity.class);
+        userDao = DaoManager.createDao(conncectionSource, UserEntity.class);
+        channelDao = DaoManager.createDao(conncectionSource, ChannelEntity.class);
     }
 
     public JdbcPooledConnectionSource getConncectionSource() {
@@ -56,25 +51,53 @@ public class DatabaseUtil {
     }
 
     @Nullable
-    public GuildEntity getGuildEntity(@NotNull Long id) throws SQLException {
-        if (guildCache.containsKey(id)) return guildCache.get(id);
+    public static GuildEntity getGuildEntity(@NotNull Long id) throws SQLException {
         QueryBuilder<GuildEntity, Long> qb = guildDao.queryBuilder();
         qb.where().eq("id", id);
-        guildCache.put(id, guildDao.queryForFirst(qb.prepare()));
-        return guildCache.get(id);
+        return qb.queryForFirst();
     }
 
-    public void updateGuildEntity(@NotNull GuildEntity guildEntity) throws SQLException, MissingEntryException {
+    public static void updateGuildEntity(@NotNull GuildEntity guildEntity) throws SQLException, MissingEntryException {
         if (getGuildEntity(guildEntity.getId()) == null) throw new MissingEntryException("Guild does not exist in the database.");
-        guildCache.put(guildEntity.getId(), guildEntity);
-        //guildDao.update(guildEntity);
+        guildDao.update(guildEntity);
     }
 
-    public void createGuildEntity(@NotNull GuildEntity guildEntity) throws SQLException, ExistingEntryException {
+    public static void createGuildEntity(@NotNull GuildEntity guildEntity) throws SQLException, ExistingEntryException {
         if (getGuildEntity(guildEntity.getId()) != null) throw new ExistingEntryException("Guild already exists");
-        guildCache.put(guildEntity.getId(), guildEntity);
-        // guildDao.create(guildEntity);
+        guildDao.create(guildEntity);
     }
 
+    @Nullable
+    public static UserEntity getUserEntity(@NotNull Long id) throws SQLException {
+        QueryBuilder<UserEntity, Long> qb = userDao.queryBuilder();
+        qb.where().eq("id", id);
+        return qb.queryForFirst();
+    }
 
+    public static void updateUserEntity(@NotNull UserEntity userEntity) throws SQLException, MissingEntryException {
+        if (getUserEntity(userEntity.getId()) == null) throw new MissingEntryException("User does not exist in the database.");
+        userDao.update(userEntity);
+    }
+
+    public static void createUserEntity(@NotNull UserEntity userEntity) throws SQLException, ExistingEntryException {
+        if (getUserEntity(userEntity.getId()) != null) throw new ExistingEntryException("User already exists");
+        userDao.create(userEntity);
+    }
+
+    @Nullable
+    public static ChannelEntity getChannelEntity(@NotNull Long id) throws SQLException {
+        QueryBuilder<ChannelEntity, Long> qb = channelDao.queryBuilder();
+        qb.where().eq("id", id);
+        return qb.queryForFirst();
+    }
+
+    public static void updateChannelEntity(@NotNull ChannelEntity channelEntity) throws SQLException, MissingEntryException {
+        if (getChannelEntity(channelEntity.getId()) == null) throw new MissingEntryException("Channel does not exist in the database.");
+        channelDao.update(channelEntity);
+    }
+
+    public static void createChannelEntity(@NotNull ChannelEntity channelEntity) throws SQLException, ExistingEntryException {
+        if (getChannelEntity(channelEntity.getId()) != null) throw new ExistingEntryException("Channel already exists");
+        channelDao.create(channelEntity);
+    }
 }
