@@ -1,34 +1,37 @@
 package wtf.triplapeeck.oatmeal.entities;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.concurrent.ConcurrentHashMap;
 
-@DatabaseTable(tableName = "oatmeal_users")
+@Entity
+@Table(name = "oatmeal_users")
 public class UserEntity {
-    @DatabaseField(canBeNull = false)
-    private @NotNull final long id;
+    @Column(nullable = false)
+    private @NotNull final Long id;
 
-    @DatabaseField(canBeNull = true)
+    @Column
     private @Nullable ConcurrentHashMap<Long, Remind.Reminder> reminders;
 
-    @DatabaseField(canBeNull = false)
-    private @NotNull boolean isAdmin;
+    @Column(nullable = false)
+    private @NotNull Boolean isAdmin;
 
-    @DatabaseField(canBeNull = false)
-    private @NotNull boolean isOwner;
+    @Column(nullable = false)
+    private @NotNull Boolean isOwner;
 
-    public UserEntity(long userId) {
+    public UserEntity(@NotNull Long userId) {
         this.id = userId;
         this.isAdmin = false;
         this.isOwner = false;
     }
 
-    public synchronized long getId() {
+    @NotNull
+    public synchronized Long getId() {
         return id;
     }
 
@@ -41,19 +44,21 @@ public class UserEntity {
         this.reminders = reminders;
     }
 
-    public synchronized boolean isAdmin() {
+    @NotNull
+    public synchronized Boolean getAdmin() {
         return isAdmin;
     }
 
-    public synchronized void setAdmin(boolean admin) {
+    public synchronized void setAdmin(@NotNull Boolean admin) {
         isAdmin = admin;
     }
 
-    public synchronized boolean isOwner() {
+    @NotNull
+    public synchronized Boolean getOwner() {
         return isOwner;
     }
 
-    public synchronized void setOwner(boolean owner) {
+    public synchronized void setOwner(@NotNull Boolean owner) {
         isOwner = owner;
     }
 }

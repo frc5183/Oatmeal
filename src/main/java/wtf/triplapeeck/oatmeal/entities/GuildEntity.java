@@ -1,33 +1,35 @@
 package wtf.triplapeeck.oatmeal.entities;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.ArrayList;
 
-@DatabaseTable(tableName = "oatmeal_guilds")
+@Table(name = "oatmeal_guilds")
 public class GuildEntity {
-    @DatabaseField(canBeNull = false)
-    private @NotNull final long id;
+    @Id
+    private @NotNull final Long id;
 
-    @DatabaseField(canBeNull = false)
+    @Column(nullable = false)
     private @NotNull GuildConfig config;
 
-    @DatabaseField(canBeNull = false)
+    @Column(nullable = false)
     private @NotNull ArrayList<BanEntity> bans;
 
-    @DatabaseField(canBeNull = false)
+    @Column(nullable = false)
     private @NotNull ArrayList<MuteEntity> mutes;
 
-    public GuildEntity(long guildId) {
+    public GuildEntity(@NotNull Long guildId) {
         this.id = guildId;
         this.config = new GuildConfig(this);
         this.bans = new ArrayList<>();
         this.mutes = new ArrayList<>();
     }
 
-    public synchronized long getId() {
+    @NotNull
+    public synchronized Long getId() {
         return id;
     }
 
@@ -49,6 +51,14 @@ public class GuildEntity {
         this.bans = bans;
     }
 
+    public synchronized void addBan(@NotNull BanEntity ban) {
+        this.bans.add(ban);
+    }
+
+    public synchronized void removeBan(@NotNull BanEntity ban) {
+        this.bans.remove(ban);
+    }
+
     @NotNull
     public synchronized ArrayList<MuteEntity> getMutes() {
         return mutes;
@@ -56,5 +66,13 @@ public class GuildEntity {
 
     public synchronized void setMutes(@NotNull ArrayList<MuteEntity> mutes) {
         this.mutes = mutes;
+    }
+
+    public synchronized void addMute(@NotNull MuteEntity mute) {
+        this.mutes.add(mute);
+    }
+
+    public synchronized void removeMute(@NotNull MuteEntity mute) {
+        this.mutes.remove(mute);
     }
 }

@@ -9,25 +9,27 @@ import java.time.LocalDateTime;
 public class MuteEntity {
     private @NotNull final UserEntity user;
     private @NotNull String reason;
-    private @NotNull long startTimestamp;
-    private @Nullable long endTimestamp;
-    private @NotNull boolean active;
-    private @NotNull boolean isPermanent;
+    private @NotNull Long startTimestamp;
+    private @Nullable Long endTimestamp;
+    private @NotNull Boolean active;
+    private @NotNull Boolean isPermanent;
 
-    public MuteEntity(UserEntity user, String reason, long endTimestamp) {
+    public MuteEntity(@NotNull UserEntity user, @NotNull String reason, @NotNull long endTimestamp) {
         this.user = user;
         this.reason = reason;
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
         this.endTimestamp = endTimestamp;
-        this.active = active;
+        this.active = true;
+        this.isPermanent = false;
     }
 
-    public MuteEntity(UserEntity user, String reason) {
+    public MuteEntity(@NotNull UserEntity user, @NotNull String reason) {
         this.user = user;
         this.reason = reason;
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
-        this.endTimestamp = endTimestamp;
-        this.active = active;
+        this.endTimestamp = null;
+        this.active = true;
+        this.isPermanent = true;
     }
 
     @NotNull
@@ -44,35 +46,39 @@ public class MuteEntity {
         this.reason = reason;
     }
 
-    public synchronized long getStartTimestamp() {
+    @NotNull
+    public synchronized Long getStartTimestamp() {
         return startTimestamp;
     }
 
-    public synchronized void setStartTimestamp(long startTimestamp) {
+    public synchronized void setStartTimestamp(@NotNull Long startTimestamp) {
         this.startTimestamp = startTimestamp;
     }
 
-    public synchronized long getEndTimestamp() {
+    @Nullable
+    public synchronized Long getEndTimestamp() {
         return endTimestamp;
     }
 
-    public synchronized void setEndTimestamp(long endTimestamp) {
+    public synchronized void setEndTimestamp(@Nullable Long endTimestamp) {
         this.endTimestamp = endTimestamp;
     }
 
-    public synchronized boolean isActive() {
+    @NotNull
+    public synchronized Boolean getActive() {
         return active;
     }
 
-    public synchronized void setActive(boolean active) {
+    public synchronized void setActive(@NotNull Boolean active) {
         this.active = active;
     }
 
-    public synchronized boolean isPermanent() {
+    @NotNull
+    public synchronized Boolean getPermanent() {
         return isPermanent;
     }
 
-    public synchronized void setPermanent(boolean permanent) {
+    public synchronized void setPermanent(@NotNull Boolean permanent) {
         isPermanent = permanent;
     }
 }
