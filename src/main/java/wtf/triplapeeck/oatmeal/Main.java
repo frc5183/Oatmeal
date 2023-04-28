@@ -11,7 +11,7 @@ import wtf.triplapeeck.oatmeal.commands.games.cards.TestHand;
 import wtf.triplapeeck.oatmeal.commands.games.cards.blackjack.*;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Ping;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
-import wtf.triplapeeck.oatmeal.errors.ArgumentException;
+import wtf.triplapeeck.oatmeal.errors.ArgumentError;
 import wtf.triplapeeck.oatmeal.listeners.DefaultListener;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.runnable.Heartbeat;
@@ -37,7 +37,7 @@ public class Main {
     public static TriviaStorable ts;
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
 
-    public static void main(String[] args) throws LoginException, InterruptedException, IOException, ArgumentException {
+    public static void main(String[] args) throws LoginException, InterruptedException, IOException {
         listener=new DefaultListener();
         threadManager=new ThreadManager();
         api = JDABuilder.createDefault(ConfigParser.getToken(args))
@@ -52,7 +52,6 @@ public class Main {
         commandHandler.addCommand(new PrintDeck());
         commandHandler.addCommand(new SetAdmin());
         commandHandler.addCommand(new SetOwner());
-        commandHandler.addCommand(new RebootVirgo());
         commandHandler.addCommand(new RebootOatmeal());
         commandHandler.addCommand(new TestHand());
         //commandHandler.addCommand(new Test());
