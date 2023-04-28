@@ -19,18 +19,17 @@ public class Config {
     public static FileRW fileRW;
 
     //DATABASE CONFIGURATION
-    public String address="";
-    public int port=0;
-    public String username="";
-    public String password="";
-    public String database="";
+    public String address = "";
+    public int port = 0;
+    public String username = "";
+    public String password = "";
+    public String database = "";
+    public int maxConnections = 10;
 
 
     public static synchronized Config getConfig() {
 
-        if (config!=null) {
-
-            return config;}
+        if (config != null) return config;
         String sPath = System.getProperty("user.dir") + "/config.json";
         Path path = Path.of(sPath);
         boolean fileExists = Files.exists(path);
@@ -41,7 +40,7 @@ public class Config {
             fileRW = new FileRW(path);
             String data = fileRW.readAll();
 
-            if (data==null || data.length()==0 || data.equals("null")) {
+            if (data == null || data.length() == 0 || data.equals("null")) {
                 data = "{token:\"\"}";
             }
             config = json.fromJson(data, Config.class);
@@ -55,7 +54,6 @@ public class Config {
 
     public static synchronized void saveConfig() {
         try {
-
             fileRW.writeAll(json.toJson(config));
         } catch (IOException e) {
             Logger.basicLog(Logger.Level.WARN, e.toString());

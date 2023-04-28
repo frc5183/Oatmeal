@@ -24,7 +24,7 @@ public class ConfigParser {
         throw new ArgumentError("Missing Token");
     }
 
-    public DatabaseConfiguration getDatabaseConfiguration() throws ArgumentError {
+    public static DatabaseConfiguration getDatabaseConfiguration() throws ArgumentError {
         if (
                 (System.getenv("TOKEN") != null && config.address.equals(""))
                 || (System.getenv("TOKEN") != null && config.port == 0)
@@ -57,14 +57,16 @@ public class ConfigParser {
         public String username;
         public String password;
         public String database;
+        public int maxConnections;
 
-        public DatabaseConfiguration(DatabaseType type, String address, int port, String username, String password, String database) {
+        public DatabaseConfiguration(DatabaseType type, String address, int port, String username, String password, String database, int maxConnections) {
             this.type = type;
             this.address = address;
             this.port = port;
             this.username = username;
             this.password = password;
             this.database = database;
+            this.maxConnections = maxConnections;
         }
 
         public DatabaseType getType() {
@@ -113,6 +115,14 @@ public class ConfigParser {
 
         public void setDatabase(String database) {
             this.database = database;
+        }
+
+        public int getMaxConnections() {
+            return maxConnections;
+        }
+
+        public void setMaxConnections(int maxConnections) {
+            this.maxConnections = maxConnections;
         }
     }
 }
