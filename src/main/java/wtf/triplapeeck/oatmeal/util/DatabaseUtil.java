@@ -28,7 +28,6 @@ public class DatabaseUtil {
         TableUtils.createTableIfNotExists(this.conncectionSource, GuildEntity.class);
         TableUtils.createTableIfNotExists(this.conncectionSource, UserEntity.class);
         TableUtils.createTableIfNotExists(this.conncectionSource, ChannelEntity.class);
-
         // init dao
         this.guildEntityDao = DaoManager.createDao(this.conncectionSource, GuildEntity.class);
         this.userEntityDao = DaoManager.createDao(this.conncectionSource, UserEntity.class);

@@ -21,13 +21,22 @@ public class GuildEntity {
     @Column(nullable = false)
     private @NotNull ArrayList<MuteEntity> mutes;
 
+    private transient int accessCount=0;
+    public synchronized void request() {
+        accessCount++;
+    }
+    public synchronized void release() {
+        accessCount--;
+    }
+    public synchronized int getAccessCount() {
+        return accessCount;
+    }
     public GuildEntity(@NotNull Long guildId) {
         this.id = guildId;
         this.config = new GuildConfig(this);
         this.bans = new ArrayList<>();
         this.mutes = new ArrayList<>();
     }
-
     @NotNull
     public synchronized Long getId() {
         return id;
