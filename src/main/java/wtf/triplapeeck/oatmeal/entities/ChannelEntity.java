@@ -7,16 +7,15 @@ import wtf.triplapeeck.oatmeal.cards.Table;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 @Entity
 @javax.persistence.Table(name = "oatmeal_channels")
-public class ChannelEntity {
+public class ChannelEntity extends AccessableEntity {
     @Id
     public @NotNull String id;
 
     @Column
-    public @Nullable Table table;
+    public @Nullable String table;
 
     @Column(nullable = false)
     public @NotNull Integer tableCount;
@@ -39,6 +38,9 @@ public class ChannelEntity {
         this.tableInsured = false;
     }
 
+    @Deprecated
+    public ChannelEntity() {}
+
     @NotNull
     public synchronized String getId() {
         return id;
@@ -46,11 +48,11 @@ public class ChannelEntity {
 
     @Nullable
     public synchronized Table getTable() {
-        return table;
+        return Table.fromString(table);
     }
 
     public synchronized void setTable(@Nullable Table table) {
-        this.table = table;
+        this.table = table.toString();
     }
 
     @NotNull

@@ -9,13 +9,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Entity
 @Table(name = "oatmeal_users")
-public class UserEntity {
-    @Id()
-    @Column(nullable = false)
+public class UserEntity extends AccessableEntity {
+    @Id
     public @NotNull String id;
 
-    @OneToMany
-    private @Nullable ConcurrentHashMap<Long, Remind.Reminder> reminders;
+    @ElementCollection
+    private @Nullable ConcurrentHashMap<Long, String> reminders;
 
     @Column(nullable = false)
     private @NotNull Boolean isAdmin;
@@ -23,18 +22,13 @@ public class UserEntity {
     @Column(nullable = false)
     private @NotNull Boolean isOwner;
 
-    private transient int accessCount=0;
-
-    public UserEntity() {
-
-    }
-
-    public synchronized void request() {accessCount++;}
-    public synchronized void release() {accessCount--;}
-    public synchronized int getAccessCount() {return accessCount;}
-
     public UserEntity(@NotNull String userId) {
         this.id = userId;
+    }
+
+    @Deprecated
+    public UserEntity() {
+
     }
 
     @NotNull
@@ -44,11 +38,36 @@ public class UserEntity {
 
     @Nullable
     public synchronized ConcurrentHashMap<Long, Remind.Reminder> getReminders() {
-        return reminders;
+        ConcurrentHashMap<Long, Remind.Reminder> newReminders = new ConcurrentHashMap<>();
+        for (Long reminder : this.reminders.keySet()) {
+            String reminderString = reminders.get(reminder);
+            Remind.Reminder newReminder = Remind.Reminder.fromString(reminderString);
+            newReminders.put(reminder, newReminder);
+        }
+        return newReminders;
     }
 
     public synchronized void setReminders(@Nullable ConcurrentHashMap<Long, Remind.Reminder> reminders) {
-        this.reminders = reminders;
+        ConcurrentHashMap<Long, String> newReminders = new ConcurrentHashMap<>();
+        for (Long reminder : reminders.keySet()) {
+            Remind.Reminder reminderObject = reminders.get(reminder);
+            String reminderString = reminderObject.toString();
+            newReminders.put(reminder, reminderString);
+        }
+        this.reminders = newReminders;
+    }
+
+    public synchronized void addReminder(@NotNull Remind.Reminder reminder) {
+        if (reminders == null) {
+            reminders = new ConcurrentHashMap<>();
+        }
+        reminders.put(reminder.getUnix(), reminder.toString());
+    }
+
+    public synchronized void removeReminder(@NotNull Long reminderTime) {
+        if (reminders != null) {
+            reminders.remove(reminderTime);
+        }
     }
 
     @NotNull

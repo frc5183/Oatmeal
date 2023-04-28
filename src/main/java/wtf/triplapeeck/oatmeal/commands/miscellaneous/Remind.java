@@ -1,5 +1,7 @@
 package wtf.triplapeeck.oatmeal.commands.miscellaneous;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.intellij.lang.annotations.Identifier;
@@ -68,24 +70,13 @@ public class Remind extends Command {
         return true;
     }
 
-    @Entity
     public class Reminder {
-        @Id
-        @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-        public @NotNull Integer id;
-        @Column(nullable = false)
         public @NotNull Long unix;
-        @Column(nullable = false)
         public @NotNull String text;
 
         public Reminder(@NotNull Long unix, @NotNull String text) {
             this.unix=unix;
             this.text=text;
-        }
-
-        @NotNull
-        public synchronized int getId() {
-            return id;
         }
 
         @NotNull
@@ -96,6 +87,19 @@ public class Remind extends Command {
         @NotNull
         public synchronized String getText() {
             return text;
+        }
+
+        @Override
+        public String toString() {
+            GsonBuilder jsonBuilder = new GsonBuilder();
+            Gson json = jsonBuilder.create();
+            return json.toJson(this);
+        }
+
+        public static Reminder fromString(String json) {
+            GsonBuilder jsonBuilder = new GsonBuilder();
+            Gson gson = jsonBuilder.create();
+            return gson.fromJson(json, Reminder.class);
         }
     }
 }

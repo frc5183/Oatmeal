@@ -1,8 +1,11 @@
 package wtf.triplapeeck.oatmeal.cards;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
 import wtf.triplapeeck.oatmeal.runnable.Waiting;
 import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
@@ -52,6 +55,19 @@ public class Table {
     public SpotGroup player3 = new SpotGroup();
 
     public SpotGroup player4 = new SpotGroup();
+
+    @Override
+    public String toString() {
+        GsonBuilder jsonBuilder = new GsonBuilder();
+        Gson json = jsonBuilder.create();
+        return json.toJson(this);
+    }
+
+    public static Table fromString(String json) {
+        GsonBuilder jsonBuilder = new GsonBuilder();
+        Gson gson = jsonBuilder.create();
+        return gson.fromJson(json, Table.class);
+    }
 
     public synchronized void Update() {
         Logger.customLog("Table", "Checking If Needing Shuffle");
