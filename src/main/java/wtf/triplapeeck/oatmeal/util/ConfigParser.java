@@ -26,11 +26,11 @@ public class ConfigParser {
 
     public static DatabaseConfiguration getDatabaseConfiguration() throws ArgumentError {
         if (
-                (System.getenv("TOKEN") != null && config.address.equals(""))
-                || (System.getenv("TOKEN") != null && config.port == 0)
-                || (System.getenv("TOKEN") != null && config.username.equals(""))
-                || (System.getenv("TOKEN") != null && config.password.equals(""))
-                || (System.getenv("TOKEN") != null && config.database.equals(""))
+                (System.getenv("DATABASE_PORT") != null && config.port == 0)
+                || (System.getenv("DATABASE_USERNAME") != null && config.username.equals(""))
+                || (System.getenv("DATABASE_PASSWORD") != null && config.password.equals(""))
+                || (System.getenv("DATABASE_NAME") != null && config.database.equals(""))
+                || (System.getenv("DATABASE_MAXCONNECTIONS") != null && config.maxConnections == 0)
         ) throw new ArgumentError("Missing one or more database configurations.");
         String address=config.address;
         String username=config.username;
@@ -44,12 +44,13 @@ public class ConfigParser {
         if (database.equals("")) database=System.getenv("DATABASE_NAME");
         try {
             if (port == 0) port = Integer.parseInt(System.getenv("DATABASE_PORT"));
+            if (maxConnections == 0) maxConnections = Integer.parseInt(System.getenv("DATABASE_MAXCONNECTIONS"));
         } catch (NumberFormatException e) {
-            throw new ArgumentError("DATABASE_PORT is not an integer.");
+            throw new ArgumentError("Database port is not an integer.");
         }
-        if (Integer.parseInt(System.getenv("DATABASE_PORT")) > 65535 || Integer.parseInt(System.getenv("DATABASE_PORT")) < 1) throw new ArgumentError("DATABASE_PORT is not a valid port number. (1-65535)");
+        if (port > 65535 || port < 1) throw new ArgumentError("Database port is not a valid port number. (1-65535)");
+        if (maxConnections < 1) throw new ArgumentError("Database max connections must be greater than 0.");
         return new DatabaseConfiguration(new MariaDbDatabaseType(), address, port, username, password, database, maxConnections);
-
     }
 
     public static class DatabaseConfiguration {
