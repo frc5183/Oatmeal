@@ -45,7 +45,7 @@ public class EntityManager extends Thread {
             try {
                 userEntity = Main.dbUtil.getUserEntity(id);
                 if (userEntity==null) {
-                    userEntity = new UserEntity(Long.valueOf(id));
+                    userEntity = new UserEntity(id);
                 }
                 userCache.put(id, userEntity);
             } catch  (SQLException e){

@@ -11,18 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Table(name = "oatmeal_guilds")
 public class GuildEntity {
-    @Id
-    private @NotNull final String id;
-
-    @Column(nullable = false)
-    private @NotNull ArrayList<BanEntity> bans;
-
-    @Column(nullable = false)
-    private @NotNull ArrayList<MuteEntity> mutes;
-
-    @Column
-    private @Nullable ConcurrentHashMap<String, String> customCommands;
-
     @Column
     private @Nullable Long starboardId;
 
@@ -34,60 +22,8 @@ public class GuildEntity {
 
     @Column(nullable = false)
     private @NotNull Boolean testingEnabled;
+    
 
-    private transient int accessCount=0;
-    public synchronized void request() {
-        accessCount++;
-    }
-    public synchronized void release() {
-        accessCount--;
-    }
-    public synchronized int getAccessCount() {
-        return accessCount;
-    }
-    public GuildEntity(@NotNull String guildId) {
-        this.id = guildId;
-        this.bans = new ArrayList<>();
-        this.mutes = new ArrayList<>();
-    }
-    @NotNull
-    public synchronized String getId() {
-        return id;
-    }
-
-    @NotNull
-    public synchronized ArrayList<BanEntity> getBans() {
-        return bans;
-    }
-
-    public synchronized void setBans(@NotNull ArrayList<BanEntity> bans) {
-        this.bans = bans;
-    }
-
-    public synchronized void addBan(@NotNull BanEntity ban) {
-        this.bans.add(ban);
-    }
-
-    public synchronized void removeBan(@NotNull BanEntity ban) {
-        this.bans.remove(ban);
-    }
-
-    @NotNull
-    public synchronized ArrayList<MuteEntity> getMutes() {
-        return mutes;
-    }
-
-    public synchronized void setMutes(@NotNull ArrayList<MuteEntity> mutes) {
-        this.mutes = mutes;
-    }
-
-    public synchronized void addMute(@NotNull MuteEntity mute) {
-        this.mutes.add(mute);
-    }
-
-    public synchronized void removeMute(@NotNull MuteEntity mute) {
-        this.mutes.remove(mute);
-    }
 
     @Nullable
     public synchronized ConcurrentHashMap<String, String> getCustomCommands() {
@@ -96,6 +32,19 @@ public class GuildEntity {
 
     public synchronized void setCustomCommands(@Nullable ConcurrentHashMap<String, String> customCommands) {
         this.customCommands = customCommands;
+    }
+
+    public synchronized void addCustomCommand(@NotNull String name, @NotNull String description) {
+        if (customCommands == null) {
+            customCommands = new ConcurrentHashMap<>();
+        }
+        customCommands.put(name, description);
+    }
+
+    public synchronized void removeCustomCommand(@NotNull String name) {
+        if (customCommands!= null) {
+            customCommands.remove(name);
+        }
     }
 
     @Nullable
@@ -132,5 +81,76 @@ public class GuildEntity {
 
     public synchronized void setTestingEnabled(@NotNull Boolean testingEnabled) {
         this.testingEnabled = testingEnabled;
+    }
+    @Column
+    private @Nullable ConcurrentHashMap<String, String> customCommands;
+    @Id
+    private @NotNull  String id;
+
+
+    @Column(nullable = false)
+    private @NotNull ArrayList<BanEntity> bans;
+
+    @Column(nullable = false)
+    private @NotNull ArrayList<MuteEntity> mutes;
+
+    private transient int accessCount=0;
+    public synchronized void request() {
+        accessCount++;
+    }
+    public synchronized void release() {
+        accessCount--;
+    }
+    public synchronized int getAccessCount() {
+        return accessCount;
+    }
+    public GuildEntity(@NotNull String guildId) {
+        this.id = guildId;
+        this.bans = new ArrayList<>();
+        this.mutes = new ArrayList<>();
+    }
+    public GuildEntity() {
+        this.bans=new ArrayList<>();
+        this.mutes = new ArrayList<>();
+    }
+    @NotNull
+    public synchronized String getId() {
+        return id;
+    }
+
+
+
+    @NotNull
+    public synchronized ArrayList<BanEntity> getBans() {
+        return bans;
+    }
+
+    public synchronized void setBans(@NotNull ArrayList<BanEntity> bans) {
+        this.bans = bans;
+    }
+
+    public synchronized void addBan(@NotNull BanEntity ban) {
+        this.bans.add(ban);
+    }
+
+    public synchronized void removeBan(@NotNull BanEntity ban) {
+        this.bans.remove(ban);
+    }
+
+    @NotNull
+    public synchronized ArrayList<MuteEntity> getMutes() {
+        return mutes;
+    }
+
+    public synchronized void setMutes(@NotNull ArrayList<MuteEntity> mutes) {
+        this.mutes = mutes;
+    }
+
+    public synchronized void addMute(@NotNull MuteEntity mute) {
+        this.mutes.add(mute);
+    }
+
+    public synchronized void removeMute(@NotNull MuteEntity mute) {
+        this.mutes.remove(mute);
     }
 }
