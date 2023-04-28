@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @Table(name = "oatmeal_guilds")
 public class GuildEntity {
     @Id
-    private @NotNull final Long id;
+    private @NotNull final String id;
 
     @Column(nullable = false)
     private @NotNull GuildConfig config;
@@ -31,14 +31,14 @@ public class GuildEntity {
     public synchronized int getAccessCount() {
         return accessCount;
     }
-    public GuildEntity(@NotNull Long guildId) {
+    public GuildEntity(@NotNull String guildId) {
         this.id = guildId;
         this.config = new GuildConfig(this);
         this.bans = new ArrayList<>();
         this.mutes = new ArrayList<>();
     }
     @NotNull
-    public synchronized Long getId() {
+    public synchronized String getId() {
         return id;
     }
 

@@ -6,14 +6,16 @@ import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Entity
 @Table(name = "oatmeal_users")
 public class UserEntity {
+    @Id()
     @Column(nullable = false)
-    private @NotNull final Long id;
+    public @NotNull Long id=0L;
 
     @Column
     private @Nullable ConcurrentHashMap<Long, Remind.Reminder> reminders;
@@ -24,10 +26,18 @@ public class UserEntity {
     @Column(nullable = false)
     private @NotNull Boolean isOwner;
 
+    private transient int accessCount=0;
+
+    public UserEntity() {
+
+    }
+
+    public synchronized void request() {accessCount++;}
+    public synchronized void release() {accessCount--;}
+    public synchronized int getAccessCount() {return accessCount;}
+
     public UserEntity(@NotNull Long userId) {
         this.id = userId;
-        this.isAdmin = false;
-        this.isOwner = false;
     }
 
     @NotNull

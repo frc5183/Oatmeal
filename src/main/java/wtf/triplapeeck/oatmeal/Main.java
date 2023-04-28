@@ -23,15 +23,27 @@ import wtf.triplapeeck.oatmeal.runnable.Heartbeat;
 import wtf.triplapeeck.oatmeal.storable.StorableFactory;
 import wtf.triplapeeck.oatmeal.storable.TriviaStorable;
 import wtf.triplapeeck.oatmeal.util.ConfigParser;
+import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 public class Main {
     public static DefaultListener listener;
     public static ThreadManager threadManager;
     public static JDA api;
+    public static DatabaseUtil dbUtil;
+
+    static {
+        try {
+            dbUtil = new DatabaseUtil();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static TriviaStorable ts;
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
     public static EntityManager entityManager = new EntityManager();
