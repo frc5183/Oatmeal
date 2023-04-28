@@ -19,19 +19,15 @@ public class ChannelEntity {
     public @Nullable Table table;
 
     @Column(nullable = false)
-    @Transient
     public @NotNull Integer tableCount;
 
     @Column(nullable = false)
-    @Transient
     public @NotNull Boolean tableRecruiting;
 
     @Column(nullable = false)
-    @Transient
     public @NotNull Boolean tableHeld;
 
     @Column(nullable = false)
-    @Transient
     public @NotNull Boolean tableInsured;
 
     public ChannelEntity(long id) {
