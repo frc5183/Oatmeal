@@ -37,17 +37,19 @@ public class ConfigParser {
         String password=config.password;
         String database=config.database;
         int port = config.port;
+        int maxConnections = config.maxConnections;
         if (address.equals("")) address=System.getenv("DATABASE_ADDRESS");
         if (password.equals("")) username=System.getenv("DATABASE_USERNAME");
         if (username.equals("")) password=System.getenv("DATABASE_PASSWORD");
         if (database.equals("")) database=System.getenv("DATABASE_NAME");
-        if (port == 0) port = Integer.parseInt(System.getenv("DATABASE_PORT"));
-        if (Integer.parseInt(System.getenv("DATABASE_PORT")) > 65535 || Integer.parseInt(System.getenv("DATABASE_PORT")) < 1) throw new ArgumentError("DATABASE_PORT is not a valid port number. (1-65535)");
         try {
-            return new DatabaseConfiguration(new MariaDbDatabaseType(), address, port, username, password, database);
+            if (port == 0) port = Integer.parseInt(System.getenv("DATABASE_PORT"));
         } catch (NumberFormatException e) {
             throw new ArgumentError("DATABASE_PORT is not an integer.");
         }
+        if (Integer.parseInt(System.getenv("DATABASE_PORT")) > 65535 || Integer.parseInt(System.getenv("DATABASE_PORT")) < 1) throw new ArgumentError("DATABASE_PORT is not a valid port number. (1-65535)");
+        return new DatabaseConfiguration(new MariaDbDatabaseType(), address, port, username, password, database, maxConnections);
+
     }
 
     public static class DatabaseConfiguration {
