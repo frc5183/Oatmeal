@@ -12,7 +12,7 @@ Run the .jar with the token as your argument.
 
 OR
 
-Changine the value 
+Change the value 
 `token:"yourtokenhere"`
 in the generated config.json
 
