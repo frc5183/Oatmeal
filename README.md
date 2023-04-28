@@ -21,6 +21,12 @@ in the generated config.json
 Set the following environment variables accordingly: `DATABASE_ADDRESS`, `DATABASE_PORT`, `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NAME`
 Currently only supports MariaDB (and it's forks), however more are planned to be added in the future, including SQLite.
 
+# Download
+Download a stable build from [here](https://github.com/frc5183/Oatmeal/releases).
+
+Download a bleeding edge build from [here](https://github.com/frc5183/Oatmeal/actions/workflows/build-gradle-jar.yml?query=is%3Acompleted).
+Click the most recent workflow run and download Oatmeal.jar found in the artifacts tab.
+
 # Build
 ```
 gradlew shadowJar
