@@ -25,9 +25,9 @@ public class DatabaseUtil {
         this.conncectionSource.setMaxConnectionsFree(this.databaseConfiguration.getMaxConnections());
 
         // init tables
-        TableUtils.createTable(this.conncectionSource, GuildEntity.class);
-        TableUtils.createTable(this.conncectionSource, UserEntity.class);
-        TableUtils.createTable(this.conncectionSource, ChannelEntity.class);
+        TableUtils.createTableIfNotExists(this.conncectionSource, GuildEntity.class);
+        TableUtils.createTableIfNotExists(this.conncectionSource, UserEntity.class);
+        TableUtils.createTableIfNotExists(this.conncectionSource, ChannelEntity.class);
 
         // init dao
         this.guildEntityDao = DaoManager.createDao(this.conncectionSource, GuildEntity.class);
