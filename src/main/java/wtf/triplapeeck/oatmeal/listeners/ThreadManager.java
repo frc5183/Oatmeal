@@ -36,21 +36,15 @@ public class ThreadManager extends Thread {
                 if (t.t.getName()=="Heartbeat" && requestToEnd) {
                     Heartbeat.requestToEnd();
                 }
-                if (t.t.getState()== State.NEW) {
-
-                    Logger.customLog("ThreadManager", "Started New Thread with name: "+t.name.getName());
-                    t.t.start();
-                } else if (t.t.getState()== State.RUNNABLE) {
-
-                } else if (t.t.getState()==State.WAITING) {
-
-                } else if (t.t.getState()==State.TIMED_WAITING) {
-
-                } else if (t.t.getState()==State.BLOCKED) {
-
-                } else if (t.t.getState()==State.TERMINATED)          {
-                    Logger.customLog("ThreadManager", "Finished Thread with name: " + t.name.getName() + " and id: " + threadList.indexOf(t));
-                    finishedList.add(t);
+                switch (t.t.getState()) {
+                    case NEW:
+                        Logger.customLog("ThreadManager", "Started New Thread with name: "+t.name.getName());
+                        t.t.start();
+                    case RUNNABLE, WAITING, TIMED_WAITING, BLOCKED:
+                        break;
+                    case TERMINATED:
+                        Logger.customLog("ThreadManager", "Finished Thread with name: "+t.name.getName()+" and id: "+threadList.indexOf(t));
+                        finishedList.add(t);
                 }
             }
             for (NamedThread i: finishedList) {
