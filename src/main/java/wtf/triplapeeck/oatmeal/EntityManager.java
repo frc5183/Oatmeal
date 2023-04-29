@@ -81,7 +81,7 @@ public class EntityManager extends Thread {
         guildEntity.release();
     }
 
-    public synchronized UserEntity getUserEntity(String id) {
+    public synchronized UserEntity getUserEntity(String id) throws MissingEntryException {
         UserEntity userEntity;
         if (userCache.get(id)==null) {
             try {
