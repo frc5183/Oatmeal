@@ -30,6 +30,7 @@ public class ChannelEntity extends AccessibleEntity {
     public @NotNull Boolean tableInsured;
 
     public ChannelEntity(String id) {
+        super();
         this.id = id;
         this.table = null;
         this.tableCount = 0;
@@ -52,6 +53,10 @@ public class ChannelEntity extends AccessibleEntity {
     }
 
     public synchronized void setTable(@Nullable Table table) {
+        if (table == null) {
+            this.table = null;
+            return;
+        }
         this.table = table.toString();
     }
 

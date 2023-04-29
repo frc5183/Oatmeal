@@ -3,22 +3,25 @@ package wtf.triplapeeck.oatmeal.entities;
 import java.time.Instant;
 
 public abstract class AccessibleEntity {
-    private transient int accessCount = 0;
-    private transient long epoch=0;
+    private transient int accessCount;
+    private transient long epoch;
 
+    public AccessibleEntity() {
+        this.accessCount = 0;
+        this.epoch = 0L;
+    }
 
     public synchronized void request() {
-
         accessCount++;
     }
     public synchronized void resetEpoch() {
-        epoch=0;
+        epoch = 0L;
     }
     public synchronized void release() {
-
         accessCount--;
-        if (accessCount==0) {
-            epoch= Instant.now().getEpochSecond();
+        if (accessCount <= 0) {
+            accessCount = 0;
+            epoch = Instant.now().getEpochSecond();
         }
     }
     public synchronized long getEpoch() {

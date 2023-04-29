@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "oatmeal_bans")
-public class BanEntity {
+public class BanEntity extends AccessibleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private @NotNull String userId;
@@ -24,24 +24,26 @@ public class BanEntity {
     private @NotNull String reason;
 
     @Column(nullable = false)
-    private @NotNull long startTimestamp;
+    private @NotNull Long startTimestamp;
 
     @Column
-    private @Nullable long endTimestamp;
+    private @Nullable Long endTimestamp;
 
     @Column(nullable = false)
-    private @NotNull boolean active;
+    private @NotNull Boolean active;
 
     @Column(nullable = false)
-    private @NotNull boolean isPermanent;
+    private @NotNull Boolean permanent;
 
-    public BanEntity(String userId, String guildId, String reason, long endTimestamp) {
+    public BanEntity(String userId, String guildId, String reason, Long endTimestamp) {
+        super();
         this.userId = userId;
         this.guildId = guildId;
         this.reason = reason;
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
         this.endTimestamp = endTimestamp;
-        this.active = active;
+        this.active = true;
+        this.permanent = false;
     }
 
     public BanEntity(String userId, String guildId, String reason) {
@@ -49,12 +51,18 @@ public class BanEntity {
         this.guildId = guildId;
         this.reason = reason;
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
-        this.endTimestamp = endTimestamp;
-        this.active = active;
+        this.endTimestamp = null;
+        this.active = true;
+        this.permanent = true;
+        super.request();
     }
 
     @Deprecated
     public BanEntity() {}
+
+    public synchronized long getId() {
+        return id;
+    }
 
     @NotNull
     public synchronized String getUserId() {
@@ -100,10 +108,10 @@ public class BanEntity {
     }
 
     public synchronized boolean isPermanent() {
-        return isPermanent;
+        return permanent;
     }
 
     public synchronized void setPermanent(boolean permanent) {
-        isPermanent = permanent;
+        this.permanent = permanent;
     }
 }

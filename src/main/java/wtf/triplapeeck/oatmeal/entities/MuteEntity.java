@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "oatmeal_bans")
-public class MuteEntity {
+public class MuteEntity extends AccessibleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private @NotNull String userId;
@@ -24,37 +24,47 @@ public class MuteEntity {
     private @NotNull String reason;
 
     @Column(nullable = false)
-    private @NotNull long startTimestamp;
+    private @NotNull Long startTimestamp;
 
     @Column
-    private @Nullable long endTimestamp;
+    private @Nullable Long endTimestamp;
 
     @Column(nullable = false)
-    private @NotNull boolean active;
+    private @NotNull Boolean active;
 
     @Column(nullable = false)
-    private @NotNull boolean isPermanent;
+    private @NotNull Boolean permanent;
 
-    public MuteEntity(String userId, String guildId, String reason, long endTimestamp) {
+    public MuteEntity(@NotNull String userId, @NotNull String guildId, @NotNull String reason, @Nullable Long endTimestamp) {
+        super();
         this.userId = userId;
         this.guildId = guildId;
         this.reason = reason;
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
         this.endTimestamp = endTimestamp;
-        this.active = active;
+        this.active = true;
+        this.permanent = false;
+        super.request();
     }
 
-    public MuteEntity(String userId, String guildId, String reason) {
+    public MuteEntity(@NotNull String userId, @NotNull String guildId, @NotNull String reason) {
+        super();
         this.userId = userId;
         this.guildId = guildId;
         this.reason = reason;
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
-        this.endTimestamp = endTimestamp;
-        this.active = active;
+        this.endTimestamp = null;
+        this.active = true;
+        this.permanent = true;
     }
 
     @Deprecated
     public MuteEntity() {}
+
+    @NotNull
+    public synchronized long getId() {
+        return id;
+    }
 
     @NotNull
     public synchronized String getUserId() {
@@ -75,35 +85,39 @@ public class MuteEntity {
         this.reason = reason;
     }
 
-    public synchronized long getStartTimestamp() {
+    @NotNull
+    public synchronized Long getStartTimestamp() {
         return startTimestamp;
     }
 
-    public synchronized void setStartTimestamp(long startTimestamp) {
+    public synchronized void setStartTimestamp(@NotNull Long startTimestamp) {
         this.startTimestamp = startTimestamp;
     }
 
-    public synchronized long getEndTimestamp() {
+    @Nullable
+    public synchronized Long getEndTimestamp() {
         return endTimestamp;
     }
 
-    public synchronized void setEndTimestamp(long endTimestamp) {
+    public synchronized void setEndTimestamp(@Nullable Long endTimestamp) {
         this.endTimestamp = endTimestamp;
     }
 
-    public synchronized boolean isActive() {
+    @NotNull
+    public synchronized Boolean getActive() {
         return active;
     }
 
-    public synchronized void setActive(boolean active) {
+    public synchronized void setActive(@NotNull Boolean active) {
         this.active = active;
     }
 
-    public synchronized boolean isPermanent() {
-        return isPermanent;
+    @NotNull
+    public synchronized Boolean getPermanent() {
+        return permanent;
     }
 
-    public synchronized void setPermanent(boolean permanent) {
-        isPermanent = permanent;
+    public synchronized void setPermanent(@NotNull Boolean permanent) {
+        this.permanent = permanent;
     }
 }

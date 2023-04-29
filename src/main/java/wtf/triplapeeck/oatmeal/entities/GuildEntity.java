@@ -11,15 +11,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @Table(name = "oatmeal_guilds")
 public class GuildEntity extends AccessibleEntity {
     @Id
-    private @NotNull String id;
+    private @NotNull String guildId;
 
     private transient @Nullable ConcurrentHashMap<String, String> customCommands;
 
     private transient @Nullable ConcurrentHashMap<String, String> starboardLink;
+
     @Column
-    private String jsonCustomCommands = "";
+    private String jsonCustomCommands;
+
     @Column
-    private String jsonStarboardLink = "";
+    private String jsonStarboardLink;
 
     public String getJsonCustomCommands() {
         return jsonCustomCommands;
@@ -38,30 +40,37 @@ public class GuildEntity extends AccessibleEntity {
     }
 
     @Column
-    private @Nullable long starboardChannelID =0;
+    private @NotNull Boolean starboardEnabled;
 
     @Column
-    private @Nullable int starboardLimit=2;
+    private @Nullable String starboardChannelID;
+
+    @Column
+    private @Nullable Integer starboardLimit;
 
     @Column(nullable = false)
-    private @NotNull boolean currencyEnabled=true;
+    private @NotNull Boolean currencyEnabled;
 
     @Column(nullable = false)
-    private @NotNull boolean testingEnabled=false;
+    private @NotNull Boolean testingEnabled;
 
     public GuildEntity(@NotNull String guildId) {
-        this.id = guildId;
+        super();
+        this.guildId = guildId;
+        this.starboardChannelID = null;
+        this.starboardLimit = null;
+        this.currencyEnabled = true;
+        this.testingEnabled = false;
+        this.starboardEnabled = false;
     }
 
-    public GuildEntity() {
-    }
+    @Deprecated
+    public GuildEntity() {}
 
     @NotNull
-    public synchronized String getID() {
-        return id;
+    public synchronized String getGuildId() {
+        return guildId;
     }
-
-
 
     @Nullable
     public synchronized ConcurrentHashMap<String, String> getCustomCommands() {
@@ -70,12 +79,15 @@ public class GuildEntity extends AccessibleEntity {
         }
         return customCommands;
     }
+
     public synchronized void setCustomCommands(ConcurrentHashMap<String, String> map) {
         customCommands=map;
     }
+
     public synchronized void setStarboardLink(ConcurrentHashMap<String, String> map) {
         starboardLink=map;
     }
+
     @Nullable
     public synchronized ConcurrentHashMap<String, String> getStarboardLink() {
         if (starboardLink==null) {
@@ -85,11 +97,11 @@ public class GuildEntity extends AccessibleEntity {
     }
 
     @Nullable
-    public synchronized long getStarboardChannelID() {
+    public synchronized String getStarboardChannelID() {
         return starboardChannelID;
     }
 
-    public synchronized void setStarboardChannelID(@Nullable long starboardChannelID) {
+    public synchronized void setStarboardChannelID(@Nullable String starboardChannelID) {
         this.starboardChannelID = starboardChannelID;
     }
 
@@ -103,7 +115,7 @@ public class GuildEntity extends AccessibleEntity {
     }
 
     @NotNull
-    public synchronized boolean getCurrencyEnabled() {
+    public synchronized boolean isCurrencyEnabled() {
         return currencyEnabled;
     }
 
@@ -112,7 +124,7 @@ public class GuildEntity extends AccessibleEntity {
     }
 
     @NotNull
-    public synchronized boolean getTestingEnabled() {
+    public synchronized boolean isTestingEnabled() {
         return testingEnabled;
     }
 
