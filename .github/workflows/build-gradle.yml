@@ -1,4 +1,4 @@
-name: Build
+name: Build Gradle Jar Project
 
 on:
   push:
@@ -15,7 +15,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -28,4 +27,9 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
         with:
-          arguments: build
+          arguments: shadowJar
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Oatmeal.jar
+          path: build/libs/oatmeal-*-all.jar
