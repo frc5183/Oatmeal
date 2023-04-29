@@ -20,8 +20,6 @@ public class GuildEmojiAddEvent implements NamedRunnable {
     MessageReactionAddEvent event;
     public GuildEmojiAddEvent(MessageReactionAddEvent event) {
         this.event=event;
-
-
     }
 
     @Override

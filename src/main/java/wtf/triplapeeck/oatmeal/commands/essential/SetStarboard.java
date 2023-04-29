@@ -13,7 +13,7 @@ public class SetStarboard extends Command {
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureAdministrator(carriage) && ensureTaggedChannelListNotEmpty(carriage) && ensureOnlyOneTaggedChannel(carriage) && ensureGuild(carriage)) {
-            Long id = carriage.message.getMentions().getChannels().get(0).getIdLong();
+            String id = carriage.message.getMentions().getChannels().get(0).getId();
             carriage.guildEntity.setStarboardChannelID(id);
             carriage.channel.sendMessage("The starboard will post in " + carriage.guild.getTextChannelById(id).getAsMention()).queue();
         }

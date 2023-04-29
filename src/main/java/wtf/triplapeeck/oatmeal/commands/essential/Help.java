@@ -46,7 +46,7 @@ public class Help extends Command {
                         carriage.channel.sendMessage("This Page is reserved only for Sinon's Admins").queue();
                     }
                 } else if (page==Page.Currency) {
-                    if (carriage.guildEntity.getCurrencyEnabled()) {
+                    if (carriage.guildEntity.isCurrencyEnabled()) {
                         listCommands(carriage, g, page);
                     } else {
                         carriage.channel.sendMessage("Currency is disabled in your server.").queue();
@@ -104,7 +104,7 @@ public class Help extends Command {
                         list.set(list + "\n" + atomicInteger.get() + " " + c.getName());
                     }
                  } else if (c==Page.Currency) {
-                  if (carriage.guildEntity.getCurrencyEnabled()) {
+                  if (carriage.guildEntity.isCurrencyEnabled()) {
                       list.set(list + "\n" + atomicInteger.get() + " " + c.getName());
 
                   }

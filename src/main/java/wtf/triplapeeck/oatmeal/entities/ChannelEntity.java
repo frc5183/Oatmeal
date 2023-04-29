@@ -29,7 +29,7 @@ public class ChannelEntity extends AccessibleEntity {
     @Column(nullable = false)
     public @NotNull Boolean tableInsured;
 
-    public ChannelEntity(String id) {
+    public ChannelEntity(@NotNull String id) {
         super();
         this.id = id;
         this.table = null;
@@ -70,7 +70,7 @@ public class ChannelEntity extends AccessibleEntity {
     }
 
     @NotNull
-    public synchronized Boolean getTableRecruiting() {
+    public synchronized Boolean isTableRecruiting() {
         return tableRecruiting;
     }
 
@@ -79,7 +79,7 @@ public class ChannelEntity extends AccessibleEntity {
     }
 
     @NotNull
-    public synchronized Boolean getTableHeld() {
+    public synchronized Boolean isTableHeld() {
         return tableHeld;
     }
 
@@ -88,7 +88,7 @@ public class ChannelEntity extends AccessibleEntity {
     }
 
     @NotNull
-    public synchronized Boolean getTableInsured() {
+    public synchronized Boolean isTableInsured() {
         return tableInsured;
     }
 

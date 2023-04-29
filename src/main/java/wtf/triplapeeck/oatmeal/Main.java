@@ -51,9 +51,10 @@ public class Main {
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
 
 
-    public static void main(String[] args) throws LoginException, InterruptedException, IOException {
+    public static void main(String[] args) throws LoginException, InterruptedException, IOException, SQLException {
         listener=new DefaultListener();
         threadManager=new ThreadManager();
+        new DatabaseUtil();
         api = JDABuilder.createDefault(ConfigParser.getToken(args))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(listener).build();

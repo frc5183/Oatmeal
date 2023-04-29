@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import wtf.triplapeeck.oatmeal.entities.GuildEntity;
 import wtf.triplapeeck.oatmeal.entities.UserEntity;
+import wtf.triplapeeck.oatmeal.errors.database.MissingEntryException;
+import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
 
 import java.sql.SQLException;
 import java.time.Instant;
@@ -13,9 +15,9 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EntityManager extends Thread {
-    private GsonBuilder gsonBuilder = new GsonBuilder();
-    private Gson gson= gsonBuilder.create();
-    boolean requestToEnd=false;
+    private final GsonBuilder gsonBuilder = new GsonBuilder();
+    private final Gson gson = gsonBuilder.create();
+    boolean requestToEnd = false;
     private static final ArrayList<String> temp = new ArrayList<>();
     private static final ConcurrentHashMap<String, GuildEntity> guildCache = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<String, UserEntity> userCache = new ConcurrentHashMap<>();
@@ -24,11 +26,11 @@ public class EntityManager extends Thread {
         requestToEnd=true;
     }
 
-    public synchronized GuildEntity getGuildEntity(String id) {
+    public synchronized GuildEntity getGuildEntity(String id) throws MissingEntryException {
         GuildEntity guildEntity;
         if (guildCache.get(id)==null) {
             try {
-                guildEntity = Main.dbUtil.getGuildEntity(id);
+                guildEntity = DatabaseUtil.getGuildEntity(id);
                 if (guildEntity==null) {
                     guildEntity = new GuildEntity(id);
                 }
@@ -68,11 +70,22 @@ public class EntityManager extends Thread {
         guildEntity.request();
         return guildEntity;
     }
+
+    public void updateGuildEntity(GuildEntity guildEntity) {
+        guildEntity.request();
+        if (guildCache.contains(guildEntity)) {
+            guildCache.replace(guildEntity.getGuildId(), guildEntity);
+        } else {
+            guildCache.put(guildEntity.getGuildId(), guildEntity);
+        }
+        guildEntity.release();
+    }
+
     public synchronized UserEntity getUserEntity(String id) {
         UserEntity userEntity;
         if (userCache.get(id)==null) {
             try {
-                userEntity = Main.dbUtil.getUserEntity(id);
+                userEntity = DatabaseUtil.getUserEntity(id);
                 if (userEntity==null) {
                     userEntity = new UserEntity(id);
                 }
@@ -86,6 +99,17 @@ public class EntityManager extends Thread {
         userEntity.request();
         return userEntity;
     }
+
+    public void updateUserEntity(UserEntity userEntity) {
+        userEntity.request();
+        if (userCache.contains(userEntity)) {
+            userCache.replace(userEntity.getUserId(), userEntity);
+        } else {
+            userCache.put(userEntity.getUserId(), userEntity);
+        }
+        userEntity.release();
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -105,7 +129,7 @@ public class EntityManager extends Thread {
                 for (String key : temp) {
                     GuildEntity guildEntity = guildCache.get(key);
                     try {
-                        Main.dbUtil.updateGuildEntity(guildEntity);
+                        DatabaseUtil.updateGuildEntity(guildEntity);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
@@ -146,7 +170,7 @@ public class EntityManager extends Thread {
                             step2.put(k, guildEntity.getStarboardLink().get(k));
                         }
                         guildEntity.setJsonStarboardLink(gson.toJson(step2));
-                        Main.dbUtil.updateGuildEntity(guildEntity);
+                        DatabaseUtil.updateGuildEntity(guildEntity);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }

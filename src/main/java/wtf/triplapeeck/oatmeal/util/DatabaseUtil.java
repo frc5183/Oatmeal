@@ -6,7 +6,6 @@ import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wtf.triplapeeck.oatmeal.cards.Table;
 import wtf.triplapeeck.oatmeal.entities.*;
 import wtf.triplapeeck.oatmeal.errors.database.MissingEntryException;
 
@@ -21,8 +20,8 @@ public class DatabaseUtil {
     private static Dao<GuildEntity, String> guildDao;
     private static Dao<UserEntity, String> userDao;
     private static Dao<ChannelEntity, String> channelDao;
-    private static Dao<BanEntity, String> banDao;
-    private static Dao<MuteEntity, String> muteDao;
+    private static Dao<BanEntity, Long> banDao;
+    private static Dao<MuteEntity, Long> muteDao;
 
     public DatabaseUtil() throws SQLException {
         // init database
@@ -53,7 +52,8 @@ public class DatabaseUtil {
     }
 
     @Nullable
-    public static GuildEntity getGuildEntity(@NotNull String id) throws SQLException {
+    public static GuildEntity getGuildEntity(@NotNull String id) throws SQLException, MissingEntryException {
+        if (guildDao.queryForId(id) == null) throw new MissingEntryException("Channel doesn't exist in database.");
         return guildDao.queryForId(id);
     }
 
@@ -61,13 +61,14 @@ public class DatabaseUtil {
         guildDao.createOrUpdate(guildEntity);
     }
 
-    public static void deleteGuildEntity(@NotNull GuildEntity guildEntity) throws SQLException {
+    public static void deleteGuildEntity(@NotNull GuildEntity guildEntity) throws SQLException, MissingEntryException {
+        if (guildDao.queryForId(guildEntity.getGuildId()) == null) throw new MissingEntryException("Channel doesn't exist in database.");
         guildDao.delete(guildEntity);
     }
 
     @Nullable
-    public static UserEntity getUserEntity(@NotNull String id) throws SQLException {
-
+    public static UserEntity getUserEntity(@NotNull String id) throws SQLException, MissingEntryException {
+        if (userDao.queryForId(id) == null) throw new MissingEntryException("Channel doesn't exist in database.");
         return userDao.queryForId(id);
     }
 
@@ -75,7 +76,8 @@ public class DatabaseUtil {
         userDao.createOrUpdate(userEntity);
     }
 
-    public static void deleteUserEntity(@NotNull UserEntity userEntity) throws SQLException {
+    public static void deleteUserEntity(@NotNull UserEntity userEntity) throws SQLException, MissingEntryException {
+        if (userDao.queryForId(userEntity.getUserId()) == null) throw new MissingEntryException("Channel doesn't exist in database.");
         userDao.delete(userEntity);
     }
 
@@ -89,12 +91,13 @@ public class DatabaseUtil {
         channelDao.createOrUpdate(channelEntity);
     }
 
-    public static void deleteChannelEntity(@NotNull ChannelEntity channelEntity) throws SQLException {
+    public static void deleteChannelEntity(@NotNull ChannelEntity channelEntity) throws SQLException, MissingEntryException {
+        if (channelDao.queryForId(channelEntity.getId()) == null) throw new MissingEntryException("Channel doesn't exist in database.");
         channelDao.delete(channelEntity);
     }
 
     @Nullable
-    public static BanEntity getBanEntity(@NotNull String id) throws SQLException, MissingEntryException {
+    public static BanEntity getBanEntity(@NotNull Long id) throws SQLException, MissingEntryException {
         if (banDao.queryForId(id) == null) throw new MissingEntryException("Ban doesn't exist in database.");
         return banDao.queryForId(id);
     }
@@ -103,12 +106,13 @@ public class DatabaseUtil {
         banDao.createOrUpdate(banEntity);
     }
 
-    public static void deleteBanEntity(@NotNull BanEntity banEntity) throws SQLException {
+    public static void deleteBanEntity(@NotNull BanEntity banEntity) throws SQLException, MissingEntryException {
+        if (banDao.queryForId(banEntity.getId()) == null) throw new MissingEntryException("Channel doesn't exist in database.");
         banDao.delete(banEntity);
     }
 
     @Nullable
-    public static MuteEntity getMuteEntity(@NotNull String id) throws SQLException, MissingEntryException {
+    public static MuteEntity getMuteEntity(@NotNull Long id) throws SQLException, MissingEntryException {
         if (muteDao.queryForId(id) == null) throw new MissingEntryException("Mute doesn't exist in database.");
         return muteDao.queryForId(id);
     }
@@ -117,7 +121,8 @@ public class DatabaseUtil {
         muteDao.createOrUpdate(muteEntity);
     }
 
-    public static void deleteMuteEntity(@NotNull MuteEntity muteEntity) throws SQLException {
+    public static void deleteMuteEntity(@NotNull MuteEntity muteEntity) throws SQLException, MissingEntryException {
+        if (muteDao.queryForId(muteEntity.getId()) == null) throw new MissingEntryException("Channel doesn't exist in database.");
         muteDao.delete(muteEntity);
     }
 }

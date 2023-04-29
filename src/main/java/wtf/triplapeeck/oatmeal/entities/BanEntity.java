@@ -35,7 +35,7 @@ public class BanEntity extends AccessibleEntity {
     @Column(nullable = false)
     private @NotNull Boolean permanent;
 
-    public BanEntity(String userId, String guildId, String reason, Long endTimestamp) {
+    public BanEntity(@NotNull String userId, @NotNull String guildId, @NotNull String reason, @NotNull Long endTimestamp) {
         super();
         this.userId = userId;
         this.guildId = guildId;
@@ -46,7 +46,7 @@ public class BanEntity extends AccessibleEntity {
         this.permanent = false;
     }
 
-    public BanEntity(String userId, String guildId, String reason) {
+    public BanEntity(@NotNull String userId, @NotNull String guildId, @NotNull String reason) {
         this.userId = userId;
         this.guildId = guildId;
         this.reason = reason;
@@ -60,7 +60,8 @@ public class BanEntity extends AccessibleEntity {
     @Deprecated
     public BanEntity() {}
 
-    public synchronized long getId() {
+    @NotNull
+    public synchronized Long getId() {
         return id;
     }
 
@@ -83,35 +84,39 @@ public class BanEntity extends AccessibleEntity {
         this.reason = reason;
     }
 
-    public synchronized long getStartTimestamp() {
+    @NotNull
+    public synchronized Long getStartTimestamp() {
         return startTimestamp;
     }
 
-    public synchronized void setStartTimestamp(long startTimestamp) {
+    public synchronized void setStartTimestamp(@NotNull Long startTimestamp) {
         this.startTimestamp = startTimestamp;
     }
 
-    public synchronized long getEndTimestamp() {
+    @Nullable
+    public synchronized Long getEndTimestamp() {
         return endTimestamp;
     }
 
-    public synchronized void setEndTimestamp(long endTimestamp) {
+    public synchronized void setEndTimestamp(@Nullable Long endTimestamp) {
         this.endTimestamp = endTimestamp;
     }
 
-    public synchronized boolean isActive() {
+    @NotNull
+    public synchronized Boolean getActive() {
         return active;
     }
 
-    public synchronized void setActive(boolean active) {
+    public synchronized void setActive(@NotNull Boolean active) {
         this.active = active;
     }
 
-    public synchronized boolean isPermanent() {
+    @NotNull
+    public synchronized Boolean getPermanent() {
         return permanent;
     }
 
-    public synchronized void setPermanent(boolean permanent) {
+    public synchronized void setPermanent(@NotNull Boolean permanent) {
         this.permanent = permanent;
     }
 }

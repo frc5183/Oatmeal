@@ -62,7 +62,7 @@ public class MuteEntity extends AccessibleEntity {
     public MuteEntity() {}
 
     @NotNull
-    public synchronized long getId() {
+    public synchronized Long getId() {
         return id;
     }
 

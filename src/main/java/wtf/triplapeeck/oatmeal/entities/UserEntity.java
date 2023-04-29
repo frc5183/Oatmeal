@@ -11,29 +11,30 @@ import java.util.concurrent.ConcurrentHashMap;
 @Table(name = "oatmeal_users")
 public class UserEntity extends AccessibleEntity {
     @Id
-    public @NotNull String id;
+    public @NotNull String userId;
 
     @ElementCollection
     private @Nullable ConcurrentHashMap<Long, String> reminders;
 
     @Column(nullable = false)
-    private @NotNull Boolean isAdmin;
+    private @NotNull Boolean admin;
 
     @Column(nullable = false)
-    private @NotNull Boolean isOwner;
+    private @NotNull Boolean owner;
 
     public UserEntity(@NotNull String userId) {
-        this.id = userId;
-        this.isAdmin = false;
-        this.isOwner = false;
+        super();
+        this.userId = userId;
+        this.admin = false;
+        this.owner = false;
     }
 
     @Deprecated
     public UserEntity() {}
 
     @NotNull
-    public synchronized String getId() {
-        return id;
+    public synchronized String getUserId() {
+        return userId;
     }
 
     @Nullable
@@ -71,20 +72,20 @@ public class UserEntity extends AccessibleEntity {
     }
 
     @NotNull
-    public synchronized Boolean getAdmin() {
-        return isAdmin;
+    public synchronized Boolean isAdmin() {
+        return admin;
     }
 
     public synchronized void setAdmin(@NotNull Boolean admin) {
-        isAdmin = admin;
+        this.admin = admin;
     }
 
     @NotNull
-    public synchronized Boolean getOwner() {
-        return isOwner;
+    public synchronized Boolean isOwner() {
+        return owner;
     }
 
     public synchronized void setOwner(@NotNull Boolean owner) {
-        isOwner = owner;
+        this.owner = owner;
     }
 }

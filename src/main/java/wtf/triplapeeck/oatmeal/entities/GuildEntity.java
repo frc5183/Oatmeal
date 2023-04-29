@@ -18,26 +18,10 @@ public class GuildEntity extends AccessibleEntity {
     private transient @Nullable ConcurrentHashMap<String, String> starboardLink;
 
     @Column
-    private String jsonCustomCommands;
+    private @Nullable String jsonCustomCommands;
 
     @Column
-    private String jsonStarboardLink;
-
-    public String getJsonCustomCommands() {
-        return jsonCustomCommands;
-    }
-
-    public String getJsonStarboardLink() {
-        return jsonStarboardLink;
-    }
-
-    public void setJsonCustomCommands(String jsonCustomCommands) {
-        this.jsonCustomCommands = jsonCustomCommands;
-    }
-
-    public void setJsonStarboardLink(String jsonStarboardLink) {
-        this.jsonStarboardLink = jsonStarboardLink;
-    }
+    private @Nullable String jsonStarboardLink;
 
     @Column
     private @NotNull Boolean starboardEnabled;
@@ -80,12 +64,8 @@ public class GuildEntity extends AccessibleEntity {
         return customCommands;
     }
 
-    public synchronized void setCustomCommands(ConcurrentHashMap<String, String> map) {
-        customCommands=map;
-    }
-
-    public synchronized void setStarboardLink(ConcurrentHashMap<String, String> map) {
-        starboardLink=map;
+    public synchronized void setCustomCommands(@Nullable ConcurrentHashMap<String, String> customCommands) {
+        this.customCommands = customCommands;
     }
 
     @Nullable
@@ -94,6 +74,28 @@ public class GuildEntity extends AccessibleEntity {
             starboardLink=new ConcurrentHashMap<>();
         }
         return starboardLink;
+    }
+
+    public synchronized void setStarboardLink(@Nullable ConcurrentHashMap<String, String> starboardLink) {
+        this.starboardLink = starboardLink;
+    }
+
+    @Nullable
+    public String getJsonCustomCommands() {
+        return jsonCustomCommands;
+    }
+
+    public void setJsonCustomCommands(@Nullable String jsonCustomCommands) {
+        this.jsonCustomCommands = jsonCustomCommands;
+    }
+
+    @Nullable
+    public String getJsonStarboardLink() {
+        return jsonStarboardLink;
+    }
+
+    public void setJsonStarboardLink(@Nullable String jsonStarboardLink) {
+        this.jsonStarboardLink = jsonStarboardLink;
     }
 
     @Nullable
@@ -106,20 +108,29 @@ public class GuildEntity extends AccessibleEntity {
     }
 
     @Nullable
-    public synchronized int getStarboardLimit() {
+    public synchronized Integer getStarboardLimit() {
         return starboardLimit;
     }
 
-    public synchronized void setStarboardLimit(@Nullable int starboardLimit) {
+    public synchronized void setStarboardLimit(@Nullable Integer starboardLimit) {
         this.starboardLimit = starboardLimit;
     }
 
     @NotNull
-    public synchronized boolean isCurrencyEnabled() {
+    public synchronized Boolean isStarboardEnabled() {
+        return starboardEnabled;
+    }
+
+    public synchronized void setStarboardEnabled(@NotNull Boolean starboardEnabled) {
+        this.starboardEnabled = starboardEnabled;
+    }
+
+    @NotNull
+    public synchronized Boolean isCurrencyEnabled() {
         return currencyEnabled;
     }
 
-    public synchronized void setCurrencyEnabled(@NotNull boolean currencyEnabled) {
+    public synchronized void setCurrencyEnabled(@NotNull Boolean currencyEnabled) {
         this.currencyEnabled = currencyEnabled;
     }
 

@@ -1,8 +1,11 @@
 package wtf.triplapeeck.oatmeal.commands;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import wtf.triplapeeck.oatmeal.entities.GuildEntity;
+import wtf.triplapeeck.oatmeal.errors.database.MissingEntryException;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.storable.GenericStorable;
 import wtf.triplapeeck.oatmeal.storable.StorableManager;
@@ -10,7 +13,6 @@ import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.runnable.TableUpdate;
-import wtf.triplapeeck.oatmeal.storable.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -82,14 +84,22 @@ public class CommandHandler {
 
         } catch (IllegalStateException e) {
             carriage.guild=null;
-            carriage.guildEntity = Main.entityManager.getGuildEntity(carriage.channel.getId()+"0000");
+            try {
+                carriage.guildEntity = Main.entityManager.getGuildEntity(carriage.channel.getId()+"0000");
+            } catch (MissingEntryException ex) {
+                carriage.guildEntity = new GuildEntity(carriage.guild.getId());
+                Main.entityManager.updateGuildEntity(carriage.guildEntity);
+            }
+        } catch (MissingEntryException e) {
+            carriage.guildEntity = new GuildEntity(carriage.guild.getId());
+            Main.entityManager.updateGuildEntity(carriage.guildEntity);
         }
 
         carriage.message=event.getMessage();
         carriage.userStorable = StorableManager.getUser(carriage.user.getIdLong());
 
         carriage.channelStorable = StorableManager.getChannel(carriage.channel.getIdLong());
-        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getID());
+        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getGuildId());
         GenericStorable gs = StorableManager.getGeneric(0L);
         gs.getKnownUserList().put(carriage.user.getIdLong(), carriage.user.getIdLong());
         gs.relinquishAccess();
@@ -100,7 +110,7 @@ public class CommandHandler {
         double lucky5int=mainRandomizer.nextInt(25)-12.5;
         boolean lucky5 = (lucky5int+carriage.memberStorable.getMessageCount()) >50;
         int lucky5rak = mainRandomizer.nextInt(25)+25;
-        if(!carriage.user.isBot() && lucky5  && carriage.guildEntity.getCurrencyEnabled()) {
+        if(!carriage.user.isBot() && lucky5  && carriage.guildEntity.isCurrencyEnabled()) {
             carriage.memberStorable.setRak(carriage.memberStorable.getRak().add(BigInteger.valueOf(lucky5rak)));
             if (carriage.userStorable.getCurrencyPreference()) {
                 carriage.channel.sendMessage("Here, have " + lucky5rak + " rak. Enjoy!" +

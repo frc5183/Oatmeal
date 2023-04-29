@@ -12,7 +12,7 @@ public class RemoveStarboard extends Command {
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureAdministrator(carriage) && ensureGuild(carriage)) {
-            carriage.guildEntity.setStarboardChannelID(0L);
+            carriage.guildEntity.setStarboardChannelID(null);
             carriage.channel.sendMessage("The starboard will no longer post").queue();
 
 
