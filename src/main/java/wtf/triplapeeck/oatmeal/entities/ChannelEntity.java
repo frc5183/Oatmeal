@@ -10,7 +10,7 @@ import javax.persistence.Id;
 
 @Entity
 @javax.persistence.Table(name = "oatmeal_channels")
-public class ChannelEntity extends AccessableEntity {
+public class ChannelEntity extends AccessibleEntity {
     @Id
     public @NotNull String id;
 

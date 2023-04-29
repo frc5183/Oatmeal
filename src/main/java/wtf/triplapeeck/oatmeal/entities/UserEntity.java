@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Entity
 @Table(name = "oatmeal_users")
-public class UserEntity extends AccessableEntity {
+public class UserEntity extends AccessibleEntity {
     @Id
     public @NotNull String id;
 

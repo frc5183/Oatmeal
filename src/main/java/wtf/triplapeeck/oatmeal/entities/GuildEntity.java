@@ -1,101 +1,118 @@
 package wtf.triplapeeck.oatmeal.entities;
 
-import com.j256.ormlite.field.DataType;
-import com.j256.ormlite.field.DatabaseField;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.*;
-import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Table(name = "oatmeal_guilds")
-public class GuildEntity extends AccessableEntity {
+public class GuildEntity extends AccessibleEntity {
     @Id
     private @NotNull String id;
 
+    private transient @Nullable ConcurrentHashMap<String, String> customCommands;
+
+    private transient @Nullable ConcurrentHashMap<String, String> starboardLink;
     @Column
-    private @Nullable ConcurrentHashMap<String, String> customCommands;
+    private String jsonCustomCommands = "";
+    @Column
+    private String jsonStarboardLink = "";
+
+    public String getJsonCustomCommands() {
+        return jsonCustomCommands;
+    }
+
+    public String getJsonStarboardLink() {
+        return jsonStarboardLink;
+    }
+
+    public void setJsonCustomCommands(String jsonCustomCommands) {
+        this.jsonCustomCommands = jsonCustomCommands;
+    }
+
+    public void setJsonStarboardLink(String jsonStarboardLink) {
+        this.jsonStarboardLink = jsonStarboardLink;
+    }
 
     @Column
-    private @Nullable Long starboardId;
+    private @Nullable long starboardChannelID =0;
 
     @Column
-    private @Nullable Integer starboardMin;
+    private @Nullable int starboardLimit=2;
 
     @Column(nullable = false)
-    private @NotNull Boolean currencyEnabled;
+    private @NotNull boolean currencyEnabled=true;
 
     @Column(nullable = false)
-    private @NotNull Boolean testingEnabled;
+    private @NotNull boolean testingEnabled=false;
 
     public GuildEntity(@NotNull String guildId) {
         this.id = guildId;
-        this.starboardId = null;
-        this.starboardMin = null;
-        this.currencyEnabled = false;
-        this.testingEnabled = false;
     }
 
-    @Deprecated
-    public GuildEntity() {}
+    public GuildEntity() {
+    }
 
     @NotNull
-    public synchronized String getId() {
+    public synchronized String getID() {
         return id;
     }
 
+
+
     @Nullable
     public synchronized ConcurrentHashMap<String, String> getCustomCommands() {
+        if (customCommands==null) {
+            customCommands=new ConcurrentHashMap<>();
+        }
         return customCommands;
     }
-
-    public synchronized void setCustomCommands(@Nullable ConcurrentHashMap<String, String> customCommands) {
-        this.customCommands = customCommands;
+    public synchronized void setCustomCommands(ConcurrentHashMap<String, String> map) {
+        customCommands=map;
     }
-
-    public synchronized void addCustomCommand(@NotNull String name, @NotNull String description) {
-        if (customCommands == null) {
-            customCommands = new ConcurrentHashMap<>();
-        }
-        customCommands.put(name, description);
+    public synchronized void setStarboardLink(ConcurrentHashMap<String, String> map) {
+        starboardLink=map;
     }
-
-    public synchronized void removeCustomCommand(@NotNull String name) {
-        if (customCommands!= null) {
-            customCommands.remove(name);
+    @Nullable
+    public synchronized ConcurrentHashMap<String, String> getStarboardLink() {
+        if (starboardLink==null) {
+            starboardLink=new ConcurrentHashMap<>();
         }
+        return starboardLink;
     }
 
     @Nullable
-    public synchronized Long getStarboardId() {
-        return starboardId;
+    public synchronized long getStarboardChannelID() {
+        return starboardChannelID;
     }
 
-    public synchronized void setStarboardId(@Nullable Long starboardId) {
-        this.starboardId = starboardId;
+    public synchronized void setStarboardChannelID(@Nullable long starboardChannelID) {
+        this.starboardChannelID = starboardChannelID;
     }
 
     @Nullable
-    public synchronized Integer getStarboardMin() {
-        return starboardMin;
+    public synchronized int getStarboardLimit() {
+        return starboardLimit;
     }
 
-    public synchronized void setStarboardMin(@Nullable Integer starboardMin) {
-        this.starboardMin = starboardMin;
+    public synchronized void setStarboardLimit(@Nullable int starboardLimit) {
+        this.starboardLimit = starboardLimit;
     }
 
     @NotNull
-    public synchronized Boolean getCurrencyEnabled() {
+    public synchronized boolean getCurrencyEnabled() {
         return currencyEnabled;
     }
 
-    public synchronized void setCurrencyEnabled(@NotNull Boolean currencyEnabled) {
+    public synchronized void setCurrencyEnabled(@NotNull boolean currencyEnabled) {
         this.currencyEnabled = currencyEnabled;
     }
 
     @NotNull
-    public synchronized Boolean getTestingEnabled() {
+    public synchronized boolean getTestingEnabled() {
         return testingEnabled;
     }
 

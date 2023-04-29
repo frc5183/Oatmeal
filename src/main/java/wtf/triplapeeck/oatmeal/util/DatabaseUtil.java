@@ -53,8 +53,7 @@ public class DatabaseUtil {
     }
 
     @Nullable
-    public static GuildEntity getGuildEntity(@NotNull String id) throws SQLException, MissingEntryException {
-        if (guildDao.queryForId(id) == null) throw new MissingEntryException("Channel doesn't exist in database.");
+    public static GuildEntity getGuildEntity(@NotNull String id) throws SQLException {
         return guildDao.queryForId(id);
     }
 
@@ -67,8 +66,8 @@ public class DatabaseUtil {
     }
 
     @Nullable
-    public static UserEntity getUserEntity(@NotNull String id) throws SQLException, MissingEntryException {
-        if (userDao.queryForId(id) == null) throw new MissingEntryException("Channel doesn't exist in database.");
+    public static UserEntity getUserEntity(@NotNull String id) throws SQLException {
+
         return userDao.queryForId(id);
     }
 
