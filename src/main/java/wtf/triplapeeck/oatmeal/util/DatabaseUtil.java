@@ -101,14 +101,12 @@ public class DatabaseUtil {
         banDao.createOrUpdate(banEntity);
     }
 
-    public static void deleteBanEntity(@NotNull BanEntity banEntity) throws SQLException, MissingEntryException {
-        if (banDao.queryForId(banEntity.getId()) == null) throw new MissingEntryException("Channel doesn't exist in database.");
+    public static void deleteBanEntity(@NotNull BanEntity banEntity) throws SQLException {
         banDao.delete(banEntity);
     }
 
     @Nullable
-    public static MuteEntity getMuteEntity(@NotNull Long id) throws SQLException, MissingEntryException {
-        if (muteDao.queryForId(id) == null) throw new MissingEntryException("Mute doesn't exist in database.");
+    public static MuteEntity getMuteEntity(@NotNull Long id) throws SQLException {
         return muteDao.queryForId(id);
     }
 
@@ -116,8 +114,8 @@ public class DatabaseUtil {
         muteDao.createOrUpdate(muteEntity);
     }
 
-    public static void deleteMuteEntity(@NotNull MuteEntity muteEntity) throws SQLException, MissingEntryException {
-        if (muteDao.queryForId(muteEntity.getId()) == null) throw new MissingEntryException("Channel doesn't exist in database.");
+    public static void deleteMuteEntity(@NotNull MuteEntity muteEntity) throws SQLException {
+
         muteDao.delete(muteEntity);
     }
 }
