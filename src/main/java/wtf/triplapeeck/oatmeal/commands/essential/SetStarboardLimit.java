@@ -16,7 +16,7 @@ public class SetStarboardLimit extends Command {
                 if (limit<1) {
                     throw new NumberFormatException();
                 }
-                carriage.guildStorable.setStarboardLimit(limit);
+                carriage.guildEntity.setStarboardLimit(limit);
             } catch (NumberFormatException e) {
                 carriage.channel.sendMessage("Your starboard limit must be a positive integer greater than zero").queue();
             }

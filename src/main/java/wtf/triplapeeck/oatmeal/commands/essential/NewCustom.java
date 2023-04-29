@@ -14,7 +14,7 @@ public class NewCustom extends Command {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage) && ensureSecondArgument(carriage)) {
             String name = carriage.args[1];
             String content = carriage.textAfterSubcommand;
-            carriage.guildStorable.getCustomCommandList().put(name, content);
+            carriage.guildEntity.getCustomCommands().put(name, content);
             carriage.channel.sendMessage("Added new command s!" + name +" that responds with \"" + content +"\"").queue();
         }
     }

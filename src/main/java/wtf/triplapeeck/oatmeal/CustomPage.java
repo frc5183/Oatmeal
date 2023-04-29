@@ -15,7 +15,7 @@ public class CustomPage extends Page {
     @Override
     public ArrayList<Command> getCommandList(DataCarriage carriage) {
         ArrayList<Command> list = new ArrayList<>();
-        for (Iterator<String> it = carriage.guildStorable.getCustomCommandList().keys().asIterator(); it.hasNext(); ) {
+        for (Iterator<String> it = carriage.guildEntity.getCustomCommands().keys().asIterator(); it.hasNext(); ) {
             String str = it.next();
             list.add(new FakeCommand(str));
 

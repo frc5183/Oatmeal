@@ -19,7 +19,7 @@ public class Nuke extends Command {
                     throw new NumberFormatException();
                 }
                 number++;
-                listener.addTask(new NukeRunnable(carriage.guildStorable.getIDLong(), carriage.channel.getIdLong(), number, carriage.channel.sendMessage("Queueing a nuke task for " + number + " messages. (Will delete your message and then " + (number-1) + " more)")));
+                listener.addTask(new NukeRunnable(0, carriage.channel.getIdLong(), number, carriage.channel.sendMessage("Queueing a nuke task for " + number + " messages. (Will delete your message and then " + (number-1) + " more)")));
             } catch (NumberFormatException e) {
                 carriage.channel.sendMessage("You have to choose an integer above 0.").queue();
             }

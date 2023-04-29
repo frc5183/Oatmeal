@@ -148,10 +148,10 @@ public abstract class Command {
         return carriage.user.getIdLong()==222517551257747456L;
     }
     public boolean currencyEnabled(@NotNull DataCarriage carriage) {
-        return carriage.guildStorable.getCurrencyEnabled();
+        return carriage.guildEntity.getCurrencyEnabled();
     }
     public boolean testingEnabled(@NotNull DataCarriage carriage) {
-        return carriage.guildStorable.getTestingEnabled();
+        return carriage.guildEntity.getTestingEnabled();
     }
     public boolean currencyPreference(@NotNull DataCarriage carriage) {
         return carriage.userStorable.getCurrencyPreference();

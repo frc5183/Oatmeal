@@ -14,7 +14,7 @@ public class SetCurrencyEnabled extends Command {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage)) {
             String preference = carriage.args[1];
             if (preference.equalsIgnoreCase("enable") || preference.equalsIgnoreCase("disable")) {
-                carriage.guildStorable.setCurrencyEnabled(preference.equalsIgnoreCase("enable"));
+                carriage.guildEntity.setCurrencyEnabled(preference.equalsIgnoreCase("enable"));
                 carriage.channel.sendMessage("Updated your server currency setting to " + preference.toLowerCase() + "d.").queue();
             } else {
                 carriage.channel.sendMessage("You have to choose either enable or disable currency.").queue();

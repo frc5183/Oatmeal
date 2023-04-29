@@ -49,7 +49,7 @@ public class CommandHandler {
             });
 
             if (!caught.get()) {
-                String customCommand = carriage.guildStorable.getCustomCommandList().get(carriage.args[level].substring(prefix.length()));
+                String customCommand = carriage.guildEntity.getCustomCommands().get(carriage.args[level].substring(prefix.length()));
                 if (customCommand!=null) {
                     carriage.channel.sendMessage(customCommand).queue();
                 }
@@ -78,17 +78,18 @@ public class CommandHandler {
         carriage.channel = event.getChannel();
         try {
             carriage.guild = event.getGuild();
-            carriage.guildStorable = StorableManager.getGuild(carriage.guild.getId());
+            carriage.guildEntity=Main.entityManager.getGuildEntity(carriage.guild.getId());
+
         } catch (IllegalStateException e) {
             carriage.guild=null;
-            carriage.guildStorable = StorableManager.getGuild(carriage.channel.getId()+"0000");
+            carriage.guildEntity = Main.entityManager.getGuildEntity(carriage.channel.getId()+"0000");
         }
 
         carriage.message=event.getMessage();
         carriage.userStorable = StorableManager.getUser(carriage.user.getIdLong());
 
         carriage.channelStorable = StorableManager.getChannel(carriage.channel.getIdLong());
-        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildStorable.getID());
+        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getID());
         GenericStorable gs = StorableManager.getGeneric(0L);
         gs.getKnownUserList().put(carriage.user.getIdLong(), carriage.user.getIdLong());
         gs.relinquishAccess();
@@ -99,7 +100,7 @@ public class CommandHandler {
         double lucky5int=mainRandomizer.nextInt(25)-12.5;
         boolean lucky5 = (lucky5int+carriage.memberStorable.getMessageCount()) >50;
         int lucky5rak = mainRandomizer.nextInt(25)+25;
-        if(!carriage.user.isBot() && lucky5  && carriage.guildStorable.getCurrencyEnabled()) {
+        if(!carriage.user.isBot() && lucky5  && carriage.guildEntity.getCurrencyEnabled()) {
             carriage.memberStorable.setRak(carriage.memberStorable.getRak().add(BigInteger.valueOf(lucky5rak)));
             if (carriage.userStorable.getCurrencyPreference()) {
                 carriage.channel.sendMessage("Here, have " + lucky5rak + " rak. Enjoy!" +
@@ -116,7 +117,7 @@ public class CommandHandler {
         carriage.userStorable.relinquishAccess();
         carriage.memberStorable.relinquishAccess();
         carriage.channelStorable.relinquishAccess();
-        carriage.guildStorable.relinquishAccess();
+        carriage.guildEntity.release();
         Logger.customLog("Listener", "Finished");
     }
 

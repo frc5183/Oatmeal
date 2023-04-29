@@ -13,7 +13,7 @@ public class RemoveCustom extends Command {
     public void handler(@NotNull MessageReceivedEvent event, @NotNull DataCarriage carriage, ThreadManager listener) {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage)) {
             String name = carriage.args[1];
-            carriage.guildStorable.getCustomCommandList().remove(name);
+            carriage.guildEntity.getCustomCommands().remove(name);
             carriage.channel.sendMessage("Removed custom command s!" + name).queue();
         }
     }

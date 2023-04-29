@@ -33,16 +33,27 @@ import java.sql.SQLException;
 public class Main {
     public static DefaultListener listener;
     public static ThreadManager threadManager;
+    public static EntityManager entityManager;
     public static JDA api;
+    public static DatabaseUtil dbUtil;
+
+    static {
+        try {
+            dbUtil = new DatabaseUtil();
+            entityManager=new EntityManager();
+            entityManager.start();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static TriviaStorable ts;
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
-    public static EntityManager entityManager = new EntityManager();
 
-    public static void main(String[] args) throws LoginException, InterruptedException, IOException, SQLException {
+
+    public static void main(String[] args) throws LoginException, InterruptedException, IOException {
         listener=new DefaultListener();
         threadManager=new ThreadManager();
-        new DatabaseUtil();
         api = JDABuilder.createDefault(ConfigParser.getToken(args))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(listener).build();
