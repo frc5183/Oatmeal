@@ -9,21 +9,15 @@ import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
+import wtf.triplapeeck.oatmeal.runnable.Shutdown;
+
+import java.time.Duration;
+import java.time.Instant;
 
 public class RebootOatmeal extends Command {
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureIsOwner(carriage)){
-            Logger.basicLog(Logger.Level.INFO, "Sinon-Reboot Initiated.");
-            listener.requestToEnd();
-            Main.entityManager.requestToEnd();
-            carriage.channel.sendMessage("Rebooting. Please allow a moment for rebooting to finish.").complete();
-
-            while (true) {
-                if (listener.getState()== Thread.State.TERMINATED) {
-                    break;
-                }
-            }
-            carriage.api.shutdownNow();
+            new Thread(new Shutdown(carriage, listener)).start();
         }
 
 

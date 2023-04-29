@@ -33,14 +33,23 @@ public class ThreadManager extends Thread {
             boolean stillFinishing=false;
             ArrayList<NamedThread> finishedList= new ArrayList<>();
             for (NamedThread t : threadList) {
-                if (t.t.getName()=="Heartbeat" && requestToEnd) {
+                if (t.name.getName()=="Heartbeat" && requestToEnd) {
                     Heartbeat.requestToEnd();
+                    if (t.t.getState()==State.TIMED_WAITING) {
+                        try {
+                            t.t.interrupt();
+                        } catch (SecurityException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
                 switch (t.t.getState()) {
                     case NEW:
                         Logger.customLog("ThreadManager", "Started New Thread with name: "+t.name.getName());
                         t.t.start();
+                        stillFinishing=true;
                     case RUNNABLE, WAITING, TIMED_WAITING, BLOCKED:
+                        stillFinishing=true;
                         break;
                     case TERMINATED:
                         Logger.customLog("ThreadManager", "Finished Thread with name: "+t.name.getName()+" and id: "+threadList.indexOf(t));

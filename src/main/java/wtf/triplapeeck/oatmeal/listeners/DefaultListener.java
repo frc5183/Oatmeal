@@ -24,12 +24,22 @@ public class DefaultListener extends ListenerAdapter
         isActive=false;
         pauseCount+=1;
     }
+    private int count=0;
+
+    public int getCount() {
+        return count;
+    }
+
     public synchronized void resume() {
         pauseCount-=1;
 
         if(pauseCount<=0) {
             isActive=true;
         }
+    }
+    private boolean requestToEnd=false;
+    public synchronized void requestToEnd() {
+        requestToEnd=true;
     }
     ThreadManager waiter;
     private JDA api;
@@ -46,7 +56,8 @@ public class DefaultListener extends ListenerAdapter
     }
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Logger.customLog("Listener", "Message Received");
-        while (!isActive) {
+        if (!isActive) {
+            return;
         }
         Logger.customLog("Listener", "Message Pre");
         commandHandler.handle(event, api, waiter);
@@ -56,14 +67,16 @@ public class DefaultListener extends ListenerAdapter
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
         Logger.customLog("Listener", "Reaction Event Received");
-        while (!isActive) {
+        if (!isActive) {
+            return;
         }
         threadManager.addTask(new GuildEmojiAddEvent(event));
     }
 
     public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
         Logger.customLog("Listener", "Reaction Event Received");
-        while (!isActive) {
+        if (!isActive) {
+            return;
         }
         threadManager.addTask(new GuildEmojiRemoveEvent(event));
     }
