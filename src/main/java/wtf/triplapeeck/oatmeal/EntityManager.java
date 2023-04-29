@@ -81,7 +81,7 @@ public class EntityManager extends Thread {
         guildEntity.release();
     }
 
-    public synchronized UserEntity getUserEntity(String id) throws MissingEntryException {
+    public synchronized UserEntity getUserEntity(String id) {
         UserEntity userEntity;
         if (userCache.get(id)==null) {
             try {
@@ -89,6 +89,16 @@ public class EntityManager extends Thread {
                 if (userEntity==null) {
                     userEntity = new UserEntity(id);
                 }
+                UserEntity.ReminderMap out;
+                try {
+                    out = gson.fromJson(userEntity.getJsonReminders(), UserEntity.ReminderMap.class);
+                } catch (JsonSyntaxException e) {
+                    out = new UserEntity.ReminderMap();
+                }
+                if (out==null) {
+                    out=new UserEntity.ReminderMap();
+                }
+                userEntity.setReminderMap(out);
                 userCache.put(id, userEntity);
             } catch  (SQLException e){
                 throw new RuntimeException(e);
@@ -103,9 +113,9 @@ public class EntityManager extends Thread {
     public void updateUserEntity(UserEntity userEntity) {
         userEntity.request();
         if (userCache.contains(userEntity)) {
-            userCache.replace(userEntity.getUserId(), userEntity);
+            userCache.replace(userEntity.getID(), userEntity);
         } else {
-            userCache.put(userEntity.getUserId(), userEntity);
+            userCache.put(userEntity.getID(), userEntity);
         }
         userEntity.release();
     }
@@ -128,8 +138,34 @@ public class EntityManager extends Thread {
                 }
                 for (String key : temp) {
                     GuildEntity guildEntity = guildCache.get(key);
+                    guildCache.remove(key);
                     try {
+                        HashMap<String, String> step = new HashMap<>();
+                        for (String k : guildEntity.getCustomCommands().keySet()) {
+                            step.put(k, guildEntity.getCustomCommands().get(k));
+                        }
+                        guildEntity.setJsonCustomCommands(gson.toJson(step));
+                        HashMap<String, String> step2 = new HashMap<>();
+                        for (String k : guildEntity.getStarboardLink().keySet()) {
+                            step2.put(k, guildEntity.getStarboardLink().get(k));
+                        }
+                        guildEntity.setJsonStarboardLink(gson.toJson(step2));
                         DatabaseUtil.updateGuildEntity(guildEntity);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                temp.clear();
+                for (String key: userCache.keySet()) {
+                    temp.add(key);
+                }
+                for (String key : temp) {
+                    UserEntity userEntity = userCache.get(key);
+                    userCache.remove(key);
+                    try {
+                        String step = gson.toJson(userEntity.getReminderMap());
+                        userEntity.setJsonReminders(step);
+                        DatabaseUtil.updateUserEntity(userEntity);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
@@ -171,6 +207,30 @@ public class EntityManager extends Thread {
                         }
                         guildEntity.setJsonStarboardLink(gson.toJson(step2));
                         DatabaseUtil.updateGuildEntity(guildEntity);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            temp.clear();
+            for (String key: userCache.keySet()) {
+                UserEntity userEntity = userCache.get(key);
+                if (userEntity.getEpoch()!=0 && userEntity.getAccessCount()==0) {
+                    if (Instant.now().getEpochSecond()>30 +userEntity.getEpoch()) {
+                        temp.add(key);
+                    }
+                } else {
+                    userEntity.resetEpoch();
+                }
+            }
+            for (String key : temp) {
+                UserEntity userEntity = userCache.get(key);
+                if (userEntity.getAccessCount()==0) {
+                    userCache.remove(key);
+                    try {
+                        String step = gson.toJson(userEntity.getReminderMap());
+                        userEntity.setJsonReminders(step);
+                        DatabaseUtil.updateUserEntity(userEntity);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
