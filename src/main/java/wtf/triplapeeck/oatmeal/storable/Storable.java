@@ -40,8 +40,8 @@ public abstract class Storable {
     }
 
     public abstract void Save();
-    //public abstract void requestAccess();
+    //public abstract void request();
 
-    //public abstract void relinquishAccess();
+    //public abstract void release();
 
 }

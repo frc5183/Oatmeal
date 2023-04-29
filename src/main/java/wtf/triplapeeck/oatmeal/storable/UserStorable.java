@@ -12,7 +12,7 @@ public class UserStorable extends Storable {
     private boolean isOwner=false;
     private boolean isAdmin=false;
     private boolean currencyPreference=true;
-    public synchronized boolean getCurrencyPreference() throws ClosedStorableError {
+    public synchronized boolean isCurrencyPreference() throws ClosedStorableError {
         if (closed) {throw new ClosedStorableError();}
         return currencyPreference;
     }
@@ -50,12 +50,12 @@ public class UserStorable extends Storable {
             closed=true;
         }
     }
-    public synchronized void requestAccess() throws ClosedStorableError {
+    public synchronized void request() throws ClosedStorableError {
         Logger.customLog("Storable","Access Requested. New Count: "+ ++accessCount);
         if (closed) {throw new ClosedStorableError();}
     }
 
-    public synchronized void relinquishAccess() {
+    public synchronized void release() {
         Logger.customLog("Storable","Access Relinquished. New Count: "+ --accessCount);
         if (closed) {throw new ClosedStorableError();}
         Save();

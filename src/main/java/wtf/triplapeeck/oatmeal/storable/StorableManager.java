@@ -69,7 +69,7 @@ public class StorableManager {
             userStorable= new StorableFactory(id).userStorable();
             userList.put(id, userStorable);
         }
-        userStorable.requestAccess();
+        userStorable.request();
         return userStorable;
     }
     public static synchronized void removeUser(Long id) {

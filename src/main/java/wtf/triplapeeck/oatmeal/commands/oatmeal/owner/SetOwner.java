@@ -4,12 +4,12 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
+import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.Page;
+import wtf.triplapeeck.oatmeal.entities.UserEntity;
 import wtf.triplapeeck.oatmeal.util.Utils;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
-import wtf.triplapeeck.oatmeal.storable.StorableFactory;
-import wtf.triplapeeck.oatmeal.storable.UserStorable;
 
 import java.util.List;
 
@@ -21,10 +21,9 @@ public class SetOwner extends Command {
             ensureOnlyOneTaggedIsNotTrip(carriage)) {
             List<User> userList = carriage.message.getMentions().getUsers();
             User user = userList.get(0);
-            StorableFactory dsUsr = new StorableFactory(user.getIdLong());
-            UserStorable usUsr = dsUsr.userStorable();
+            UserEntity usUsr = Main.entityManager.getUserEntity(user.getId());
+
             usUsr.setOwner(!usUsr.isOwner());
-            dsUsr.saveStorable(usUsr);
             carriage.channel.sendMessage(user.getName() + " now " + Utils.isNot(usUsr.isAdmin()) + " an Owner").queue();
         }
     }

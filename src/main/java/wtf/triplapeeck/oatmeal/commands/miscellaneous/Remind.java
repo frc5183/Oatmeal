@@ -26,7 +26,7 @@ public class Remind extends Command {
             Long num = Long.valueOf(carriage.args[1]);
             Long time = Utils.parseTimeOffset(num, carriage.args[2]);
             Reminder r = new Reminder(Instant.now().getEpochSecond()+time, carriage.textAfterSubcommand.substring(carriage.args[2].length()+1));
-            carriage.userStorable.getReminderList().put((long) carriage.userStorable.getReminderList().size()-1, r);
+            carriage.userEntity.getReminders().put(String.valueOf(carriage.userEntity.getReminders().size()-1), r);
             carriage.channel.sendMessage("Will remind you in " + num + " " + carriage.args[2]+ "!"+
                     "\nNote: the reminder system only updates every 5 minutes" +
                     "\nNote: the reminder system should not be relied on for important reminders. " +
@@ -36,6 +36,8 @@ public class Remind extends Command {
         } catch (Utils.TimeFormatException e) {
             carriage.channel.sendMessage(e.toString()).queue();
         } catch (ArrayIndexOutOfBoundsException e) {
+            carriage.channel.sendMessage("You haven't included enough arguments for a reminder").queue();
+        } catch (StringIndexOutOfBoundsException e) {
             carriage.channel.sendMessage("You haven't included enough arguments for a reminder").queue();
         }
     }

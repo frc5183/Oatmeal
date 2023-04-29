@@ -4,9 +4,10 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.entities.UserEntity;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.storable.StorableFactory;
-import wtf.triplapeeck.oatmeal.storable.UserStorable;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
@@ -30,7 +31,7 @@ public abstract class Command {
 
     public abstract @NotNull boolean hasPermission(DataCarriage carriage, User user);
     public boolean ensureIsAdmin(@NotNull DataCarriage carriage) {
-        if (carriage.userStorable.isAdmin()) {
+        if (carriage.userEntity.isAdmin()) {
             return true;
         } else {
             carriage.channel.sendMessage("You are not allowed to do this command.").queue();
@@ -39,13 +40,13 @@ public abstract class Command {
 
     }
     public boolean isOwner(@NotNull DataCarriage carriage) {
-        return carriage.userStorable.isOwner();
+        return carriage.userEntity.isOwner();
     }
     public boolean isAdmin(@NotNull DataCarriage carriage) {
-        return carriage.userStorable.isAdmin();
+        return carriage.userEntity.isAdmin();
     }
     public boolean ensureIsOwner(@NotNull DataCarriage carriage) {
-        if (carriage.userStorable.isOwner()) {
+        if (carriage.userEntity.isOwner()) {
             return true;
         } else {
             carriage.channel.sendMessage("You are not allowed to do this command.").queue();
@@ -121,8 +122,7 @@ public abstract class Command {
     public boolean getOwnerStatusOfOnlyOneTagged(@NotNull DataCarriage carriage) {
         List<User> userList = carriage.message.getMentions().getUsers();
         User user = userList.get(0);
-        StorableFactory dsUsr = new StorableFactory(user.getIdLong());
-        UserStorable usUsr = dsUsr.userStorable();
+        UserEntity usUsr = Main.entityManager.getUserEntity(user.getId());
         return usUsr.isOwner();
 
     }
@@ -154,7 +154,7 @@ public abstract class Command {
         return carriage.guildEntity.isTestingEnabled();
     }
     public boolean currencyPreference(@NotNull DataCarriage carriage) {
-        return carriage.userStorable.getCurrencyPreference();
+        return carriage.userEntity.isCurrencyPreference();
     }
     public boolean ensureCurrencyEnabled(@NotNull DataCarriage carriage) {
         if (currencyEnabled(carriage)) {

@@ -13,7 +13,7 @@ public class RakMessages extends Command {
         if (ensureCurrencyEnabled(carriage) && ensureFirstArgument(carriage)) {
             String preference = carriage.args[1];
             if (preference.equalsIgnoreCase("enable") || preference.equalsIgnoreCase("disable")) {
-                    carriage.userStorable.setCurrencyPreference(preference.equalsIgnoreCase("enable"));
+                    carriage.userEntity.setCurrencyPreference(preference.equalsIgnoreCase("enable"));
                     carriage.channel.sendMessage("Updated your preference to be messages " + preference.toLowerCase() + "d.").queue();
             } else {
                 carriage.channel.sendMessage("You have to choose either enable or disable for your preference.").queue();

@@ -33,14 +33,14 @@ public class Help extends Command {
                     }
 
                 } else if (page==Page.SinonOwner) {
-                    if (carriage.userStorable.isOwner()) {
+                    if (carriage.userEntity.isOwner()) {
                         listCommands(carriage, g, page);
                     } else {
                         carriage.channel.sendMessage("This Page is reserved only for Sinon's Owners").queue();
                     }
 
                 } else if (page==Page.SinonAdmin) {
-                    if (carriage.userStorable.isAdmin()) {
+                    if (carriage.userEntity.isAdmin()) {
                         listCommands(carriage, g, page);
                     } else {
                         carriage.channel.sendMessage("This Page is reserved only for Sinon's Admins").queue();
@@ -91,12 +91,12 @@ public class Help extends Command {
                     }
 
                 } else if (c==Page.SinonOwner) {
-                    if (carriage.userStorable.isOwner()) {
+                    if (carriage.userEntity.isOwner()) {
                         list.set(list + "\n" + atomicInteger.get() + " " + c.getName());
                     }
 
                 } else if (c==Page.SinonAdmin) {
-                    if (carriage.userStorable.isAdmin()) {
+                    if (carriage.userEntity.isAdmin()) {
                         list.set(list + "\n" + atomicInteger.get() + " " + c.getName());
                     }
                 } else if (c==Page.CustomPage) {

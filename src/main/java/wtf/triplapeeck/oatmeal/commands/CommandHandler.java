@@ -86,7 +86,7 @@ public class CommandHandler {
         }
 
         carriage.message=event.getMessage();
-        carriage.userStorable = StorableManager.getUser(carriage.user.getIdLong());
+        carriage.userEntity = Main.entityManager.getUserEntity(carriage.user.getId());
 
         carriage.channelStorable = StorableManager.getChannel(carriage.channel.getIdLong());
         carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getId());
@@ -102,7 +102,7 @@ public class CommandHandler {
         int lucky5rak = mainRandomizer.nextInt(25)+25;
         if(!carriage.user.isBot() && lucky5  && carriage.guildEntity.isCurrencyEnabled()) {
             carriage.memberStorable.setRak(carriage.memberStorable.getRak().add(BigInteger.valueOf(lucky5rak)));
-            if (carriage.userStorable.getCurrencyPreference()) {
+            if (carriage.userEntity.isCurrencyPreference()) {
                 carriage.channel.sendMessage("Here, have " + lucky5rak + " rak. Enjoy!" +
                         "\n*To opt out of Random RAK gain notification use the command s!rakmessage disable)").queue();
             }
@@ -114,7 +114,7 @@ public class CommandHandler {
         Logger.customLog("Listener", "Pre Table Update");
         Main.threadManager.addTask(new TableUpdate(carriage.channel.getIdLong()));
         Logger.customLog("Listener", "Post Table Update");
-        carriage.userStorable.relinquishAccess();
+        carriage.userEntity.release();
         carriage.memberStorable.relinquishAccess();
         carriage.channelStorable.relinquishAccess();
         carriage.guildEntity.release();
