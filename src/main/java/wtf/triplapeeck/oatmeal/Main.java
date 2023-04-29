@@ -34,23 +34,15 @@ public class Main {
     public static DefaultListener listener;
     public static ThreadManager threadManager;
     public static JDA api;
-    public static DatabaseUtil dbUtil;
-
-    static {
-        try {
-            dbUtil = new DatabaseUtil();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static TriviaStorable ts;
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
     public static EntityManager entityManager = new EntityManager();
 
-    public static void main(String[] args) throws LoginException, InterruptedException, IOException {
+    public static void main(String[] args) throws LoginException, InterruptedException, IOException, SQLException {
         listener=new DefaultListener();
         threadManager=new ThreadManager();
+        new DatabaseUtil();
         api = JDABuilder.createDefault(ConfigParser.getToken(args))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(listener).build();
@@ -89,6 +81,4 @@ public class Main {
         commandHandler.addCommand(new Remind());
         threadManager.addTask(new Heartbeat());
     }
-
-
 }

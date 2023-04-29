@@ -3,38 +3,67 @@ package wtf.triplapeeck.oatmeal.entities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "oatmeal_bans")
 public class MuteEntity {
-    private @NotNull final UserEntity user;
-    private @NotNull String reason;
-    private @NotNull Long startTimestamp;
-    private @Nullable Long endTimestamp;
-    private @NotNull Boolean active;
-    private @NotNull Boolean isPermanent;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    public MuteEntity(@NotNull UserEntity user, @NotNull String reason, @NotNull long endTimestamp) {
-        this.user = user;
+    @Column(nullable = false)
+    private @NotNull String userId;
+
+    @Column(nullable = false)
+    private @NotNull String guildId;
+
+    @Column(nullable = false)
+    private @NotNull String reason;
+
+    @Column(nullable = false)
+    private @NotNull long startTimestamp;
+
+    @Column
+    private @Nullable long endTimestamp;
+
+    @Column(nullable = false)
+    private @NotNull boolean active;
+
+    @Column(nullable = false)
+    private @NotNull boolean isPermanent;
+
+    public MuteEntity(String userId, String guildId, String reason, long endTimestamp) {
+        this.userId = userId;
+        this.guildId = guildId;
         this.reason = reason;
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
         this.endTimestamp = endTimestamp;
-        this.active = true;
-        this.isPermanent = false;
+        this.active = active;
     }
 
-    public MuteEntity(@NotNull UserEntity user, @NotNull String reason) {
-        this.user = user;
+    public MuteEntity(String userId, String guildId, String reason) {
+        this.userId = userId;
+        this.guildId = guildId;
         this.reason = reason;
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
-        this.endTimestamp = null;
-        this.active = true;
-        this.isPermanent = true;
+        this.endTimestamp = endTimestamp;
+        this.active = active;
+    }
+
+    @Deprecated
+    public MuteEntity() {}
+
+    @NotNull
+    public synchronized String getUserId() {
+        return userId;
     }
 
     @NotNull
-    public synchronized UserEntity getUser() {
-        return user;
+    public synchronized String getGuildId() {
+        return guildId;
     }
 
     @NotNull
@@ -46,39 +75,35 @@ public class MuteEntity {
         this.reason = reason;
     }
 
-    @NotNull
-    public synchronized Long getStartTimestamp() {
+    public synchronized long getStartTimestamp() {
         return startTimestamp;
     }
 
-    public synchronized void setStartTimestamp(@NotNull Long startTimestamp) {
+    public synchronized void setStartTimestamp(long startTimestamp) {
         this.startTimestamp = startTimestamp;
     }
 
-    @Nullable
-    public synchronized Long getEndTimestamp() {
+    public synchronized long getEndTimestamp() {
         return endTimestamp;
     }
 
-    public synchronized void setEndTimestamp(@Nullable Long endTimestamp) {
+    public synchronized void setEndTimestamp(long endTimestamp) {
         this.endTimestamp = endTimestamp;
     }
 
-    @NotNull
-    public synchronized Boolean getActive() {
+    public synchronized boolean isActive() {
         return active;
     }
 
-    public synchronized void setActive(@NotNull Boolean active) {
+    public synchronized void setActive(boolean active) {
         this.active = active;
     }
 
-    @NotNull
-    public synchronized Boolean getPermanent() {
+    public synchronized boolean isPermanent() {
         return isPermanent;
     }
 
-    public synchronized void setPermanent(@NotNull Boolean permanent) {
+    public synchronized void setPermanent(boolean permanent) {
         isPermanent = permanent;
     }
 }

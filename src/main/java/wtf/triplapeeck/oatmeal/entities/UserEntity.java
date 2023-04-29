@@ -24,12 +24,12 @@ public class UserEntity extends AccessableEntity {
 
     public UserEntity(@NotNull String userId) {
         this.id = userId;
+        this.isAdmin = false;
+        this.isOwner = false;
     }
 
     @Deprecated
-    public UserEntity() {
-
-    }
+    public UserEntity() {}
 
     @NotNull
     public synchronized String getId() {

@@ -14,7 +14,7 @@ public class ChannelEntity extends AccessableEntity {
     @Id
     public @NotNull String id;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     public @Nullable String table;
 
     @Column(nullable = false)

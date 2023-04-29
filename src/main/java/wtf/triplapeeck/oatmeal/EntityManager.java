@@ -3,6 +3,7 @@ package wtf.triplapeeck.oatmeal;
 import net.dv8tion.jda.api.entities.Guild;
 import wtf.triplapeeck.oatmeal.entities.GuildEntity;
 import wtf.triplapeeck.oatmeal.entities.UserEntity;
+import wtf.triplapeeck.oatmeal.errors.database.MissingEntryException;
 import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
 
 import java.sql.SQLException;
@@ -25,12 +26,12 @@ public class EntityManager extends Thread {
         GuildEntity guildEntity;
         if (guildCache.get(id)==null) {
             try {
-                guildEntity = Main.dbUtil.getGuildEntity(id);
+                guildEntity = DatabaseUtil.getGuildEntity(id);
                 if (guildEntity==null) {
                     guildEntity = new GuildEntity(id);
                 }
                 guildCache.put(id, guildEntity);
-            } catch  (SQLException e){
+            } catch  (SQLException | MissingEntryException e){
                 throw new RuntimeException(e);
             }
         } else {
@@ -43,12 +44,12 @@ public class EntityManager extends Thread {
         UserEntity userEntity;
         if (userCache.get(id)==null) {
             try {
-                userEntity = Main.dbUtil.getUserEntity(id);
+                userEntity = DatabaseUtil.getUserEntity(id);
                 if (userEntity==null) {
                     userEntity = new UserEntity(id);
                 }
                 userCache.put(id, userEntity);
-            } catch  (SQLException e){
+            } catch  (SQLException | MissingEntryException e){
                 throw new RuntimeException(e);
             }
         } else {

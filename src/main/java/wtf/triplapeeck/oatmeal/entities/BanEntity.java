@@ -3,36 +3,67 @@ package wtf.triplapeeck.oatmeal.entities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "oatmeal_bans")
 public class BanEntity {
-    private @NotNull final UserEntity user;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(nullable = false)
+    private @NotNull String userId;
+
+    @Column(nullable = false)
+    private @NotNull String guildId;
+
+    @Column(nullable = false)
     private @NotNull String reason;
+
+    @Column(nullable = false)
     private @NotNull long startTimestamp;
+
+    @Column
     private @Nullable long endTimestamp;
+
+    @Column(nullable = false)
     private @NotNull boolean active;
+
+    @Column(nullable = false)
     private @NotNull boolean isPermanent;
 
-    public BanEntity(UserEntity user, String reason, long endTimestamp) {
-        this.user = user;
+    public BanEntity(String userId, String guildId, String reason, long endTimestamp) {
+        this.userId = userId;
+        this.guildId = guildId;
         this.reason = reason;
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
         this.endTimestamp = endTimestamp;
         this.active = active;
     }
 
-    public BanEntity(UserEntity user, String reason) {
-        this.user = user;
+    public BanEntity(String userId, String guildId, String reason) {
+        this.userId = userId;
+        this.guildId = guildId;
         this.reason = reason;
         this.startTimestamp = Timestamp.valueOf(LocalDateTime.now()).getTime();
         this.endTimestamp = endTimestamp;
         this.active = active;
+    }
+
+    @Deprecated
+    public BanEntity() {}
+
+    @NotNull
+    public synchronized String getUserId() {
+        return userId;
     }
 
     @NotNull
-    public synchronized UserEntity getUser() {
-        return user;
+    public synchronized String getGuildId() {
+        return guildId;
     }
 
     @NotNull

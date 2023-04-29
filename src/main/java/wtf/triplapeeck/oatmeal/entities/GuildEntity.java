@@ -1,11 +1,11 @@
 package wtf.triplapeeck.oatmeal.entities;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,12 +16,6 @@ public class GuildEntity extends AccessableEntity {
 
     @Column
     private @Nullable ConcurrentHashMap<String, String> customCommands;
-
-    @Column(nullable = false)
-    private @NotNull ArrayList<BanEntity> bans;
-
-    @Column(nullable = false)
-    private @NotNull ArrayList<MuteEntity> mutes;
 
     @Column
     private @Nullable Long starboardId;
@@ -37,53 +31,18 @@ public class GuildEntity extends AccessableEntity {
 
     public GuildEntity(@NotNull String guildId) {
         this.id = guildId;
-        this.bans = new ArrayList<>();
-        this.mutes = new ArrayList<>();
+        this.starboardId = null;
+        this.starboardMin = null;
+        this.currencyEnabled = false;
+        this.testingEnabled = false;
     }
 
     @Deprecated
-    public GuildEntity() {
-        this.bans=new ArrayList<>();
-        this.mutes = new ArrayList<>();
-    }
+    public GuildEntity() {}
 
     @NotNull
     public synchronized String getId() {
         return id;
-    }
-
-    @NotNull
-    public synchronized ArrayList<BanEntity> getBans() {
-        return bans;
-    }
-
-    public synchronized void setBans(@NotNull ArrayList<BanEntity> bans) {
-        this.bans = bans;
-    }
-
-    public synchronized void addBan(@NotNull BanEntity ban) {
-        this.bans.add(ban);
-    }
-
-    public synchronized void removeBan(@NotNull BanEntity ban) {
-        this.bans.remove(ban);
-    }
-
-    @NotNull
-    public synchronized ArrayList<MuteEntity> getMutes() {
-        return mutes;
-    }
-
-    public synchronized void setMutes(@NotNull ArrayList<MuteEntity> mutes) {
-        this.mutes = mutes;
-    }
-
-    public synchronized void addMute(@NotNull MuteEntity mute) {
-        this.mutes.add(mute);
-    }
-
-    public synchronized void removeMute(@NotNull MuteEntity mute) {
-        this.mutes.remove(mute);
     }
 
     @Nullable
