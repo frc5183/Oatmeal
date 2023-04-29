@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Table(name = "oatmeal_guilds")
 public class GuildEntity extends AccessibleEntity {
     @Id
-    private @NotNull String guildId;
+    private @NotNull String id;
 
     private transient @Nullable ConcurrentHashMap<String, String> customCommands;
 
@@ -23,8 +23,6 @@ public class GuildEntity extends AccessibleEntity {
     @Column
     private @Nullable String jsonStarboardLink;
 
-    @Column
-    private @NotNull Boolean starboardEnabled;
 
     @Column
     private @Nullable String starboardChannelID;
@@ -40,20 +38,19 @@ public class GuildEntity extends AccessibleEntity {
 
     public GuildEntity(@NotNull String guildId) {
         super();
-        this.guildId = guildId;
+        this.id = guildId;
         this.starboardChannelID = null;
         this.starboardLimit = null;
         this.currencyEnabled = true;
         this.testingEnabled = false;
-        this.starboardEnabled = false;
     }
 
     @Deprecated
     public GuildEntity() {}
 
     @NotNull
-    public synchronized String getGuildId() {
-        return guildId;
+    public synchronized String getId() {
+        return id;
     }
 
     @Nullable
@@ -116,14 +113,7 @@ public class GuildEntity extends AccessibleEntity {
         this.starboardLimit = starboardLimit;
     }
 
-    @NotNull
-    public synchronized Boolean isStarboardEnabled() {
-        return starboardEnabled;
-    }
 
-    public synchronized void setStarboardEnabled(@NotNull Boolean starboardEnabled) {
-        this.starboardEnabled = starboardEnabled;
-    }
 
     @NotNull
     public synchronized Boolean isCurrencyEnabled() {

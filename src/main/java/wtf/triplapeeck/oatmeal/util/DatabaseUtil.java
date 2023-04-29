@@ -52,8 +52,7 @@ public class DatabaseUtil {
     }
 
     @Nullable
-    public static GuildEntity getGuildEntity(@NotNull String id) throws SQLException, MissingEntryException {
-        if (guildDao.queryForId(id) == null) throw new MissingEntryException("Channel doesn't exist in database.");
+    public static GuildEntity getGuildEntity(@NotNull String id) throws SQLException{
         return guildDao.queryForId(id);
     }
 
@@ -61,14 +60,12 @@ public class DatabaseUtil {
         guildDao.createOrUpdate(guildEntity);
     }
 
-    public static void deleteGuildEntity(@NotNull GuildEntity guildEntity) throws SQLException, MissingEntryException {
-        if (guildDao.queryForId(guildEntity.getGuildId()) == null) throw new MissingEntryException("Channel doesn't exist in database.");
+    public static void deleteGuildEntity(@NotNull GuildEntity guildEntity) throws SQLException {
         guildDao.delete(guildEntity);
     }
 
     @Nullable
-    public static UserEntity getUserEntity(@NotNull String id) throws SQLException, MissingEntryException {
-        if (userDao.queryForId(id) == null) throw new MissingEntryException("Channel doesn't exist in database.");
+    public static UserEntity getUserEntity(@NotNull String id) throws SQLException {
         return userDao.queryForId(id);
     }
 
@@ -76,14 +73,13 @@ public class DatabaseUtil {
         userDao.createOrUpdate(userEntity);
     }
 
-    public static void deleteUserEntity(@NotNull UserEntity userEntity) throws SQLException, MissingEntryException {
-        if (userDao.queryForId(userEntity.getUserId()) == null) throw new MissingEntryException("Channel doesn't exist in database.");
+    public static void deleteUserEntity(@NotNull UserEntity userEntity) throws SQLException {
+
         userDao.delete(userEntity);
     }
 
     @Nullable
-    public static ChannelEntity getChannelEntity(@NotNull String id) throws SQLException, MissingEntryException {
-        if (channelDao.queryForId(id) == null) throw new MissingEntryException("Channel doesn't exist in database.");
+    public static ChannelEntity getChannelEntity(@NotNull String id) throws SQLException {
         return channelDao.queryForId(id);
     }
 
@@ -91,14 +87,13 @@ public class DatabaseUtil {
         channelDao.createOrUpdate(channelEntity);
     }
 
-    public static void deleteChannelEntity(@NotNull ChannelEntity channelEntity) throws SQLException, MissingEntryException {
-        if (channelDao.queryForId(channelEntity.getId()) == null) throw new MissingEntryException("Channel doesn't exist in database.");
+    public static void deleteChannelEntity(@NotNull ChannelEntity channelEntity) throws SQLException {
+
         channelDao.delete(channelEntity);
     }
 
     @Nullable
-    public static BanEntity getBanEntity(@NotNull Long id) throws SQLException, MissingEntryException {
-        if (banDao.queryForId(id) == null) throw new MissingEntryException("Ban doesn't exist in database.");
+    public static BanEntity getBanEntity(@NotNull Long id) throws SQLException {
         return banDao.queryForId(id);
     }
 

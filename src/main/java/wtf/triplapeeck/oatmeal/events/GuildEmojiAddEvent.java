@@ -26,14 +26,9 @@ public class GuildEmojiAddEvent implements NamedRunnable {
     @Override
     public void run() {
 
-        GuildEntity guildEntity = null;
-        try {
+        GuildEntity guildEntity;
             guildEntity = Main.entityManager.getGuildEntity(event.getGuild().getId());
-        } catch (MissingEntryException e) {
-            guildEntity = new GuildEntity(event.getGuild().getId());
-            Main.entityManager.updateGuildEntity(guildEntity);
-        }
-        if (guildEntity.isStarboardEnabled()) {
+        if (guildEntity.getStarboardChannelID()!=null) {
             assert guildEntity.getStarboardChannelID() != null;
             TextChannel starboard = event.getGuild().getTextChannelById(guildEntity.getStarboardChannelID());
             if (event.getReaction().getEmoji().getType() == Emoji.Type.CUSTOM) {

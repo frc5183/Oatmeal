@@ -1,11 +1,8 @@
 package wtf.triplapeeck.oatmeal.commands;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
-import wtf.triplapeeck.oatmeal.entities.GuildEntity;
-import wtf.triplapeeck.oatmeal.errors.database.MissingEntryException;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.storable.GenericStorable;
 import wtf.triplapeeck.oatmeal.storable.StorableManager;
@@ -78,28 +75,21 @@ public class CommandHandler {
         carriage.random=mainRandomizer;
         carriage.user = event.getAuthor();
         carriage.channel = event.getChannel();
+        carriage.guild = event.getGuild();
         try {
-            carriage.guild = event.getGuild();
+
             carriage.guildEntity=Main.entityManager.getGuildEntity(carriage.guild.getId());
 
         } catch (IllegalStateException e) {
-            carriage.guild=null;
-            try {
-                carriage.guildEntity = Main.entityManager.getGuildEntity(carriage.channel.getId()+"0000");
-            } catch (MissingEntryException ex) {
-                carriage.guildEntity = new GuildEntity(carriage.guild.getId());
-                Main.entityManager.updateGuildEntity(carriage.guildEntity);
-            }
-        } catch (MissingEntryException e) {
-            carriage.guildEntity = new GuildEntity(carriage.guild.getId());
-            Main.entityManager.updateGuildEntity(carriage.guildEntity);
+            carriage.guildEntity = Main.entityManager.getGuildEntity(carriage.channel.getId() + "0000");
+
         }
 
         carriage.message=event.getMessage();
         carriage.userStorable = StorableManager.getUser(carriage.user.getIdLong());
 
         carriage.channelStorable = StorableManager.getChannel(carriage.channel.getIdLong());
-        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getGuildId());
+        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getId());
         GenericStorable gs = StorableManager.getGeneric(0L);
         gs.getKnownUserList().put(carriage.user.getIdLong(), carriage.user.getIdLong());
         gs.relinquishAccess();

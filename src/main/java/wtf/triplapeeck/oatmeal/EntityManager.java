@@ -26,7 +26,7 @@ public class EntityManager extends Thread {
         requestToEnd=true;
     }
 
-    public synchronized GuildEntity getGuildEntity(String id) throws MissingEntryException {
+    public synchronized GuildEntity getGuildEntity(String id)  {
         GuildEntity guildEntity;
         if (guildCache.get(id)==null) {
             try {
@@ -74,9 +74,9 @@ public class EntityManager extends Thread {
     public void updateGuildEntity(GuildEntity guildEntity) {
         guildEntity.request();
         if (guildCache.contains(guildEntity)) {
-            guildCache.replace(guildEntity.getGuildId(), guildEntity);
+            guildCache.replace(guildEntity.getId(), guildEntity);
         } else {
-            guildCache.put(guildEntity.getGuildId(), guildEntity);
+            guildCache.put(guildEntity.getId(), guildEntity);
         }
         guildEntity.release();
     }

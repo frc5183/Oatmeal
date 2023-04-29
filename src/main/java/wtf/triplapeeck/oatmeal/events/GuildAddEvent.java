@@ -23,12 +23,8 @@ public class GuildAddEvent implements NamedRunnable {
     @Override
     public void run() {
         Guild g = this.event.getGuild();
-        try {
-            Main.entityManager.getGuildEntity(g.getId());
-        } catch (MissingEntryException e) {
-            GuildEntity ge = new GuildEntity(g.getId());
-            Main.entityManager.updateGuildEntity(ge);
-            ge.release();
-        }
+        GuildEntity ge=Main.entityManager.getGuildEntity(g.getId());
+        Main.entityManager.updateGuildEntity(ge);
+        ge.release();
     }
 }
