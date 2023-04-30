@@ -75,9 +75,9 @@ public class CommandHandler {
         carriage.random=mainRandomizer;
         carriage.user = event.getAuthor();
         carriage.channel = event.getChannel();
-        carriage.guild = event.getGuild();
-        try {
 
+        try {
+            carriage.guild = event.getGuild();
             carriage.guildEntity=Main.entityManager.getGuildEntity(carriage.guild.getId());
 
         } catch (IllegalStateException e) {
