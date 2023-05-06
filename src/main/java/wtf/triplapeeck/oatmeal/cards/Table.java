@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
 import wtf.triplapeeck.oatmeal.runnable.Waiting;
 import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
@@ -183,7 +184,7 @@ public class Table {
             Logger.customLog("Table", "Initial Deal: Waiting for 15 Seconds to allow insurance (Starting INSURANCE)");
             channel.sendMessage("If you would like to buy an insurance bet, do s!insure within 15 Seconds").queue();
             state=INSURING;
-            ChannelJSONStorable channelStorable = StorableManager.getChannel(id);
+            ChannelData channelStorable =  Main.dataManager.getChannelData(String.valueOf(id));
             channelStorable.setTableInsuring(true);
             channelStorable.release();
             Main.threadManager.addTask(new Waiting(15, new Insuring(id)));

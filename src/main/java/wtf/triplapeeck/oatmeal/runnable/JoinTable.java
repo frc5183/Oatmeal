@@ -1,6 +1,7 @@
 package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
@@ -34,7 +35,7 @@ public class JoinTable implements NamedRunnable {
 
     @Override
     public void run() {
-        ChannelJSONStorable channelStorable = StorableManager.getChannel(channelId);
+        ChannelData channelStorable = Main.dataManager.getChannelData(String.valueOf(channelId));
         Logger.customLog("JoinTable","Starting. Waiting On Table.");
 
         TextChannel channel;
@@ -58,14 +59,14 @@ public class JoinTable implements NamedRunnable {
         channel= Main.api.getTextChannelById(channelId);
         if (table==null) {
             channel.sendMessage("There is not currently a table.").queue();
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             Logger.customLog("JoinTable","Table Relinquished. Finished. ");
             return;
         }
         if (table.state!= TableState.RECRUITING) {
             channel.sendMessage("The table is not currently recruiting users.").queue();
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             Logger.customLog("JoinTable","Table Relinquished. Finished. ");
             return;
@@ -75,7 +76,7 @@ public class JoinTable implements NamedRunnable {
 
             table.findUser(memberID);
             channel.sendMessage("You are already in this table.").queue();
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             Logger.customLog("JoinTable","Table Relinquished. Finished. ");
             return;
@@ -96,7 +97,7 @@ public class JoinTable implements NamedRunnable {
             channel.sendMessage("That is not a valid bet. It must be an integer.").queue();
             table.RemoveSpotGroup(player);
         }
-                channelStorable.relinquishTable();
+                channelStorable.releaseTable();
         channelStorable.release();
 
         Logger.customLog("JoinTable","Table Relinquished. Finished. ");

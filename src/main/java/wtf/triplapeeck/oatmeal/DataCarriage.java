@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import wtf.triplapeeck.oatmeal.commands.Command;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.entities.GuildData;
 import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.entities.mariadb.MariaGuild;
@@ -27,7 +28,7 @@ public class DataCarriage {
 
     public UserData userEntity;
     public GuildData guildEntity;
-    public ChannelJSONStorable channelStorable;
+    public ChannelData channelStorable;
     public MemberJSONStorable memberStorable;
     public Message message;
 

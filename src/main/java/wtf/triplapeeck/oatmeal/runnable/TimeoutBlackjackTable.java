@@ -3,6 +3,7 @@ package wtf.triplapeeck.oatmeal.runnable;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.cards.Table;
 import wtf.triplapeeck.oatmeal.cards.TableState;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
 import wtf.triplapeeck.oatmeal.entities.StorableManager;
@@ -24,13 +25,13 @@ public class TimeoutBlackjackTable implements NamedRunnable {
 
     Table table;
 
-    ChannelJSONStorable channelStorable;
+    ChannelData channelStorable;
     public TimeoutBlackjackTable(long ID ) {
         id=ID;
     }
     @Override
     public void run() {
-        channelStorable = StorableManager.getChannel(id);
+        channelStorable =  Main.dataManager.getChannelData(String.valueOf(id));
         Logger.customLog("Timeout","Starting. Waiting On Table.");
         while (true) {
             boolean complete=false;
@@ -52,7 +53,7 @@ public class TimeoutBlackjackTable implements NamedRunnable {
         channel=Main.api.getTextChannelById(id);
         if (table==null) {
             channel.sendMessage("There is not currently a table.").queue();
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             Logger.customLog("Timeout","Table Relinquished. Finished. ");
             return;
@@ -60,7 +61,7 @@ public class TimeoutBlackjackTable implements NamedRunnable {
         if (table.state== TableState.RECRUITING) {
             if (Main.threadManager.containsType(this)) {
                 channel.sendMessage("This table is currently recruiting.").queue();
-                channelStorable.relinquishTable();
+                channelStorable.releaseTable();
                 channelStorable.release();
                 Logger.customLog("Timeout","Table Relinquished. Finished. ");
                 return;
@@ -72,14 +73,14 @@ public class TimeoutBlackjackTable implements NamedRunnable {
         }
         if (table.state!=TableState.RECRUITING) {
             channel.sendMessage("The table is currently active.").queue();
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             Logger.customLog("Timeout","Table Relinquished. Finished. ");
             return;
         }
         channel.sendMessage("Recruiting for 30 Seconds.").complete();
         channelStorable.setTableRecruiting(true);
-        channelStorable.relinquishTable();
+        channelStorable.releaseTable();
         try {
             sleep(Utils.threadSeconds(30));
         } catch (InterruptedException ignored) {
@@ -110,7 +111,7 @@ public class TimeoutBlackjackTable implements NamedRunnable {
             table.state=TableState.INACTIVE;
         }
         Logger.basicLog(Logger.Level.INFO, "Resumed");
-                channelStorable.relinquishTable();
+                channelStorable.releaseTable();
         channelStorable.release();
 
         Logger.customLog("Timeout","Table Relinquished. Finished. ");

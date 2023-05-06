@@ -165,7 +165,7 @@ public abstract class Command {
     }
     public boolean isTableEmpty(@NotNull DataCarriage carriage) throws UsedTableException {
         boolean rtrn = (carriage.channelStorable.getTable()==null);
-        carriage.channelStorable.relinquishTable();
+        carriage.channelStorable.releaseTable();
         Logger.customLog("Command", "Requested And Relinquished Table.");
         return rtrn;
     }

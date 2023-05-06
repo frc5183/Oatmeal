@@ -3,6 +3,7 @@ package wtf.triplapeeck.oatmeal.managers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.entities.GuildData;
 import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.entities.mariadb.MariaGuild;
@@ -17,6 +18,7 @@ public abstract class DataManager extends Thread {
     protected static final ArrayList<String> temp = new ArrayList<>();
     protected static final ConcurrentHashMap<String, GuildData> guildCache = new ConcurrentHashMap<>();
     protected static final ConcurrentHashMap<String, UserData> userCache = new ConcurrentHashMap<>();
+    protected static final ConcurrentHashMap<String, ChannelData> channelCache = new ConcurrentHashMap<>();
     protected final GsonBuilder gsonBuilder = new GsonBuilder();
     public synchronized void requestToEnd() {
         requestToEnd=true;
@@ -27,6 +29,8 @@ public abstract class DataManager extends Thread {
     protected abstract void saveGuildData(String id);
     protected abstract UserData getRawUserData(String id);
     protected abstract void saveUserData(String id);
+    protected abstract ChannelData getRawChannelData(String id);
+    protected abstract void saveChannelData(String id);
     public GuildData getGuildData(String id) {
         GuildData guildData;
         if (guildCache.get(id)==null) {
@@ -49,6 +53,17 @@ public abstract class DataManager extends Thread {
         userData.request();
         return userData;
     }
+    public ChannelData getChannelData(String id) {
+        ChannelData channelData;
+        if (channelCache.get(id)==null) {
+            channelData = getRawChannelData(id);
+            channelCache.put(id, channelData);
+        } else {
+            channelData=channelCache.get(id);
+        }
+        channelData.request();
+        return channelData;
+    }
     @Override
     public void run() {
         while(true) {
@@ -70,6 +85,10 @@ public abstract class DataManager extends Thread {
                     saveUserData(key);
                 }
                 temp.clear();
+                temp.addAll(channelCache.keySet());
+                for (String key: temp) {
+                    saveChannelData(key);
+                }
                 break;
             }
 
@@ -109,6 +128,21 @@ public abstract class DataManager extends Thread {
                 UserData userData = userCache.get(key);
                 if (userData.getAccessCount()==0) {
                     saveUserData(key);
+                }
+            }
+            temp.clear();
+            for (String key: channelCache.keySet()) {
+                ChannelData channelData = channelCache.get(key);
+                if (channelData.getEpoch()!=0 && channelData.getAccessCount()==0) {
+                    if (Instant.now().getEpochSecond()>30 + channelData.getEpoch()) {
+                        temp.add(key);
+                    }
+                }
+            }
+            for (String key: temp) {
+                ChannelData channelData = channelCache.get(key);
+                if (channelData.getAccessCount()==0) {
+                    saveChannelData(key);
                 }
             }
             temp.clear();

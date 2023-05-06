@@ -2,8 +2,13 @@ package wtf.triplapeeck.oatmeal.entities.mariadb;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.cards.Table;
 import wtf.triplapeeck.oatmeal.entities.AccessibleEntity;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
+import wtf.triplapeeck.oatmeal.errors.UsedTableException;
+import wtf.triplapeeck.oatmeal.errors.ValidTableException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,24 +16,15 @@ import javax.persistence.Id;
 
 @Entity
 @javax.persistence.Table(name = "oatmeal_channels")
-public class MariaChannel extends AccessibleEntity {
+public class MariaChannel extends ChannelData {
     @Id
     public @NotNull String id;
 
-    @Column(columnDefinition = "TEXT")
-    public @Nullable String table;
+    @Column(nullable=true)
+    public @Nullable String tableJson;
 
-    @Column(nullable = false)
-    public @NotNull Integer tableCount;
+    public transient Table table;
 
-    @Column(nullable = false)
-    public @NotNull Boolean tableRecruiting;
-
-    @Column(nullable = false)
-    public @NotNull Boolean tableHeld;
-
-    @Column(nullable = false)
-    public @NotNull Boolean tableInsured;
 
     public MariaChannel(@NotNull String id) {
         super();
@@ -37,63 +33,48 @@ public class MariaChannel extends AccessibleEntity {
         this.tableCount = 0;
         this.tableRecruiting = false;
         this.tableHeld = false;
-        this.tableInsured = false;
+        this.tableInsuring = false;
     }
 
-    @Deprecated
     public MariaChannel() {}
 
-    @NotNull
-    public synchronized String getId() {
-        return id;
-    }
 
     @Nullable
-    public synchronized Table getTable() {
-        return Table.fromString(table);
-    }
-
-    public synchronized void setTable(@Nullable Table table) {
-        if (table == null) {
-            this.table = null;
-            return;
+    public synchronized Table getTable() throws UsedTableException {
+        if (!tableHeld) {
+            tableCount++;;
+            tableHeld=true;
+            return table;
+        } else {
+            throw new UsedTableException();
         }
-        this.table = table.toString();
     }
 
-    @NotNull
-    public synchronized Integer getTableCount() {
-        return tableCount;
+    public synchronized void setTable(@Nullable Table table) throws ValidTableException {
+        if (this.table!=null) {throw new ValidTableException();}
+            this.table=table;
+
     }
 
-    public synchronized void setTableCount(@NotNull Integer tableCount) {
-        this.tableCount = tableCount;
+    @Override
+    public void removeTable() throws UsedTableException {
+        if (tableHeld) {throw new UsedTableException();}
+        table=null;
     }
 
-    @NotNull
-    public synchronized Boolean isTableRecruiting() {
-        return tableRecruiting;
+    @Override
+    public synchronized void releaseTable() {
+        tableCount--;
+        tableHeld=false;
     }
 
-    public synchronized void setTableRecruiting(@NotNull Boolean tableRecruiting) {
-        this.tableRecruiting = tableRecruiting;
+    @Override
+    public synchronized void load() {
+        this.table = Main.dataManager.gson.fromJson(tableJson, Table.class);
     }
 
-    @NotNull
-    public synchronized Boolean isTableHeld() {
-        return tableHeld;
-    }
-
-    public synchronized void setTableHeld(@NotNull Boolean tableHeld) {
-        this.tableHeld = tableHeld;
-    }
-
-    @NotNull
-    public synchronized Boolean isTableInsured() {
-        return tableInsured;
-    }
-
-    public synchronized void setTableInsured(@NotNull Boolean tableInsured) {
-        this.tableInsured = tableInsured;
+    @Override
+    public String getID() {
+        return null;
     }
 }

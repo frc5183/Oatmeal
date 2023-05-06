@@ -1,6 +1,7 @@
 package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
@@ -25,9 +26,9 @@ public class TableUpdate implements NamedRunnable {
     @Override
     public void run() {
         Logger.customLog("TableUpdate", "Starting. Waiting On Table.");
-        ChannelJSONStorable channelStorable = null;
+        ChannelData channelStorable = null;
         try {
-            channelStorable = StorableManager.getChannel(ChannelID);
+            channelStorable =  Main.dataManager.getChannelData(String.valueOf(ChannelID));
             channelStorable.release();
         } catch (ClosedStorableError e) {
 
@@ -38,7 +39,7 @@ public class TableUpdate implements NamedRunnable {
             boolean complete = false;
 
             try {
-                    channelStorable = StorableManager.getChannel(ChannelID);
+                channelStorable =  Main.dataManager.getChannelData(String.valueOf(ChannelID));
                     table = channelStorable.getTable();
                     complete = true;
             } catch (UsedTableException ignored) {
@@ -52,7 +53,7 @@ public class TableUpdate implements NamedRunnable {
 
         }
        if (table==null) {
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             return;
         }
@@ -72,7 +73,7 @@ public class TableUpdate implements NamedRunnable {
         } catch (Exception e) {
 
         }
-                channelStorable.relinquishTable();
+                channelStorable.releaseTable();
         channelStorable.release();
 
         }

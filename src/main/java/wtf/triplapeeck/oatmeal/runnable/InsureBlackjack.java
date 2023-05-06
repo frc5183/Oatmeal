@@ -1,5 +1,6 @@
 package wtf.triplapeeck.oatmeal.runnable;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
@@ -26,7 +27,7 @@ public class InsureBlackjack implements NamedRunnable {
 
     @Override
     public void run() {
-        ChannelJSONStorable channelStorable = StorableManager.getChannel(channelId);
+        ChannelData channelStorable =  Main.dataManager.getChannelData(String.valueOf(channelId));
 
         Logger.customLog("Insure","Starting. Waiting On Table.");
         TextChannel channel;
@@ -51,14 +52,14 @@ public class InsureBlackjack implements NamedRunnable {
         channel= Main.api.getTextChannelById(channelId);
         if (table==null) {
             channel.sendMessage("There is not currently a table.").queue();
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             Logger.customLog("Insure","Table Relinquished. Finished. ");
             return;
         }
         if (!table.canInsure()) {
             channel.sendMessage("You can't bet insurance right now.").queue();
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             Logger.customLog("Insure","Table Relinquished. Finished. ");
             return;
@@ -69,12 +70,12 @@ public class InsureBlackjack implements NamedRunnable {
             player=table.findUser(memberID);
             player.Insure();
             channel.sendMessage("You are now insured").queue();
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             Logger.customLog("Insure","Table Relinquished. Finished. ");
         } catch (InvalidCardActionException e) {
             channel.sendMessage(e.getMessage()).queue();
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             Logger.customLog("Insure","Table Relinquished. Finished. ");
         }

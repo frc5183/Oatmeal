@@ -2,6 +2,7 @@ package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.cards.SpotGroup;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
@@ -32,7 +33,7 @@ public class HitBlackjack implements NamedRunnable {
 
     @Override
     public void run() {
-        ChannelJSONStorable channelStorable = StorableManager.getChannel(ChannelID);
+        ChannelData channelStorable = Main.dataManager.getChannelData(String.valueOf(ChannelID));
         Logger.customLog("Hit","Starting. Waiting On Table.");
 
         TextChannel channel;
@@ -58,7 +59,7 @@ public class HitBlackjack implements NamedRunnable {
         channel= Main.api.getTextChannelById(ChannelID);
         if (table==null) {
             channel.sendMessage("There is not currently a table.").queue();
-            channelStorable.relinquishTable();
+            channelStorable.releaseTable();
             channelStorable.release();
             Logger.customLog("Hit","Table Relinquished. Finished. ");
             return;
@@ -90,7 +91,7 @@ public class HitBlackjack implements NamedRunnable {
 
             }
         }
-        channelStorable.relinquishTable();
+        channelStorable.releaseTable();
         channelStorable.release();
         Logger.customLog("Hit","Table Relinquished. Finished. ");
     }

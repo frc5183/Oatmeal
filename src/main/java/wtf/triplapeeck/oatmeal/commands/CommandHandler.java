@@ -88,7 +88,7 @@ public class CommandHandler {
         carriage.message=event.getMessage();
         carriage.userEntity = Main.dataManager.getUserData(carriage.user.getId());
 
-        carriage.channelStorable = StorableManager.getChannel(carriage.channel.getIdLong());
+        carriage.channelStorable = Main.dataManager.getChannelData(carriage.channel.getId());
         carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getID());
         GenericJSONStorable gs = StorableManager.getGeneric(0L);
         gs.getKnownUserList().put(carriage.user.getIdLong(), carriage.user.getIdLong());

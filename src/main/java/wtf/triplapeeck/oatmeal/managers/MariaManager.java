@@ -1,8 +1,10 @@
 package wtf.triplapeeck.oatmeal.managers;
 
 import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.entities.mariadb.MariaChannel;
 import wtf.triplapeeck.oatmeal.entities.mariadb.MariaGuild;
 import wtf.triplapeeck.oatmeal.entities.mariadb.MariaUser;
+import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
 
 import java.sql.SQLException;
@@ -74,6 +76,38 @@ public class MariaManager extends DataManager {
             throw new RuntimeException(e);
         }
     }
+    public MariaChannel getRawChannelData(String id) {
+        MariaChannel mariaChannel;
+        try {
+            mariaChannel = DatabaseUtil.getChannelEntity(id);
+            if (mariaChannel==null) {
+                mariaChannel = new MariaChannel(id);
+            }
+            mariaChannel.load();
+        } catch  (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return mariaChannel;
+    }
+    public void saveChannelData(String key) {
+        MariaChannel mariaChannel =  (MariaChannel) channelCache.get(key);
+        channelCache.remove(key);
+        try {
+            String step;
+            while (true) {
+                try {
+                    step = gson.toJson(mariaChannel.getTable());
+                    break;
+                } catch (UsedTableException e) {
 
+                }
+
+            }
+            mariaChannel.tableJson=step;
+            DatabaseUtil.updateChannelEntity(mariaChannel);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

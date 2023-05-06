@@ -7,6 +7,7 @@ import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.entities.json.*;
 
 import java.util.Hashtable;
+@Deprecated
 
 public class StorableManager {
 
@@ -17,38 +18,10 @@ public class StorableManager {
 
     private static Hashtable<Long, GenericJSONStorable> genericList = new Hashtable<>();
 
-    public static synchronized ChannelJSONStorable getChannel(Long id) {
-        ChannelJSONStorable channelStorable = channelList.get(id);
-        if (channelStorable==null) {
-            channelStorable= new JSONStorableFactory(id).channelStorable();
-            channelList.put(id, channelStorable);
-
-        }
-        channelStorable.request();
-        return channelStorable;
-    }
-    public static void removeChannel(Long id) {
-
-        Logger.customLog("CHANNELStorable","Stalled");
-
-        channelList.remove(id);
-
-    }
 
 
 
-    public static synchronized GuildJSONStorable getGuild(String id) {
-        GuildJSONStorable guildStorable = guildList.get(id);
-        if (guildStorable==null) {
-            guildStorable= new JSONStorableFactory(id).guildStorable();
-            guildList.put(id, guildStorable);
 
-        }
-        //TODO: IMPLEMENT ACCESSIBLE ENTITY HERE SOMEWHERE
-        //request()
-        return guildStorable;
-    }
-    public static synchronized void removeGuild(String id) {guildList.remove(id);}
 
     public static synchronized MemberJSONStorable getMember(String id) {
         MemberJSONStorable memberStorable = memberList.get(id);
@@ -59,22 +32,6 @@ public class StorableManager {
         }
             memberStorable.request();
         return memberStorable;
-    }
-    public static synchronized void removeMember(String id) {
-        memberList.remove(id);
-    }
-
-    public static synchronized UserJSONStorable getUser(Long id) {
-        UserJSONStorable userStorable = userList.get(id);
-        if (userStorable==null) {
-            userStorable= new JSONStorableFactory(id).userStorable();
-            userList.put(id, userStorable);
-        }
-        userStorable.request();
-        return userStorable;
-    }
-    public static synchronized void removeUser(Long id) {
-        userList.remove(id);
     }
 
 

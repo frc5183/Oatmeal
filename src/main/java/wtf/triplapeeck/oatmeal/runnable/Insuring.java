@@ -2,6 +2,7 @@ package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.cards.Table;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
 import wtf.triplapeeck.oatmeal.entities.StorableManager;
@@ -25,7 +26,7 @@ public class Insuring implements NamedRunnable {
     }
     @Override
     public void run() {
-        ChannelJSONStorable channelStorable = StorableManager.getChannel(ChannelID);
+        ChannelData channelStorable = Main.dataManager.getChannelData(String.valueOf(ChannelID));
         Logger.customLog("FinishInsuring","Starting. Waiting On Table.");
 
         TextChannel channel;
@@ -69,7 +70,7 @@ public class Insuring implements NamedRunnable {
             channel.sendMessage("Dealer does not have a blackjack. Insurance Bets have been lost.\nThe Dealer's " + table.dealer.hand.toString()).queue();
             table.state= TableState.PLAYING;
         }
-                channelStorable.relinquishTable();
+                channelStorable.releaseTable();
         channelStorable.release();
 
         channelStorable.setTableInsuring(false);

@@ -2,6 +2,7 @@ package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.cards.Table;
+import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.errors.ValidTableException;
 import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
@@ -22,7 +23,7 @@ public class NewTable implements NamedRunnable {
     }
     @Override
     public void run() {
-        channelStorable = StorableManager.getChannel(id);
+        ChannelData channelStorable = Main.dataManager.getChannelData(String.valueOf(id));
         Logger.customLog("NewTable","Starting. Waiting On Table.");
         while (true) {
             boolean complete=false;
@@ -51,7 +52,7 @@ public class NewTable implements NamedRunnable {
             TextChannel channel = Main.api.getTextChannelById(id);
             channel.sendMessage("A Table Already Exists!").queue();
         }
-                channelStorable.relinquishTable();
+                channelStorable.releaseTable();
         channelStorable.release();
 
         Logger.customLog("NewTable","Table Relinquished. Finished. ");
