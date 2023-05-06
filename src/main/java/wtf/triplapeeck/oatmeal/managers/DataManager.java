@@ -3,12 +3,10 @@ package wtf.triplapeeck.oatmeal.managers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.entities.ChannelData;
-import wtf.triplapeeck.oatmeal.entities.GuildData;
-import wtf.triplapeeck.oatmeal.entities.UserData;
-import wtf.triplapeeck.oatmeal.entities.mariadb.MariaGuild;
-import wtf.triplapeeck.oatmeal.entities.mariadb.MariaUser;
+import wtf.triplapeeck.oatmeal.entities.*;
 
+
+import java.lang.reflect.Member;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,6 +17,8 @@ public abstract class DataManager extends Thread {
     protected static final ConcurrentHashMap<String, GuildData> guildCache = new ConcurrentHashMap<>();
     protected static final ConcurrentHashMap<String, UserData> userCache = new ConcurrentHashMap<>();
     protected static final ConcurrentHashMap<String, ChannelData> channelCache = new ConcurrentHashMap<>();
+    protected static final ConcurrentHashMap<String, MemberData> memberCache = new ConcurrentHashMap<>();
+    protected static final ConcurrentHashMap<String, GenericData> genericCache = new ConcurrentHashMap<>();
     protected final GsonBuilder gsonBuilder = new GsonBuilder();
     public synchronized void requestToEnd() {
         requestToEnd=true;
@@ -31,6 +31,11 @@ public abstract class DataManager extends Thread {
     protected abstract void saveUserData(String id);
     protected abstract ChannelData getRawChannelData(String id);
     protected abstract void saveChannelData(String id);
+    protected abstract MemberData getRawMemberData(String id);
+    protected abstract void saveMemberData(String id);
+    protected abstract GenericData getRawGenericData(String id);
+    protected abstract void saveGenericData(String id);
+
     public GuildData getGuildData(String id) {
         GuildData guildData;
         if (guildCache.get(id)==null) {
@@ -64,6 +69,29 @@ public abstract class DataManager extends Thread {
         channelData.request();
         return channelData;
     }
+    public MemberData getMemberData(String id) {
+        MemberData memberData;
+        if (memberCache.get(id)==null) {
+            memberData = getRawMemberData(id);
+            memberCache.put(id, memberData);
+        } else {
+            memberData=memberCache.get(id);
+        }
+        memberData.request();
+        return memberData;
+    }
+    public GenericData getGenericData(String id) {
+        GenericData genericData;
+        if (genericCache.get(id)==null) {
+            genericData=getRawGenericData(id);
+            genericCache.put(id, genericData);
+        } else {
+            genericData=genericCache.get(id);
+        }
+        genericData.request();
+        return genericData;
+
+    }
     @Override
     public void run() {
         while(true) {
@@ -89,6 +117,12 @@ public abstract class DataManager extends Thread {
                 for (String key: temp) {
                     saveChannelData(key);
                 }
+                temp.clear();
+                temp.addAll(memberCache.keySet());
+                for (String key: temp) {
+                    saveMemberData(key);
+                }
+                temp.clear();
                 break;
             }
 
@@ -143,6 +177,21 @@ public abstract class DataManager extends Thread {
                 ChannelData channelData = channelCache.get(key);
                 if (channelData.getAccessCount()==0) {
                     saveChannelData(key);
+                }
+            }
+            temp.clear();
+            for (String key: memberCache.keySet()) {
+                MemberData memberData = memberCache.get(key);
+                if (memberData.getEpoch()!=0 && memberData.getAccessCount()==0) {
+                    if (Instant.now().getEpochSecond()>30 + memberData.getEpoch()) {
+                        temp.add(key);
+                    }
+                }
+            }
+            for (String key: temp) {
+                MemberData memberData = memberCache.get(key);
+                if (memberData.getAccessCount()==0) {
+                    saveMemberData(key);
                 }
             }
             temp.clear();

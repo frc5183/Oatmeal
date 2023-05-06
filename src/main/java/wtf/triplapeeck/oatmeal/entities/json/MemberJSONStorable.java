@@ -2,11 +2,13 @@ package wtf.triplapeeck.oatmeal.entities.json;
 
 import wtf.triplapeeck.oatmeal.FileRW;
 import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.entities.MemberData;
 import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
 
 import java.math.BigInteger;
 
-public class MemberJSONStorable extends JSONStorable {
+public class MemberJSONStorable extends MemberData {
+    public void load() {}
     protected transient JSONStorableFactory factory;
     public synchronized void setFactory(JSONStorableFactory factory1) {
         factory=factory1;
@@ -37,10 +39,10 @@ public class MemberJSONStorable extends JSONStorable {
         rak=val;
     }
     private int messageCount = 0;
-    public synchronized int getMessageCount() {
+    public synchronized Integer getMessageCount() {
         return messageCount;
     }
-    public synchronized void setMessageCount(int val) {
+    public synchronized void setMessageCount(Integer val) {
         messageCount=val;
     }
 

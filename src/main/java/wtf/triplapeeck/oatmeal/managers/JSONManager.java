@@ -2,10 +2,7 @@ package wtf.triplapeeck.oatmeal.managers;
 
 import wtf.triplapeeck.oatmeal.entities.GuildData;
 import wtf.triplapeeck.oatmeal.entities.UserData;
-import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
-import wtf.triplapeeck.oatmeal.entities.json.GuildJSONStorable;
-import wtf.triplapeeck.oatmeal.entities.json.JSONStorableFactory;
-import wtf.triplapeeck.oatmeal.entities.json.UserJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.json.*;
 
 public class JSONManager extends DataManager {
 
@@ -48,5 +45,29 @@ public class JSONManager extends DataManager {
         channelData = (ChannelJSONStorable) channelCache.get(id);
         channelCache.remove(id);
         channelData.Store();
+    }
+    public MemberJSONStorable getRawMemberData(String id) {
+        MemberJSONStorable memberData;
+        memberData = new JSONStorableFactory(id).memberStorable();
+        memberData.load();
+        return memberData;
+    }
+    protected void saveMemberData(String id) {
+        MemberJSONStorable memberData;
+        memberData = (MemberJSONStorable) memberCache.get(id);
+        memberCache.remove(id);
+        memberData.Store();
+    }
+    public GenericJSONStorable getRawGenericData(String id) {
+        GenericJSONStorable genericData;
+        genericData = new JSONStorableFactory(id).genericStorable();
+        genericData.load();
+        return genericData;
+    }
+    protected void saveGenericData(String id) {
+        GenericJSONStorable genericData;
+        genericData = (GenericJSONStorable) genericCache.get(id);
+        genericCache.remove(id);
+        genericData.Store();
     }
 }

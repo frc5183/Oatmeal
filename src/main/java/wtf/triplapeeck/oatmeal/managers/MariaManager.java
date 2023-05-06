@@ -1,17 +1,12 @@
 package wtf.triplapeeck.oatmeal.managers;
 
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.entities.mariadb.MariaChannel;
-import wtf.triplapeeck.oatmeal.entities.mariadb.MariaGuild;
-import wtf.triplapeeck.oatmeal.entities.mariadb.MariaUser;
+import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
 
 import java.sql.SQLException;
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class MariaManager extends DataManager {
 
@@ -109,5 +104,53 @@ public class MariaManager extends DataManager {
             throw new RuntimeException(e);
         }
     }
-
+    public MariaMember getRawMemberData(String id) {
+        MariaMember mariaMember;
+        try {
+            mariaMember = DatabaseUtil.getMemberEntity(id);
+            if (mariaMember==null) {
+                mariaMember=new MariaMember(id);
+            }
+            mariaMember.load();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return mariaMember;
+    }
+    public void saveMemberData(String key) {
+        MariaMember mariaMember = (MariaMember) memberCache.get(key);
+        memberCache.remove(key);
+        try {
+            DatabaseUtil.updateMemberEntity(mariaMember);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public MariaGeneric getRawGenericData(String id) {
+        MariaGeneric mariaGeneric;
+        try {
+            mariaGeneric = DatabaseUtil.getGenericEntity(id);
+            if (mariaGeneric==null) {
+                mariaGeneric=new MariaGeneric(id);
+            }
+            mariaGeneric.load();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return mariaGeneric;
+    }
+    public void saveGenericData(String key) {
+        MariaGeneric mariaGeneric = (MariaGeneric) genericCache.get(key);
+        genericCache.remove(mariaGeneric);
+        try {
+            HashMap<String, String> step = new HashMap<>();
+            for (String k: mariaGeneric.getKnownUserList().keySet()) {
+                step.put(k, mariaGeneric.getKnownUserList().get(key));
+            }
+            mariaGeneric.setJsonUsers(gson.toJson(step));
+            DatabaseUtil.updateGenericEntity(mariaGeneric);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

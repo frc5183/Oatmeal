@@ -6,8 +6,6 @@ import wtf.triplapeeck.oatmeal.cards.Table;
 import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
-import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
-import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.cards.TableState;

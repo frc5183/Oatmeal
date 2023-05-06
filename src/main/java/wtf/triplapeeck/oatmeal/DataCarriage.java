@@ -8,11 +8,8 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.entities.GuildData;
+import wtf.triplapeeck.oatmeal.entities.MemberData;
 import wtf.triplapeeck.oatmeal.entities.UserData;
-import wtf.triplapeeck.oatmeal.entities.mariadb.MariaGuild;
-import wtf.triplapeeck.oatmeal.entities.mariadb.MariaUser;
-import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
-import wtf.triplapeeck.oatmeal.entities.json.MemberJSONStorable;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,7 +26,7 @@ public class DataCarriage {
     public UserData userEntity;
     public GuildData guildEntity;
     public ChannelData channelStorable;
-    public MemberJSONStorable memberStorable;
+    public MemberData memberStorable;
     public Message message;
 
     public JDA api;

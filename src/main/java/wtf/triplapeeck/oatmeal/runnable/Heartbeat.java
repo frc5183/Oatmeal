@@ -1,9 +1,9 @@
 package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.PrivateChannel;
+import wtf.triplapeeck.oatmeal.entities.GenericData;
 import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.entities.json.GenericJSONStorable;
-import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
@@ -28,8 +28,8 @@ public class Heartbeat implements NamedRunnable {
         while (true) {
             Logger.customLog("Heartbeat", "beep");
             ArrayList<Long> temp = new ArrayList<>();
-            GenericJSONStorable gs = StorableManager.getGeneric(0L);
-            for (Long i : gs.getKnownUserList().keySet()) {
+            GenericData gs = Main.dataManager.getGenericData("0");
+            for (String i : gs.getKnownUserList().keySet()) {
                 UserData us = Main.dataManager.getUserData(String.valueOf(i));
 
                 for (String l: us.getReminders().keySet()) {

@@ -2,11 +2,12 @@ package wtf.triplapeeck.oatmeal.entities.json;
 
 import wtf.triplapeeck.oatmeal.FileRW;
 import wtf.triplapeeck.oatmeal.Logger;
+import wtf.triplapeeck.oatmeal.entities.GenericData;
 
 import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;
 @Deprecated
-public class GenericJSONStorable extends JSONStorable {
+public class GenericJSONStorable extends GenericData {
     protected transient JSONStorableFactory factory;
     public synchronized void setFactory(JSONStorableFactory factory1) {
         factory=factory1;
@@ -29,16 +30,18 @@ public class GenericJSONStorable extends JSONStorable {
         Logger.customLog("CHANNELSTORABLE","IdLONG");
         return idLong;
     }
-    private ConcurrentHashMap<Long, Long> knownUserList = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, String> knownUserList = new ConcurrentHashMap<>();
 
-    public synchronized ConcurrentHashMap<Long, Long> getKnownUserList() {
+    public synchronized ConcurrentHashMap<String, String> getKnownUserList() {
         return knownUserList;
     }
-
-
+    public synchronized void setKnownUserList(ConcurrentHashMap<String, String> userList) {
+        this.knownUserList=userList;
+    }
     public void Store() {
         factory.saveStorable(this);
 
     }
+    public void load() {}
 
 }

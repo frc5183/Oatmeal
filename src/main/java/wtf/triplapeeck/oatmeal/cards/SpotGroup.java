@@ -1,9 +1,9 @@
 package wtf.triplapeeck.oatmeal.cards;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.entities.MemberData;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
-import wtf.triplapeeck.oatmeal.entities.json.MemberJSONStorable;
-import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 
 import java.math.BigInteger;
@@ -41,7 +41,7 @@ public class SpotGroup {
     public Spot spot2;
     public synchronized void winBlackjack() {
         Logger.customLog("SpotGroup", "Winning Blackjack");
-                MemberJSONStorable memberStorable = StorableManager.getMember(id);
+                MemberData memberStorable = Main.dataManager.getMemberData(id);
         BigInteger rak = memberStorable.getRak();
 
         memberStorable.setRak(rak.add(BaseBet).add(BaseBet).add(BaseBet.divide(BigInteger.TWO)));
@@ -49,7 +49,7 @@ public class SpotGroup {
     }
     public synchronized void winNormal(int place) {
         Logger.customLog("SpotGroup", "Winning Normal");
-        MemberJSONStorable memberStorable = StorableManager.getMember(id);
+        MemberData memberStorable = Main.dataManager.getMemberData(id);
         BigInteger rak = memberStorable.getRak();
         BigInteger BaseBet = getBaseBet(place);
         memberStorable.setRak(rak.add(BaseBet).add(BaseBet));
@@ -57,7 +57,7 @@ public class SpotGroup {
     }
     public synchronized void winPush(int place) {
         Logger.customLog("SpotGroup", "Winning Push");
-        MemberJSONStorable memberStorable = StorableManager.getMember(id);
+        MemberData memberStorable = Main.dataManager.getMemberData(id);
         BigInteger BaseBet = getBaseBet(place);
         BigInteger rak = memberStorable.getRak();
         memberStorable.setRak(rak.add(BaseBet));
@@ -65,7 +65,7 @@ public class SpotGroup {
     }
     public synchronized void winInsurance() {
         Logger.customLog("SpotGroup", "Winning Insurnace");
-        MemberJSONStorable memberStorable = StorableManager.getMember(id);
+        MemberData memberStorable = Main.dataManager.getMemberData(id);
         BigInteger rak = memberStorable.getRak();
         memberStorable.setRak(rak.add(BaseBet).add(BaseBet.divide(BigInteger.TWO)));
         memberStorable.release();
@@ -86,7 +86,7 @@ public class SpotGroup {
     public synchronized void setBet(BigInteger bet) throws InvalidCardActionException {
         Logger.customLog("SpotGroup", "Attempting To Set Bet");
         Logger.customLog("SpotGroup","Getting Member Storable");
-        MemberJSONStorable memberStorable = StorableManager.getMember(id);
+        MemberData memberStorable = Main.dataManager.getMemberData(id);
         Logger.customLog("SpotGroup","Getting Rak Value");
         BigInteger rak = memberStorable.getRak();
         Logger.customLog("SpotGroup","Reassigning Bet");
@@ -114,7 +114,7 @@ public class SpotGroup {
 
     private synchronized void DoubleDown(Deck deck, Spot spot, Table table) throws InvalidCardActionException {
         Logger.customLog("SpotGroup", "Attempting To Double Down Internal");
-        MemberJSONStorable memberStorable = StorableManager.getMember(id);
+        MemberData memberStorable = Main.dataManager.getMemberData(id);
         BigInteger rak = memberStorable.getRak();
         if (rak.compareTo(BaseBet)==-1) {
             memberStorable.release();
@@ -144,7 +144,7 @@ public class SpotGroup {
         if (spot2!=null) {
             throw new InvalidCardActionException("You have already split.");
         }
-        MemberJSONStorable memberStorable = StorableManager.getMember(id);
+        MemberData memberStorable = Main.dataManager.getMemberData(id);
         BigInteger rak = memberStorable.getRak();
         if (rak.compareTo(BaseBet)==-1) {
             memberStorable.release();
@@ -167,7 +167,7 @@ public class SpotGroup {
         if (insured) {
             throw new InvalidCardActionException("You are already insured.");
         }
-        MemberJSONStorable memberStorable = StorableManager.getMember(id);
+        MemberData memberStorable = Main.dataManager.getMemberData(id);
         BigInteger rak = memberStorable.getRak();
         if (rak.compareTo(BaseBet.divide(BigInteger.TWO))==-1) {
             memberStorable.release();

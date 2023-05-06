@@ -21,7 +21,8 @@ public class DatabaseUtil {
     private static Dao<MariaChannel, String> channelDao;
     private static Dao<MariaBan, Long> banDao;
     private static Dao<MariaMute, Long> muteDao;
-
+    private static Dao<MariaMember, String> memberDao;
+    private static Dao<MariaGeneric, String> genericDao;
     public DatabaseUtil() throws SQLException {
         // init database
         databaseConfiguration = ConfigParser.getDatabaseConfiguration();
@@ -34,12 +35,16 @@ public class DatabaseUtil {
         TableUtils.createTableIfNotExists(connectionSource, MariaChannel.class);
         TableUtils.createTableIfNotExists(connectionSource, MariaBan.class);
         TableUtils.createTableIfNotExists(connectionSource, MariaMute.class);
+        TableUtils.createTableIfNotExists(connectionSource, MariaMember.class);
+        TableUtils.createTableIfNotExists(connectionSource, MariaGeneric.class);
         // init dao
         guildDao = DaoManager.createDao(connectionSource, MariaGuild.class);
         userDao = DaoManager.createDao(connectionSource, MariaUser.class);
         channelDao = DaoManager.createDao(connectionSource, MariaChannel.class);
         banDao = DaoManager.createDao(connectionSource, MariaBan.class);
         muteDao = DaoManager.createDao(connectionSource, MariaMute.class);
+        memberDao = DaoManager.createDao(connectionSource, MariaMember.class);
+        genericDao = DaoManager.createDao(connectionSource, MariaGeneric.class);
     }
 
     public JdbcPooledConnectionSource getConnectionSource() {
@@ -116,5 +121,25 @@ public class DatabaseUtil {
     public static void deleteMuteEntity(@NotNull MariaMute muteEntity) throws SQLException {
 
         muteDao.delete(muteEntity);
+    }
+    @Nullable
+    public static MariaMember getMemberEntity(@NotNull String id) throws SQLException {
+        return memberDao.queryForId(id);
+    }
+    public static void updateMemberEntity(@NotNull MariaMember memberEntity) throws SQLException {
+        memberDao.createOrUpdate(memberEntity);
+    }
+    public static void deleteMemberEntity(@NotNull MariaMember memberEntity) throws SQLException {
+        memberDao.delete(memberEntity);
+    }
+    @Nullable
+    public static MariaGeneric getGenericEntity(@NotNull String id) throws SQLException {
+        return genericDao.queryForId(id);
+    }
+    public static void updateGenericEntity(@NotNull MariaGeneric mariaGeneric) throws SQLException {
+        genericDao.createOrUpdate(mariaGeneric);
+    }
+    public static void deleteGenericEntity(@NotNull MariaGeneric mariaGeneric) throws SQLException {
+        genericDao.delete(mariaGeneric);
     }
 }

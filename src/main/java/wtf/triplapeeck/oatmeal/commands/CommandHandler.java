@@ -3,9 +3,9 @@ package wtf.triplapeeck.oatmeal.commands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import wtf.triplapeeck.oatmeal.entities.GenericData;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.entities.json.GenericJSONStorable;
-import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
@@ -89,9 +89,9 @@ public class CommandHandler {
         carriage.userEntity = Main.dataManager.getUserData(carriage.user.getId());
 
         carriage.channelStorable = Main.dataManager.getChannelData(carriage.channel.getId());
-        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getID());
-        GenericJSONStorable gs = StorableManager.getGeneric(0L);
-        gs.getKnownUserList().put(carriage.user.getIdLong(), carriage.user.getIdLong());
+        carriage.memberStorable = Main.dataManager.getMemberData(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getID());
+        GenericData gs = Main.dataManager.getGenericData("0");
+        gs.getKnownUserList().put(carriage.user.getId(), carriage.user.getId());
         gs.release();
     }
     private void HandleMessage(MessageReceivedEvent event, DataCarriage carriage) {
