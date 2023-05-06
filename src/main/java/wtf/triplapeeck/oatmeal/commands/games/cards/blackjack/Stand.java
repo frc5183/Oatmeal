@@ -18,9 +18,9 @@ public class Stand extends Command {
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureCurrencyEnabled(carriage)) {
             try {
-            Main.threadManager.addTask(new StandBlackjack(carriage.channelStorable.getID().longValue(), carriage.memberStorable.getID().toString(), Integer.valueOf(carriage.args[1])==2));
+            Main.threadManager.addTask(new StandBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString(), Integer.valueOf(carriage.args[1])==2));
         } catch (ArrayIndexOutOfBoundsException e) {
-            Main.threadManager.addTask(new StandBlackjack(carriage.channelStorable.getID().longValue(), carriage.memberStorable.getID().toString(), false));
+            Main.threadManager.addTask(new StandBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString(), false));
         }
     }
     }

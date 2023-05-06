@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.cards.Table;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.errors.ValidTableException;
-import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
-import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 
@@ -16,7 +16,7 @@ public class NewTable implements NamedRunnable {
     }
     private long id;
     Table table;
-    ChannelStorable channelStorable;
+    ChannelJSONStorable channelStorable;
     public NewTable(long ID) {
         id=ID;
     }
@@ -52,7 +52,7 @@ public class NewTable implements NamedRunnable {
             channel.sendMessage("A Table Already Exists!").queue();
         }
                 channelStorable.relinquishTable();
-        channelStorable.relinquishAccess();
+        channelStorable.release();
 
         Logger.customLog("NewTable","Table Relinquished. Finished. ");
     }

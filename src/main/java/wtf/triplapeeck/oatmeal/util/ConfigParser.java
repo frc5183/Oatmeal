@@ -3,6 +3,7 @@ package wtf.triplapeeck.oatmeal.util;
 import com.j256.ormlite.db.DatabaseType;
 import com.j256.ormlite.jdbc.db.MariaDbDatabaseType;
 import wtf.triplapeeck.oatmeal.Config;
+import wtf.triplapeeck.oatmeal.entities.DataMode;
 import wtf.triplapeeck.oatmeal.errors.ArgumentError;
 
 public class ConfigParser {
@@ -22,6 +23,12 @@ public class ConfigParser {
         }
 
         throw new ArgumentError("Missing Token");
+    }
+    public static String getPath() {
+        return config.path;
+    }
+    public static DataMode getDataMode() {
+        return config.dataMode;
     }
 
     public static DatabaseConfiguration getDatabaseConfiguration() throws ArgumentError {

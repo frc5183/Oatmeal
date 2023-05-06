@@ -2,8 +2,8 @@ package wtf.triplapeeck.oatmeal.runnable;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
-import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
-import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.cards.SpotGroup;
@@ -26,7 +26,7 @@ public class InsureBlackjack implements NamedRunnable {
 
     @Override
     public void run() {
-        ChannelStorable channelStorable = StorableManager.getChannel(channelId);
+        ChannelJSONStorable channelStorable = StorableManager.getChannel(channelId);
 
         Logger.customLog("Insure","Starting. Waiting On Table.");
         TextChannel channel;
@@ -52,14 +52,14 @@ public class InsureBlackjack implements NamedRunnable {
         if (table==null) {
             channel.sendMessage("There is not currently a table.").queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("Insure","Table Relinquished. Finished. ");
             return;
         }
         if (!table.canInsure()) {
             channel.sendMessage("You can't bet insurance right now.").queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("Insure","Table Relinquished. Finished. ");
             return;
         }
@@ -70,12 +70,12 @@ public class InsureBlackjack implements NamedRunnable {
             player.Insure();
             channel.sendMessage("You are now insured").queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("Insure","Table Relinquished. Finished. ");
         } catch (InvalidCardActionException e) {
             channel.sendMessage(e.getMessage()).queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("Insure","Table Relinquished. Finished. ");
         }
     }

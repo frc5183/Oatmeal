@@ -17,7 +17,7 @@ public class Split extends Command {
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureCurrencyEnabled(carriage)) {
-            Main.threadManager.addTask(new SplitBlackjack(carriage.channelStorable.getID().longValue(), carriage.memberStorable.getID().toString()));
+            Main.threadManager.addTask(new SplitBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString()));
         }
     }
 

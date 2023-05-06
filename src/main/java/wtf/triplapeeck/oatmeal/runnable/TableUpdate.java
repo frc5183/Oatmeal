@@ -3,8 +3,8 @@ package wtf.triplapeeck.oatmeal.runnable;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
-import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
-import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.cards.Table;
@@ -25,10 +25,10 @@ public class TableUpdate implements NamedRunnable {
     @Override
     public void run() {
         Logger.customLog("TableUpdate", "Starting. Waiting On Table.");
-        ChannelStorable channelStorable = null;
+        ChannelJSONStorable channelStorable = null;
         try {
             channelStorable = StorableManager.getChannel(ChannelID);
-            channelStorable.relinquishAccess();
+            channelStorable.release();
         } catch (ClosedStorableError e) {
 
         }
@@ -42,7 +42,7 @@ public class TableUpdate implements NamedRunnable {
                     table = channelStorable.getTable();
                     complete = true;
             } catch (UsedTableException ignored) {
-                channelStorable.relinquishAccess();
+                channelStorable.release();
             } catch (ClosedStorableError e) {
 
             }
@@ -53,7 +53,7 @@ public class TableUpdate implements NamedRunnable {
         }
        if (table==null) {
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             return;
         }
        table.Update();
@@ -73,7 +73,7 @@ public class TableUpdate implements NamedRunnable {
 
         }
                 channelStorable.relinquishTable();
-        channelStorable.relinquishAccess();
+        channelStorable.release();
 
         }
 }

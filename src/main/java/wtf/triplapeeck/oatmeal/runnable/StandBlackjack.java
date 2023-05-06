@@ -5,8 +5,8 @@ import wtf.triplapeeck.oatmeal.cards.SpotGroup;
 import wtf.triplapeeck.oatmeal.cards.Table;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
-import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
-import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.cards.TableState;
@@ -32,7 +32,7 @@ public class StandBlackjack implements NamedRunnable {
 
     @Override
     public void run() {
-        ChannelStorable channelStorable = StorableManager.getChannel(ChannelID);
+        ChannelJSONStorable channelStorable = StorableManager.getChannel(ChannelID);
         Logger.customLog("Stand","Starting. Waiting On Table.");
 
         TextChannel channel;
@@ -59,7 +59,7 @@ public class StandBlackjack implements NamedRunnable {
         if (table==null) {
             channel.sendMessage("There is not currently a table.").queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("Stand","Table Relinquished. Finished. ");
             return;
         }
@@ -82,7 +82,7 @@ public class StandBlackjack implements NamedRunnable {
             }
         }
                 channelStorable.relinquishTable();
-        channelStorable.relinquishAccess();
+        channelStorable.release();
 
         Logger.customLog("Stand","Table Relinquished. Finished. ");
     }

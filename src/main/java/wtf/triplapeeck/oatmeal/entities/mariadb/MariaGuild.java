@@ -1,15 +1,49 @@
-package wtf.triplapeeck.oatmeal.entities;
+package wtf.triplapeeck.oatmeal.entities.mariadb;
 
+import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.entities.GuildData;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Table(name = "oatmeal_guilds")
-public class GuildEntity extends AccessibleEntity {
+public class MariaGuild extends GuildData  {
+    public void load() {
+        try {
+            HashMap<String, String> step = Main.dataManager.gson.fromJson(this.getJsonCustomCommands(), HashMap.class);
+            if (step==null) {
+                step=new HashMap<>();
+            }
+            ConcurrentHashMap<String, String> out = new ConcurrentHashMap<>();
+            for (String key: step.keySet()) {
+                out.put(key, step.get(key));
+            }
+            this.setCustomCommands(out);
+        } catch (JsonSyntaxException e) {
+            this.setCustomCommands(new ConcurrentHashMap<>());
+        }
+        try {
+            HashMap<String, String> step = Main.dataManager.gson.fromJson(this.getJsonStarboardLink(), HashMap.class);
+            if (step==null) {
+                step=new HashMap<>();
+            }
+            ConcurrentHashMap<String, String> out = new ConcurrentHashMap<>();
+            for (String key: step.keySet()) {
+                out.put(key, step.get(key));
+            }
+            this.setStarboardLink(out);
+        } catch (JsonSyntaxException e) {
+            this.setStarboardLink(new ConcurrentHashMap<>());
+        }
+    }
+
+
     @Id
     private @NotNull String id;
 
@@ -36,7 +70,7 @@ public class GuildEntity extends AccessibleEntity {
     @Column(nullable = false)
     private @NotNull Boolean testingEnabled;
 
-    public GuildEntity(@NotNull String guildId) {
+    public MariaGuild(@NotNull String guildId) {
         super();
         this.id = guildId;
         this.starboardChannelID = null;
@@ -46,10 +80,10 @@ public class GuildEntity extends AccessibleEntity {
     }
 
     @Deprecated
-    public GuildEntity() {}
+    public MariaGuild() {}
 
     @NotNull
-    public synchronized String getId() {
+    public synchronized String getID() {
         return id;
     }
 
@@ -125,7 +159,7 @@ public class GuildEntity extends AccessibleEntity {
     }
 
     @NotNull
-    public synchronized boolean isTestingEnabled() {
+    public synchronized Boolean isTestingEnabled() {
         return testingEnabled;
     }
 

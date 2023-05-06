@@ -5,8 +5,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.entities.GuildEntity;
-import wtf.triplapeeck.oatmeal.errors.database.MissingEntryException;
+import wtf.triplapeeck.oatmeal.entities.GuildData;
 import wtf.triplapeeck.oatmeal.runnable.NamedRunnable;
 
 import java.util.ArrayList;
@@ -26,8 +25,8 @@ public class GuildEmojiAddEvent implements NamedRunnable {
     @Override
     public void run() {
 
-        GuildEntity guildEntity;
-            guildEntity = Main.entityManager.getGuildEntity(event.getGuild().getId());
+        GuildData guildEntity;
+            guildEntity = Main.dataManager.getGuildData(event.getGuild().getId());
         if (guildEntity.getStarboardChannelID()!=null) {
             assert guildEntity.getStarboardChannelID() != null;
             TextChannel starboard = event.getGuild().getTextChannelById(guildEntity.getStarboardChannelID());

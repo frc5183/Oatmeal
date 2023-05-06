@@ -3,8 +3,8 @@ package wtf.triplapeeck.oatmeal.runnable;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
-import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
-import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.cards.Spot;
@@ -34,7 +34,7 @@ public class JoinTable implements NamedRunnable {
 
     @Override
     public void run() {
-        ChannelStorable channelStorable = StorableManager.getChannel(channelId);
+        ChannelJSONStorable channelStorable = StorableManager.getChannel(channelId);
         Logger.customLog("JoinTable","Starting. Waiting On Table.");
 
         TextChannel channel;
@@ -59,14 +59,14 @@ public class JoinTable implements NamedRunnable {
         if (table==null) {
             channel.sendMessage("There is not currently a table.").queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("JoinTable","Table Relinquished. Finished. ");
             return;
         }
         if (table.state!= TableState.RECRUITING) {
             channel.sendMessage("The table is not currently recruiting users.").queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("JoinTable","Table Relinquished. Finished. ");
             return;
         }
@@ -76,7 +76,7 @@ public class JoinTable implements NamedRunnable {
             table.findUser(memberID);
             channel.sendMessage("You are already in this table.").queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("JoinTable","Table Relinquished. Finished. ");
             return;
         } catch (InvalidCardActionException e) {
@@ -97,7 +97,7 @@ public class JoinTable implements NamedRunnable {
             table.RemoveSpotGroup(player);
         }
                 channelStorable.relinquishTable();
-        channelStorable.relinquishAccess();
+        channelStorable.release();
 
         Logger.customLog("JoinTable","Table Relinquished. Finished. ");
     }

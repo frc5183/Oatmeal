@@ -6,8 +6,7 @@ import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import wtf.triplapeeck.oatmeal.entities.*;
-import wtf.triplapeeck.oatmeal.errors.database.MissingEntryException;
+import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 
 import java.sql.SQLException;
 
@@ -17,11 +16,11 @@ public class DatabaseUtil {
 
 
     // Daos
-    private static Dao<GuildEntity, String> guildDao;
-    private static Dao<UserEntity, String> userDao;
-    private static Dao<ChannelEntity, String> channelDao;
-    private static Dao<BanEntity, Long> banDao;
-    private static Dao<MuteEntity, Long> muteDao;
+    private static Dao<MariaGuild, String> guildDao;
+    private static Dao<MariaUser, String> userDao;
+    private static Dao<MariaChannel, String> channelDao;
+    private static Dao<MariaBan, Long> banDao;
+    private static Dao<MariaMute, Long> muteDao;
 
     public DatabaseUtil() throws SQLException {
         // init database
@@ -30,17 +29,17 @@ public class DatabaseUtil {
         connectionSource.setMaxConnectionsFree(databaseConfiguration.getMaxConnections());
 
         // init tables
-        TableUtils.createTableIfNotExists(connectionSource, GuildEntity.class);
-        TableUtils.createTableIfNotExists(connectionSource, UserEntity.class);
-        TableUtils.createTableIfNotExists(connectionSource, ChannelEntity.class);
-        TableUtils.createTableIfNotExists(connectionSource, BanEntity.class);
-        TableUtils.createTableIfNotExists(connectionSource, MuteEntity.class);
+        TableUtils.createTableIfNotExists(connectionSource, MariaGuild.class);
+        TableUtils.createTableIfNotExists(connectionSource, MariaUser.class);
+        TableUtils.createTableIfNotExists(connectionSource, MariaChannel.class);
+        TableUtils.createTableIfNotExists(connectionSource, MariaBan.class);
+        TableUtils.createTableIfNotExists(connectionSource, MariaMute.class);
         // init dao
-        guildDao = DaoManager.createDao(connectionSource, GuildEntity.class);
-        userDao = DaoManager.createDao(connectionSource, UserEntity.class);
-        channelDao = DaoManager.createDao(connectionSource, ChannelEntity.class);
-        banDao = DaoManager.createDao(connectionSource, BanEntity.class);
-        muteDao = DaoManager.createDao(connectionSource, MuteEntity.class);
+        guildDao = DaoManager.createDao(connectionSource, MariaGuild.class);
+        userDao = DaoManager.createDao(connectionSource, MariaUser.class);
+        channelDao = DaoManager.createDao(connectionSource, MariaChannel.class);
+        banDao = DaoManager.createDao(connectionSource, MariaBan.class);
+        muteDao = DaoManager.createDao(connectionSource, MariaMute.class);
     }
 
     public JdbcPooledConnectionSource getConnectionSource() {
@@ -52,69 +51,69 @@ public class DatabaseUtil {
     }
 
     @Nullable
-    public static GuildEntity getGuildEntity(@NotNull String id) throws SQLException{
+    public static MariaGuild getGuildEntity(@NotNull String id) throws SQLException{
         return guildDao.queryForId(id);
     }
 
-    public static void updateGuildEntity(@NotNull GuildEntity guildEntity) throws SQLException {
+    public static void updateGuildEntity(@NotNull MariaGuild guildEntity) throws SQLException {
         guildDao.createOrUpdate(guildEntity);
     }
 
-    public static void deleteGuildEntity(@NotNull GuildEntity guildEntity) throws SQLException {
+    public static void deleteGuildEntity(@NotNull MariaGuild guildEntity) throws SQLException {
         guildDao.delete(guildEntity);
     }
 
     @Nullable
-    public static UserEntity getUserEntity(@NotNull String id) throws SQLException {
+    public static MariaUser getUserEntity(@NotNull String id) throws SQLException {
         return userDao.queryForId(id);
     }
 
-    public static void updateUserEntity(@NotNull UserEntity userEntity) throws SQLException {
+    public static void updateUserEntity(@NotNull MariaUser userEntity) throws SQLException {
         userDao.createOrUpdate(userEntity);
     }
 
-    public static void deleteUserEntity(@NotNull UserEntity userEntity) throws SQLException {
+    public static void deleteUserEntity(@NotNull MariaUser userEntity) throws SQLException {
 
         userDao.delete(userEntity);
     }
 
     @Nullable
-    public static ChannelEntity getChannelEntity(@NotNull String id) throws SQLException {
+    public static MariaChannel getChannelEntity(@NotNull String id) throws SQLException {
         return channelDao.queryForId(id);
     }
 
-    public static void updateChannelEntity(@NotNull ChannelEntity channelEntity) throws SQLException {
+    public static void updateChannelEntity(@NotNull MariaChannel channelEntity) throws SQLException {
         channelDao.createOrUpdate(channelEntity);
     }
 
-    public static void deleteChannelEntity(@NotNull ChannelEntity channelEntity) throws SQLException {
+    public static void deleteChannelEntity(@NotNull MariaChannel channelEntity) throws SQLException {
 
         channelDao.delete(channelEntity);
     }
 
     @Nullable
-    public static BanEntity getBanEntity(@NotNull Long id) throws SQLException {
+    public static MariaBan getBanEntity(@NotNull Long id) throws SQLException {
         return banDao.queryForId(id);
     }
 
-    public static void updateBanEntity(@NotNull BanEntity banEntity) throws SQLException {
+    public static void updateBanEntity(@NotNull MariaBan banEntity) throws SQLException {
         banDao.createOrUpdate(banEntity);
     }
 
-    public static void deleteBanEntity(@NotNull BanEntity banEntity) throws SQLException {
+    public static void deleteBanEntity(@NotNull MariaBan banEntity) throws SQLException {
         banDao.delete(banEntity);
     }
 
     @Nullable
-    public static MuteEntity getMuteEntity(@NotNull Long id) throws SQLException {
+    public static MariaMute getMuteEntity(@NotNull Long id) throws SQLException {
         return muteDao.queryForId(id);
     }
 
-    public static void updateMuteEntity(@NotNull MuteEntity muteEntity) throws SQLException {
+    public static void updateMuteEntity(@NotNull MariaMute muteEntity) throws SQLException {
         muteDao.createOrUpdate(muteEntity);
     }
 
-    public static void deleteMuteEntity(@NotNull MuteEntity muteEntity) throws SQLException {
+    public static void deleteMuteEntity(@NotNull MariaMute muteEntity) throws SQLException {
 
         muteDao.delete(muteEntity);
     }

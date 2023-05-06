@@ -5,9 +5,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.entities.UserEntity;
+import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
-import wtf.triplapeeck.oatmeal.storable.StorableFactory;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
@@ -122,7 +121,7 @@ public abstract class Command {
     public boolean getOwnerStatusOfOnlyOneTagged(@NotNull DataCarriage carriage) {
         List<User> userList = carriage.message.getMentions().getUsers();
         User user = userList.get(0);
-        UserEntity usUsr = Main.entityManager.getUserEntity(user.getId());
+        UserData usUsr = Main.dataManager.getUserData(user.getId());
         return usUsr.isOwner();
 
     }

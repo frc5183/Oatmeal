@@ -1,6 +1,5 @@
 package wtf.triplapeeck.oatmeal.runnable;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
@@ -26,7 +25,7 @@ public class Shutdown implements NamedRunnable {
         } while (Duration.between(start, Instant.now()).toSeconds() < 1);
         listener.requestToEnd();
 
-        Main.entityManager.requestToEnd();
+        Main.dataManager.requestToEnd();
 
         carriage.channel.sendMessage("Rebooting. Please allow a moment for rebooting to finish.").complete();
         System.out.println("HELLO");

@@ -17,11 +17,14 @@ import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.Count;
 import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.RebootOatmeal;
 import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetOwner;
 import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetStatus;
+import wtf.triplapeeck.oatmeal.entities.DataMode;
 import wtf.triplapeeck.oatmeal.listeners.DefaultListener;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
+import wtf.triplapeeck.oatmeal.managers.DataManager;
+import wtf.triplapeeck.oatmeal.managers.JSONManager;
+import wtf.triplapeeck.oatmeal.managers.MariaManager;
 import wtf.triplapeeck.oatmeal.runnable.Heartbeat;
-import wtf.triplapeeck.oatmeal.storable.StorableFactory;
-import wtf.triplapeeck.oatmeal.storable.TriviaStorable;
+import wtf.triplapeeck.oatmeal.entities.json.JSONStorableFactory;
 import wtf.triplapeeck.oatmeal.util.ConfigParser;
 import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
 
@@ -33,34 +36,36 @@ import java.sql.SQLException;
 public class Main {
     public static DefaultListener listener;
     public static ThreadManager threadManager;
-    public static EntityManager entityManager;
+    public static DataManager dataManager;
     public static JDA api;
     public static DatabaseUtil dbUtil;
 
     static {
-        try {
-            dbUtil = new DatabaseUtil();
-            entityManager=new EntityManager();
-            entityManager.start();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if (Config.getConfig().dataMode== DataMode.MARIADB) {
+            try {
+                dbUtil = new DatabaseUtil();
+                dataManager = new MariaManager();
+                dataManager.start();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (Config.getConfig().dataMode == DataMode.JSON) {
+            dataManager= new JSONManager();
+            dataManager.start();
         }
     }
 
-    public static TriviaStorable ts;
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
 
 
     public static void main(String[] args) throws LoginException, InterruptedException, IOException, SQLException {
         listener=new DefaultListener();
         threadManager=new ThreadManager();
-        new DatabaseUtil();
         api = JDABuilder.createDefault(ConfigParser.getToken(args))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(listener).build();
         api.awaitReady();
-        StorableFactory sf = new StorableFactory(0L);
-        ts = sf.triviaStorable();
+        JSONStorableFactory sf = new JSONStorableFactory(0L);
         commandHandler.addCommand(new Balance());
         commandHandler.addCommand(new Ping());
         commandHandler.addCommand(new Help());

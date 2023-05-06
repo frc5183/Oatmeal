@@ -1,15 +1,18 @@
-package wtf.triplapeeck.oatmeal.entities;
+package wtf.triplapeeck.oatmeal.entities.mariadb;
 
+import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
+import wtf.triplapeeck.oatmeal.entities.UserData;
 
 import javax.persistence.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Entity
 @Table(name = "oatmeal_users")
-public class UserEntity extends AccessibleEntity {
+public class MariaUser extends UserData {
     @Id
     public @NotNull String userId;
 
@@ -52,7 +55,7 @@ public class UserEntity extends AccessibleEntity {
     @Column(nullable=false)
     private @NotNull boolean currencyPreference;
 
-    public UserEntity(@NotNull String userId) {
+    public MariaUser(@NotNull String userId) {
         super();
         this.userId = userId;
         this.admin = false;
@@ -60,7 +63,7 @@ public class UserEntity extends AccessibleEntity {
     }
 
 
-    public UserEntity() {}
+    public MariaUser() {}
 
     @NotNull
     public synchronized String getID() {
@@ -72,10 +75,20 @@ public class UserEntity extends AccessibleEntity {
         return reminders.getReminders();
     }
 
+    @Override
+    public void setReminders(ConcurrentHashMap<String, Remind.Reminder> reminders) {
+
+    }
+
 
     @NotNull
-    public synchronized boolean isAdmin() {
+    public synchronized Boolean isAdmin() {
         return admin;
+    }
+
+    @Override
+    public void setAdmin(Boolean admin) {
+
     }
 
     public synchronized void setAdmin(@NotNull boolean admin) {
@@ -83,16 +96,40 @@ public class UserEntity extends AccessibleEntity {
     }
 
     @NotNull
-    public synchronized boolean isOwner() {
+    public synchronized Boolean isOwner() {
         return owner;
+    }
+
+    @Override
+    public void setOwner(Boolean owner) {
+
     }
 
     public synchronized void setOwner(@NotNull boolean owner) {
         this.owner = owner;
     }
 
-    public boolean isCurrencyPreference() {
+    public Boolean isCurrencyPreference() {
         return currencyPreference;
+    }
+
+    @Override
+    public void setCurrencyPreference(Boolean currencyPreference) {
+
+    }
+
+    @Override
+    public void load() {
+        MariaUser.ReminderMap out;
+        try {
+            out = Main.dataManager.gson.fromJson(this.getJsonReminders(), MariaUser.ReminderMap.class);
+        } catch (JsonSyntaxException e) {
+            out = new MariaUser.ReminderMap();
+        }
+        if (out==null) {
+            out=new MariaUser.ReminderMap();
+        }
+        this.setReminderMap(out);
     }
 
     public void setCurrencyPreference(boolean currencyPreference) {

@@ -19,9 +19,9 @@ public class Hit extends Command {
         if (ensureCurrencyEnabled(carriage)) {
             try {
 
-            Main.threadManager.addTask(new HitBlackjack(carriage.channelStorable.getID().longValue(), carriage.memberStorable.getID().toString(), Integer.valueOf(carriage.args[1])==2));
+            Main.threadManager.addTask(new HitBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString(), Integer.valueOf(carriage.args[1])==2));
         } catch (ArrayIndexOutOfBoundsException e) {
-            Main.threadManager.addTask(new HitBlackjack(carriage.channelStorable.getID().longValue(), carriage.memberStorable.getID().toString(), false));
+            Main.threadManager.addTask(new HitBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString(), false));
         }
     }
     }

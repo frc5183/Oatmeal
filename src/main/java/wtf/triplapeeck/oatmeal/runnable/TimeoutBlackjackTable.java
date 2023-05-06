@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.cards.Table;
 import wtf.triplapeeck.oatmeal.cards.TableState;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
-import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
-import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.util.Utils;
@@ -24,7 +24,7 @@ public class TimeoutBlackjackTable implements NamedRunnable {
 
     Table table;
 
-    ChannelStorable channelStorable;
+    ChannelJSONStorable channelStorable;
     public TimeoutBlackjackTable(long ID ) {
         id=ID;
     }
@@ -53,7 +53,7 @@ public class TimeoutBlackjackTable implements NamedRunnable {
         if (table==null) {
             channel.sendMessage("There is not currently a table.").queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("Timeout","Table Relinquished. Finished. ");
             return;
         }
@@ -61,7 +61,7 @@ public class TimeoutBlackjackTable implements NamedRunnable {
             if (Main.threadManager.containsType(this)) {
                 channel.sendMessage("This table is currently recruiting.").queue();
                 channelStorable.relinquishTable();
-                channelStorable.relinquishAccess();
+                channelStorable.release();
                 Logger.customLog("Timeout","Table Relinquished. Finished. ");
                 return;
             }
@@ -73,7 +73,7 @@ public class TimeoutBlackjackTable implements NamedRunnable {
         if (table.state!=TableState.RECRUITING) {
             channel.sendMessage("The table is currently active.").queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("Timeout","Table Relinquished. Finished. ");
             return;
         }
@@ -111,7 +111,7 @@ public class TimeoutBlackjackTable implements NamedRunnable {
         }
         Logger.basicLog(Logger.Level.INFO, "Resumed");
                 channelStorable.relinquishTable();
-        channelStorable.relinquishAccess();
+        channelStorable.release();
 
         Logger.customLog("Timeout","Table Relinquished. Finished. ");
     }

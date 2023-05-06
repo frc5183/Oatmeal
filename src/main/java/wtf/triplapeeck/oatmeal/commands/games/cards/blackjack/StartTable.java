@@ -17,7 +17,7 @@ public class StartTable extends Command {
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (currencyEnabled(carriage)) {
-            Main.threadManager.addTask(new TimeoutBlackjackTable(carriage.channelStorable.getID().longValue()));
+            Main.threadManager.addTask(new TimeoutBlackjackTable(Long.valueOf(carriage.channelStorable.getID())));
         }
     }
 

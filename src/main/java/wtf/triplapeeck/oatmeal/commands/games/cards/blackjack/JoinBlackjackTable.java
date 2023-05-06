@@ -19,7 +19,7 @@ public class JoinBlackjackTable extends Command {
         if (ensureCurrencyEnabled(carriage)) {
             try {
                 String BET = carriage.args[1];
-                Main.threadManager.addTask(new JoinTable(carriage.channelStorable.getID().longValue(), String.valueOf(carriage.user.getIdLong()) + carriage.guild.getIdLong(), carriage.user.getIdLong(), BET));
+                Main.threadManager.addTask(new JoinTable(Long.valueOf(carriage.channelStorable.getID()), String.valueOf(carriage.user.getIdLong()) + carriage.guild.getIdLong(), carriage.user.getIdLong(), BET));
             } catch (ArrayIndexOutOfBoundsException e) {
                 carriage.channel.sendMessage("You have to bet").queue();
             }

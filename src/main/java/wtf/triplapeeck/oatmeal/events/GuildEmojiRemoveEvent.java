@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.entities.GuildEntity;
+import wtf.triplapeeck.oatmeal.entities.GuildData;
 import wtf.triplapeeck.oatmeal.runnable.NamedRunnable;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class GuildEmojiRemoveEvent implements NamedRunnable {
     }
     @Override
     public void run() {
-        GuildEntity guildEntity = Main.entityManager.getGuildEntity(event.getGuild().getId());
+        GuildData guildEntity = Main.dataManager.getGuildData(event.getGuild().getId());
         TextChannel starboard = event.getGuild().getTextChannelById(guildEntity.getStarboardChannelID());
         if (event.getReaction().getEmoji().getType()== Emoji.Type.CUSTOM) {
             guildEntity.release();

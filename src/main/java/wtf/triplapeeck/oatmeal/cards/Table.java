@@ -5,11 +5,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
 import wtf.triplapeeck.oatmeal.runnable.Waiting;
-import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
-import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.runnable.Insuring;
@@ -184,9 +183,9 @@ public class Table {
             Logger.customLog("Table", "Initial Deal: Waiting for 15 Seconds to allow insurance (Starting INSURANCE)");
             channel.sendMessage("If you would like to buy an insurance bet, do s!insure within 15 Seconds").queue();
             state=INSURING;
-            ChannelStorable channelStorable = StorableManager.getChannel(id);
+            ChannelJSONStorable channelStorable = StorableManager.getChannel(id);
             channelStorable.setTableInsuring(true);
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Main.threadManager.addTask(new Waiting(15, new Insuring(id)));
         } else if (dealer.hand.hand.get(0).sameValue(new PlayingCard(SPADES,TEN))) {
             Logger.customLog("Table", "Initial Deal: No Insurance, Checking for blackjack");

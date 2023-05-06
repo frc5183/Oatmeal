@@ -2,8 +2,8 @@ package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
-import wtf.triplapeeck.oatmeal.storable.ChannelStorable;
-import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.errors.InvalidCardActionException;
@@ -33,7 +33,7 @@ public class DoubleDownBlackjack implements NamedRunnable {
     @Override
     public void run() {
         Logger.customLog("DoubleDown", "Starting. Waiting On Table.");
-        ChannelStorable channelStorable = StorableManager.getChannel(ChannelID);
+        ChannelJSONStorable channelStorable = StorableManager.getChannel(ChannelID);
 
 
         TextChannel channel;
@@ -60,7 +60,7 @@ public class DoubleDownBlackjack implements NamedRunnable {
         if (table==null) {
             channel.sendMessage("There is not currently a table.").queue();
             channelStorable.relinquishTable();
-            channelStorable.relinquishAccess();
+            channelStorable.release();
             Logger.customLog("DoubleDown", "Table Relinquished. Finished. ");
             return;
         }

@@ -1,25 +1,26 @@
-package wtf.triplapeeck.oatmeal.storable;
+package wtf.triplapeeck.oatmeal.entities.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import wtf.triplapeeck.oatmeal.FileRW;
+import wtf.triplapeeck.oatmeal.util.ConfigParser;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class StorableFactory {
+public class JSONStorableFactory {
     private String id;
     protected transient Gson json;
     protected transient GsonBuilder jsonBuilder = new GsonBuilder();
     protected transient String data;
     protected transient FileRW file;
     protected transient String path;
-    public StorableFactory(Long id2) {
+    public JSONStorableFactory(Long id2) {
         try {
         id=id2.toString();
-        path  = "D:\\sinondata\\" + id + ".json";
+        path  = ConfigParser.getPath() + id + ".json";
         boolean t = fileExists(path);
         if (!t) {
             new FileOutputStream(path, true).close();
@@ -43,11 +44,11 @@ public class StorableFactory {
         return Files.exists(Path.of(path));
     }
 
-    public StorableFactory(String id2) {
+    public JSONStorableFactory(String id2) {
         try {
             id = id2;
 
-            path = "D:\\sinondata\\" + id + ".json";
+            path = ConfigParser.getPath() + id + ".json";
             boolean t = fileExists(path);
             if (!t) {
                 new FileOutputStream(path, true).close();
@@ -63,47 +64,40 @@ public class StorableFactory {
         }
     }
 
-    public UserStorable userStorable() {
-        UserStorable us = json.fromJson(data, UserStorable.class);
+    public UserJSONStorable userStorable() {
+        UserJSONStorable us = json.fromJson(data, UserJSONStorable.class);
         us.setFileRW(file);
         us.setFactory(this);
         return us;
     }
-    public GuildStorable guildStorable() {
-        GuildStorable gs = json.fromJson(data, GuildStorable.class);
+    public GuildJSONStorable guildStorable() {
+        GuildJSONStorable gs = json.fromJson(data, GuildJSONStorable.class);
         gs.setFileRW(file);
         gs.setFactory(this);
         return gs;
     }
 
-    public ChannelStorable channelStorable() {
-        ChannelStorable cs = json.fromJson(data, ChannelStorable.class);
+    public ChannelJSONStorable channelStorable() {
+        ChannelJSONStorable cs = json.fromJson(data, ChannelJSONStorable.class);
         cs.setFileRW(file);
         cs.setFactory(this);
         return cs;
     }
 
-    public MemberStorable memberStorable() {
-        MemberStorable ms = json.fromJson(data, MemberStorable.class);
+    public MemberJSONStorable memberStorable() {
+        MemberJSONStorable ms = json.fromJson(data, MemberJSONStorable.class);
         ms.setFileRW(file);
         ms.setFactory(this);
         return ms;
     }
-    public TriviaStorable triviaStorable() {
-        TriviaStorable ts = json.fromJson(data, TriviaStorable.class);
-        ts.setFileRW(file);
-        ts.setFactory(this);
-        return ts;
-
-    }
-    public GenericStorable genericStorable() {
-        GenericStorable gs = json.fromJson(data, GenericStorable.class);
+    public GenericJSONStorable genericStorable() {
+        GenericJSONStorable gs = json.fromJson(data, GenericJSONStorable.class);
         gs.setFileRW(file);
         gs.setFactory(this);
         return gs;
 
     }
-    public synchronized void saveStorable(Storable s) {
+    public synchronized void saveStorable(Object s) {
         try {
         file.writeAll(json.toJson(s));
         } catch (IOException e) {

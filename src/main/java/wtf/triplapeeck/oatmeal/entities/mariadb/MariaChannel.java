@@ -1,8 +1,9 @@
-package wtf.triplapeeck.oatmeal.entities;
+package wtf.triplapeeck.oatmeal.entities.mariadb;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.cards.Table;
+import wtf.triplapeeck.oatmeal.entities.AccessibleEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,7 @@ import javax.persistence.Id;
 
 @Entity
 @javax.persistence.Table(name = "oatmeal_channels")
-public class ChannelEntity extends AccessibleEntity {
+public class MariaChannel extends AccessibleEntity {
     @Id
     public @NotNull String id;
 
@@ -29,7 +30,7 @@ public class ChannelEntity extends AccessibleEntity {
     @Column(nullable = false)
     public @NotNull Boolean tableInsured;
 
-    public ChannelEntity(@NotNull String id) {
+    public MariaChannel(@NotNull String id) {
         super();
         this.id = id;
         this.table = null;
@@ -40,7 +41,7 @@ public class ChannelEntity extends AccessibleEntity {
     }
 
     @Deprecated
-    public ChannelEntity() {}
+    public MariaChannel() {}
 
     @NotNull
     public synchronized String getId() {

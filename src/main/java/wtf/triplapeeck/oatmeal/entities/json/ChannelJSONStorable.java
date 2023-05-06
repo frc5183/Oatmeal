@@ -1,12 +1,36 @@
-package wtf.triplapeeck.oatmeal.storable;
+package wtf.triplapeeck.oatmeal.entities.json;
 
+import wtf.triplapeeck.oatmeal.FileRW;
 import wtf.triplapeeck.oatmeal.Logger;
-import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.errors.ValidTableException;
 import wtf.triplapeeck.oatmeal.cards.Table;
 
-public class ChannelStorable extends Storable {
+import java.math.BigInteger;
+
+public class ChannelJSONStorable extends JSONStorable {
+    protected transient JSONStorableFactory factory;
+    public synchronized void setFactory(JSONStorableFactory factory1) {
+        factory=factory1;
+        idLong=id.longValue();
+    }
+    private BigInteger id;
+    private transient long idLong;
+    protected transient FileRW file = null;
+    public synchronized void setFileRW(FileRW file1) {
+        file=file1;
+    }
+
+    public synchronized void setID(BigInteger id1) {
+        id=id1;
+    }
+    public synchronized String getID()  {
+        return id.toString();
+    }
+    public synchronized long getIDLong() {
+        Logger.customLog("CHANNELSTORABLE","IdLONG");
+        return idLong;
+    }
     private Table table;
     private transient boolean tableHeld=false;
     private transient int tableCount;
@@ -60,30 +84,12 @@ public class ChannelStorable extends Storable {
         Logger.customLog("CHANNELSTORABLE","Table relinquished");
         tableHeld=false;
     }
-    @Override
-    public synchronized void Save() {
 
-        if (accessCount==0) {
-            StorableManager.removeChannel(getIDLong());
+    public synchronized void Store() {
+
             factory.saveStorable(this);
-            Logger.customLog("CHANNELStorable","Saving with count: " + accessCount);
-            Logger.customLog("CHANNELStorable","removed with count: " + accessCount);
-            closed=true;
-        } else {
-            Logger.customLog("CHANNELStorable","Did NOT save because count is: " + accessCount);
-        }
 
     }
-    public synchronized void requestAccess() throws ClosedStorableError {
-        accessCount++;
-        Logger.customLog("CHANNELStorable","Access Requested. New Count: "+ accessCount);
-        if (closed) {throw new ClosedStorableError();}
-    }
 
-    public synchronized void relinquishAccess() {
-        accessCount--;
-        Logger.customLog("CHANNELStorable","Access Relinquished. New Count: "+ accessCount);
-        if (closed) {throw new ClosedStorableError();}
-        Save();
-    }
+
 }

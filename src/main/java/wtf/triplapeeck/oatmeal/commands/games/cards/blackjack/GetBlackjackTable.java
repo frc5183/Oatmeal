@@ -18,7 +18,7 @@ public class GetBlackjackTable extends Command {
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureCurrencyEnabled(carriage)) {
-            Main.threadManager.addTask(new GetTable(carriage.channelStorable.getID().longValue()));
+            Main.threadManager.addTask(new GetTable(Long.valueOf(carriage.channelStorable.getID())));
         }
     }
 

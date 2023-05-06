@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
-import wtf.triplapeeck.oatmeal.storable.GenericStorable;
-import wtf.triplapeeck.oatmeal.storable.StorableManager;
+import wtf.triplapeeck.oatmeal.entities.json.GenericJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.StorableManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
@@ -78,21 +78,21 @@ public class CommandHandler {
 
         try {
             carriage.guild = event.getGuild();
-            carriage.guildEntity=Main.entityManager.getGuildEntity(carriage.guild.getId());
+            carriage.guildEntity=Main.dataManager.getGuildData(carriage.guild.getId());
 
         } catch (IllegalStateException e) {
-            carriage.guildEntity = Main.entityManager.getGuildEntity(carriage.channel.getId() + "0000");
+            carriage.guildEntity = Main.dataManager.getGuildData(carriage.channel.getId() + "0000");
 
         }
 
         carriage.message=event.getMessage();
-        carriage.userEntity = Main.entityManager.getUserEntity(carriage.user.getId());
+        carriage.userEntity = Main.dataManager.getUserData(carriage.user.getId());
 
         carriage.channelStorable = StorableManager.getChannel(carriage.channel.getIdLong());
-        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getId());
-        GenericStorable gs = StorableManager.getGeneric(0L);
+        carriage.memberStorable = StorableManager.getMember(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getID());
+        GenericJSONStorable gs = StorableManager.getGeneric(0L);
         gs.getKnownUserList().put(carriage.user.getIdLong(), carriage.user.getIdLong());
-        gs.relinquishAccess();
+        gs.release();
     }
     private void HandleMessage(MessageReceivedEvent event, DataCarriage carriage) {
         carriage.memberStorable.setMessageCount(carriage.memberStorable.getMessageCount()+1);
@@ -115,8 +115,8 @@ public class CommandHandler {
         Main.threadManager.addTask(new TableUpdate(carriage.channel.getIdLong()));
         Logger.customLog("Listener", "Post Table Update");
         carriage.userEntity.release();
-        carriage.memberStorable.relinquishAccess();
-        carriage.channelStorable.relinquishAccess();
+        carriage.memberStorable.release();
+        carriage.channelStorable.release();
         carriage.guildEntity.release();
         Logger.customLog("Listener", "Finished");
     }

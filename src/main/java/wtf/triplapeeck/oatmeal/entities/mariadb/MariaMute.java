@@ -1,7 +1,8 @@
-package wtf.triplapeeck.oatmeal.entities;
+package wtf.triplapeeck.oatmeal.entities.mariadb;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wtf.triplapeeck.oatmeal.entities.AccessibleEntity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "oatmeal_bans")
-public class BanEntity extends AccessibleEntity {
+public class MariaMute extends AccessibleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,7 +36,7 @@ public class BanEntity extends AccessibleEntity {
     @Column(nullable = false)
     private @NotNull Boolean permanent;
 
-    public BanEntity(@NotNull String userId, @NotNull String guildId, @NotNull String reason, @NotNull Long endTimestamp) {
+    public MariaMute(@NotNull String userId, @NotNull String guildId, @NotNull String reason, @Nullable Long endTimestamp) {
         super();
         this.userId = userId;
         this.guildId = guildId;
@@ -44,9 +45,11 @@ public class BanEntity extends AccessibleEntity {
         this.endTimestamp = endTimestamp;
         this.active = true;
         this.permanent = false;
+        super.request();
     }
 
-    public BanEntity(@NotNull String userId, @NotNull String guildId, @NotNull String reason) {
+    public MariaMute(@NotNull String userId, @NotNull String guildId, @NotNull String reason) {
+        super();
         this.userId = userId;
         this.guildId = guildId;
         this.reason = reason;
@@ -54,11 +57,10 @@ public class BanEntity extends AccessibleEntity {
         this.endTimestamp = null;
         this.active = true;
         this.permanent = true;
-        super.request();
     }
 
     @Deprecated
-    public BanEntity() {}
+    public MariaMute() {}
 
     @NotNull
     public synchronized Long getId() {
