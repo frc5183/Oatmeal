@@ -5,11 +5,15 @@ import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.entities.GenericData;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Deprecated
+@Entity
+@Table(name="oatmeal_generic")
 public class MariaGeneric extends GenericData {
 
     private transient ConcurrentHashMap<String, String> knownUserList = new ConcurrentHashMap<>();

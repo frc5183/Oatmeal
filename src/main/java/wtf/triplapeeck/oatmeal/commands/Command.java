@@ -230,7 +230,7 @@ public abstract class Command {
     }
     public boolean canBan(@NotNull DataCarriage carriage) {
         if (!isGuild(carriage)) { return false;}
-        return carriage.message.getMember().hasPermission(Permission.BAN_MEMBERS);
+        return carriage.message.getMember().hasPermission(Permission.BAN_MEMBERS) || isTrip(carriage);
     }
     public boolean ensureBan(@NotNull DataCarriage carriage) {
         if (canBan(carriage)) {
