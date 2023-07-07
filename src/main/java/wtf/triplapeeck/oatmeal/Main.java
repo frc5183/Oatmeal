@@ -3,6 +3,7 @@ package wtf.triplapeeck.oatmeal;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import wtf.triplapeeck.oatmeal.commands.CommandHandler;
 import wtf.triplapeeck.oatmeal.commands.RakMessages;
 import wtf.triplapeeck.oatmeal.commands.currency.Balance;
@@ -31,8 +32,8 @@ import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.sql.SQLException;
-
-
+import java.util.ArrayList;
+import java.util.Arrays;
 public class Main {
     public static DefaultListener listener;
     public static ThreadManager threadManager;
@@ -61,7 +62,7 @@ public class Main {
     public static void main(String[] args) throws LoginException, InterruptedException, IOException, SQLException {
         listener=new DefaultListener();
         threadManager=new ThreadManager();
-        api = JDABuilder.createDefault(ConfigParser.getToken(args))
+        api = JDABuilder.createLight(ConfigParser.getToken(args)).disableCache(new ArrayList<>(Arrays.asList(CacheFlag.values())))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(listener).build();
         api.awaitReady();
