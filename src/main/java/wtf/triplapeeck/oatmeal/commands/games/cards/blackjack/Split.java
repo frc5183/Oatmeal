@@ -5,20 +5,22 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.runnable.SplitBlackjack;
 
 public class Split extends Command {
-    public Split() {
-        Page.CardGames.addCommand(this);
-    }
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureCurrencyEnabled(carriage)) {
             Main.threadManager.addTask(new SplitBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString()));
         }
+    }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CARD_GAMES;
     }
 
     @NotNull

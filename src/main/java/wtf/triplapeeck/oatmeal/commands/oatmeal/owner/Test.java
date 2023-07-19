@@ -1,18 +1,26 @@
-package wtf.triplapeeck.oatmeal.commands;
+package wtf.triplapeeck.oatmeal.commands.oatmeal.owner;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.runnable.Waiting;
 
 public class Test extends Command
 {
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
-        listener.addTask(new Waiting(15, null));
+        if (ensureIsOwner(carriage)) {
+            listener.addTask(new Waiting(15, null));
+        }
+    }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.SINON_OWNER;
     }
 
 
@@ -29,9 +37,5 @@ public class Test extends Command
     @Override
     public boolean hasPermission(DataCarriage carriage, User user) {
         return true;
-    }
-
-    public Test() {
-        Page.TripOnly.addCommand(this);
     }
 }

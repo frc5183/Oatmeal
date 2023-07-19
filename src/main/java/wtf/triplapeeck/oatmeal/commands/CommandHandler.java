@@ -17,13 +17,22 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CommandHandler {
-    ArrayList<Command> commandList = new ArrayList<>();
+    private static CommandHandler instance;
+    private ArrayList<Command> commandList = new ArrayList<>();
     private final String prefix;
     private final Random mainRandomizer = new Random();
     private final int level;
+
     public CommandHandler(@NotNull String pre, int level1) {
-        prefix=pre; level=level1;
+        instance = this;
+        prefix=pre;
+        level=level1;
     }
+
+    public static ArrayList<Command> getCommandList() {
+        return instance.commandList;
+    }
+
     public void addCommand(@NotNull Command command) {
         commandList.add(command);
     }

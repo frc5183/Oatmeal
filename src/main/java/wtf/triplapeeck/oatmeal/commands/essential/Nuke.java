@@ -7,7 +7,6 @@ import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.runnable.NukeRunnable;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 
 public class Nuke extends Command {
     @Override
@@ -28,6 +27,12 @@ public class Nuke extends Command {
 
     @NotNull
     @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.ESSENTIAL;
+    }
+
+    @NotNull
+    @Override
     public String getDocumentation() {
         return "Usage:"
                 +"\ns!nuke [number (integer more than zero)]"
@@ -42,8 +47,5 @@ public class Nuke extends Command {
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return isAdministrator(carriage) && isGuild(carriage);
-    }
-    public Nuke() {
-        Page.Essential.addCommand(this);
     }
 }

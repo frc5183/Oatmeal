@@ -4,18 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.intellij.lang.annotations.Identifier;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.util.Utils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.time.Instant;
 
 public class Remind extends Command {
@@ -60,11 +54,14 @@ public class Remind extends Command {
 
     @NotNull
     @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.MISC;
+    }
+
+    @NotNull
+    @Override
     public String getName() {
         return "remind";
-    }
-    public Remind() {
-        Page.Miscellaneous.addCommand(this);
     }
     @NotNull
     @Override

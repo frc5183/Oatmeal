@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 
 public class Ping extends Command {
     @Override
@@ -17,6 +16,13 @@ public class Ping extends Command {
             carriage.channel.sendMessage("Pong!").queue();
         }
     }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.MISC;
+    }
+
     @Override
     public @NotNull String getDocumentation() {
         return "Simply responds with Pong! followed by your message" +
@@ -31,9 +37,5 @@ public class Ping extends Command {
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return true;
-    }
-
-    public Ping() {
-        Page.Miscellaneous.addCommand(this);
     }
 }

@@ -25,6 +25,12 @@ public class SetStarboardLimit extends Command {
 
     @NotNull
     @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.ESSENTIAL;
+    }
+
+    @NotNull
+    @Override
     public String getDocumentation() {
         return "Used to set the required number of stars for a message to be posted to the starboard."
                 +"\nUsage: s!setstarboardlimit [limit]"

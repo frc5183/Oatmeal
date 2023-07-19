@@ -15,6 +15,12 @@ public class FakeCommand extends Command {
 
     @NotNull
     @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CUSTOM_COMMAND;
+    }
+
+    @NotNull
+    @Override
     public String getDocumentation() {
         return "s!" + name + " is a custom command within this server!"
                 +"\nUsage: s!" + name;

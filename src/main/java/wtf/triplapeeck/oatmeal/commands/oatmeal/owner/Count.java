@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 
@@ -36,6 +35,12 @@ public class Count extends Command {
 
     @NotNull
     @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.SINON_OWNER;
+    }
+
+    @NotNull
+    @Override
     public String getDocumentation() {
         return "Usage:" +
                 "\ns!count" +
@@ -51,6 +56,4 @@ public class Count extends Command {
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return isOwner(carriage);
     }
-    public Count() {
-        Page.SinonOwner.addCommand(this);}
 }

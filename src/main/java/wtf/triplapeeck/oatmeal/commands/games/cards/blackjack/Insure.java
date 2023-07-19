@@ -6,19 +6,21 @@ import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.runnable.InsureBlackjack;
 
 public class Insure extends Command {
-    public Insure() {
-        Page.CardGames.addCommand(this);
-    }
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureCurrencyEnabled(carriage)) {
             Main.threadManager.addTask(new InsureBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString()));
         }
+    }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CARD_GAMES;
     }
 
     @NotNull

@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import wtf.triplapeeck.oatmeal.commands.CommandHandler;
-import wtf.triplapeeck.oatmeal.commands.RakMessages;
+import wtf.triplapeeck.oatmeal.commands.currency.RakMessages;
 import wtf.triplapeeck.oatmeal.commands.currency.Balance;
 import wtf.triplapeeck.oatmeal.commands.essential.*;
 import wtf.triplapeeck.oatmeal.commands.games.cards.PrintDeck;

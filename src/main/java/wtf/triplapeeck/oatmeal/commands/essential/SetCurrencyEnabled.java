@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 
@@ -20,6 +19,12 @@ public class SetCurrencyEnabled extends Command {
                 carriage.channel.sendMessage("You have to choose either enable or disable currency.").queue();
             }
         }
+    }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.ESSENTIAL;
     }
 
     @NotNull
@@ -40,8 +45,5 @@ public class SetCurrencyEnabled extends Command {
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return isAdministrator(carriage);
-    }
-    public SetCurrencyEnabled() {
-        Page.Essential.addCommand(this);
     }
 }

@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.util.Utils;
 import wtf.triplapeeck.oatmeal.commands.Command;
@@ -28,6 +27,13 @@ public class SetOwner extends Command {
         }
     }
 
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.SINON_OWNER;
+    }
+
+
     public @NotNull String getDocumentation() { return "Used by Trip-kun to set the owner status of users." +
             "\nUsage: s!setowner [Tagged Users (Just 1)]";}
     public @NotNull String getName() {
@@ -39,7 +45,4 @@ public class SetOwner extends Command {
         return isTrip(carriage);
     }
 
-    public SetOwner() {
-        Page.SinonOwner.addCommand(this);
-    }
 }

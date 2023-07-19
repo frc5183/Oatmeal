@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 
 public class RemoveStarboard extends Command {
     @Override
@@ -18,6 +17,13 @@ public class RemoveStarboard extends Command {
 
         }
     }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.ESSENTIAL;
+    }
+
     @NotNull
     @Override
     public String getDocumentation() {
@@ -35,7 +41,4 @@ public class RemoveStarboard extends Command {
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return isAdministrator(carriage) && isGuild(carriage);
     }
-
-    public RemoveStarboard() {
-        Page.Essential.addCommand(this);}
 }

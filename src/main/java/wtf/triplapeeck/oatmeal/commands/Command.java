@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
@@ -14,6 +15,100 @@ import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import java.util.List;
 
 public abstract class Command {
+    public enum CommandCategory {
+        ESSENTIAL("Essential", 1),
+        MISC("Miscellaneous", 2),
+        CARD_GAMES("Card Games", 3),
+        CURRENCY("Currency", 4),
+        CUSTOM_COMMAND("Custom Commands", 5),
+        SINON_ADMIN("Sinon Admin", 10),
+        SINON_OWNER("Sinon Owner", 11),
+        TRIP_ONLY("Trip Only", 12);
+
+        private final String name;
+        private final int id;
+
+        CommandCategory(String name, int id) {
+            this.name = name;
+            this.id = id;
+        }
+
+        @Nullable
+        public static CommandCategory fromInt(int id) {
+            switch (id) {
+                case 1 -> {
+                    return ESSENTIAL;
+                }
+                case 2 -> {
+                    return MISC;
+                }
+                case 3 -> {
+                    return CARD_GAMES;
+                }
+                case 4 -> {
+                    return CURRENCY;
+                }
+                case 5 -> {
+                    return CUSTOM_COMMAND;
+                }
+                case 10 -> {
+                    return SINON_ADMIN;
+                }
+                case 11 -> {
+                    return SINON_OWNER;
+                }
+                case 12 -> {
+                    return TRIP_ONLY;
+                }
+                default -> {
+                    return null;
+                }
+            }
+        }
+
+        @Nullable
+        public static CommandCategory fromString(String value) {
+            value = value.toLowerCase();
+            switch (value) {
+                case "miscellaneous" -> {
+                    return MISC;
+                }
+                case "owner" -> {
+                    return SINON_OWNER;
+                }
+                case "admin" -> {
+                    return SINON_ADMIN;
+                }
+                case "card" -> {
+                    return CARD_GAMES;
+                }
+                case "currency" -> {
+                    return CURRENCY;
+                }
+                case "essential" -> {
+                    return ESSENTIAL;
+                }
+                case "trip" -> {
+                    return TRIP_ONLY;
+                }
+                case "custom" -> {
+                    return CUSTOM_COMMAND;
+                }
+                default -> {
+                    return null;
+                }
+            }
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getId() {
+            return id;
+        }
+    }
+
     public boolean ensureGuild(DataCarriage carriage) {
         if (carriage.guild==null) {
             carriage.channel.sendMessage("This command is not available outside of a server.").queue();
@@ -25,6 +120,7 @@ public abstract class Command {
     }
     public abstract void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener);
 
+    public abstract @NotNull CommandCategory getCategory();
     public abstract @NotNull java.lang.String getDocumentation();
     public abstract @NotNull String getName();
 

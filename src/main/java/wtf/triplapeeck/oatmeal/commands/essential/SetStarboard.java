@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 
@@ -17,6 +16,12 @@ public class SetStarboard extends Command {
             carriage.guildEntity.setStarboardChannelID(id);
             carriage.channel.sendMessage("The starboard will post in " + carriage.guild.getTextChannelById(id).getAsMention()).queue();
         }
+    }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.ESSENTIAL;
     }
 
     @NotNull
@@ -36,7 +41,4 @@ public class SetStarboard extends Command {
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return isAdministrator(carriage) && isGuild(carriage);
     }
-
-    public SetStarboard() {
-        Page.Essential.addCommand(this);}
 }

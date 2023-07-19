@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.cards.Spot;
 import wtf.triplapeeck.oatmeal.cards.Table;
@@ -24,6 +23,13 @@ public class TestHand extends Command {
         ).queue();
 
     }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CARD_GAMES;
+    }
+
     public @NotNull String getName() {
         return "testhand";
     }
@@ -36,10 +42,5 @@ public class TestHand extends Command {
     public @NotNull String getDocumentation() {
         return "Usage:" +
                 "\ns!testhand";
-    }
-
-
-    public TestHand() {
-        Page.CardGames.addCommand(this);
     }
 }

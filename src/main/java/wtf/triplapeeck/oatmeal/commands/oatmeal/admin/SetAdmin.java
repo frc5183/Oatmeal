@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.util.Utils;
 import wtf.triplapeeck.oatmeal.commands.Command;
@@ -33,6 +32,13 @@ public class SetAdmin extends Command {
 
         }
     }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.SINON_ADMIN;
+    }
+
     public @NotNull String getDocumentation() { return "Used By Sinon's Owners to set the admin status of users" +
             "\n Usage: s!setadmin [Tagged Users (Just 1)]";}
     public @NotNull String getName() {
@@ -42,9 +48,5 @@ public class SetAdmin extends Command {
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return isOwner(carriage);
-    }
-
-    public SetAdmin() {
-        Page.SinonAdmin.addCommand(this);
     }
 }

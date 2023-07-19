@@ -1,11 +1,11 @@
-package wtf.triplapeeck.oatmeal.commands;
+package wtf.triplapeeck.oatmeal.commands.currency;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 
 public class RakMessages extends Command {
     @Override
@@ -19,6 +19,12 @@ public class RakMessages extends Command {
                 carriage.channel.sendMessage("You have to choose either enable or disable for your preference.").queue();
             }
         }
+    }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CURRENCY;
     }
 
     @NotNull
@@ -38,8 +44,5 @@ public class RakMessages extends Command {
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return currencyEnabled(carriage);
-    }
-    public RakMessages() {
-        Page.Currency.addCommand(this);
     }
 }

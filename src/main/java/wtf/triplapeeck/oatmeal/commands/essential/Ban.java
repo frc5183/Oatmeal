@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
-import wtf.triplapeeck.oatmeal.Page;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +42,13 @@ public class Ban extends Command {
             }
         }
     }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.ESSENTIAL;
+    }
+
     public @NotNull String getDocumentation() { return "Used By Members with the ban members permission to ban users." +
             "\n Usage: s!ban [Tagged User (Just 1)]";}
     public @NotNull String getName() {
@@ -53,7 +59,4 @@ public class Ban extends Command {
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return canBan(carriage) && isGuild(carriage);
     }
-
-    public Ban() {
-        Page.Essential.addCommand(this);}
 }

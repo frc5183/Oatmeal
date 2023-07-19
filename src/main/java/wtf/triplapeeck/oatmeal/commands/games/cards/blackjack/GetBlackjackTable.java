@@ -7,19 +7,21 @@ import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.runnable.GetTable;
 
 public class GetBlackjackTable extends Command {
-    public GetBlackjackTable () {
-        Page.CardGames.addCommand(this);
-    }
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureCurrencyEnabled(carriage)) {
             Main.threadManager.addTask(new GetTable(Long.valueOf(carriage.channelStorable.getID())));
         }
+    }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CARD_GAMES;
     }
 
     @NotNull

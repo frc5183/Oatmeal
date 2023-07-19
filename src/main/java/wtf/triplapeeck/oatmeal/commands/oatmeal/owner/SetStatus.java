@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 
@@ -21,6 +20,13 @@ public class SetStatus extends Command {
     }
 
 
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.SINON_OWNER;
+    }
+
+
     public @NotNull String getDocumentation() {
         return "Used to update my status." +
                 "\nUsage: s!status [custom status here]" +
@@ -31,8 +37,5 @@ public class SetStatus extends Command {
     @Override
     public boolean hasPermission(DataCarriage carriage, User user) {
         return isOwner(carriage);
-    }
-    public SetStatus() {
-        Page.SinonOwner.addCommand(this);
     }
 }

@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
-import wtf.triplapeeck.oatmeal.Page;
 
 public class NewCustom extends Command {
     @Override
@@ -18,6 +17,13 @@ public class NewCustom extends Command {
             carriage.channel.sendMessage("Added new command s!" + name +" that responds with \"" + content +"\"").queue();
         }
     }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.ESSENTIAL;
+    }
+
     public @NotNull String getDocumentation() {
         return "Used to create or update a custom guild command." +
                 "\nUsage: s!custom [name] [response]"+
@@ -28,6 +34,4 @@ public class NewCustom extends Command {
     public boolean hasPermission(DataCarriage carriage, User user) {
         return isAdministrator(carriage);
     }
-    public NewCustom() {
-        Page.Essential.addCommand(this);}
 }

@@ -6,20 +6,22 @@ import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.runnable.NewTable;
 
 public class CreateBlackjackTable extends Command {
-    public CreateBlackjackTable() {
-        Page.CardGames.addCommand(this);
-    }
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if(ensureCurrencyEnabled(carriage) && ensureTableIsEmpty(carriage)) {
             carriage.channel.sendMessage("Creating a new blackjack table.").queue();
             Main.threadManager.addTask(new NewTable(carriage.channel.getIdLong()));
         }
+    }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CARD_GAMES;
     }
 
     @NotNull

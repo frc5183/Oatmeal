@@ -6,24 +6,25 @@ import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.runnable.HitBlackjack;
 
 public class Hit extends Command {
-    public Hit() {
-        Page.CardGames.addCommand(this);
-    }
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureCurrencyEnabled(carriage)) {
             try {
-
-            Main.threadManager.addTask(new HitBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString(), Integer.valueOf(carriage.args[1])==2));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            Main.threadManager.addTask(new HitBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString(), false));
+                Main.threadManager.addTask(new HitBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString(), Integer.valueOf(carriage.args[1])==2));
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Main.threadManager.addTask(new HitBlackjack(Long.valueOf(carriage.channelStorable.getID()), carriage.memberStorable.getID().toString(), false));
+            }
         }
     }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CARD_GAMES;
     }
 
     @NotNull

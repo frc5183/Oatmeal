@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
-import wtf.triplapeeck.oatmeal.Page;
 
 public class RemoveCustom extends Command {
     @Override
@@ -16,6 +15,12 @@ public class RemoveCustom extends Command {
             carriage.guildEntity.getCustomCommands().remove(name);
             carriage.channel.sendMessage("Removed custom command s!" + name).queue();
         }
+    }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.ESSENTIAL;
     }
 
     @NotNull
@@ -34,8 +39,5 @@ public class RemoveCustom extends Command {
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
         return isAdministrator(carriage);
-    }
-    public RemoveCustom() {
-        Page.Essential.addCommand(this);
     }
 }
