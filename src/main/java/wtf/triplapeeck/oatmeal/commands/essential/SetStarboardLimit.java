@@ -3,15 +3,11 @@ package wtf.triplapeeck.oatmeal.commands.essential;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
-import wtf.triplapeeck.oatmeal.Page;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 
 public class SetStarboardLimit extends Command {
-    public SetStarboardLimit() {
-        Page.Essential.addCommand(this);
-    }
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage)) {
