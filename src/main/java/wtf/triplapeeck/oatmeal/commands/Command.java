@@ -16,21 +16,23 @@ import java.util.List;
 
 public abstract class Command {
     public enum CommandCategory {
-        ESSENTIAL("Essential", 1),
-        MISC("Miscellaneous", 2),
-        CARD_GAMES("Card Games", 3),
-        CURRENCY("Currency", 4),
-        CUSTOM_COMMAND("Custom Commands", 5),
-        SINON_ADMIN("Sinon Admin", 10),
-        SINON_OWNER("Sinon Owner", 11),
-        TRIP_ONLY("Trip Only", 12);
+        ESSENTIAL("Essential", 1, "Essential commands for the bot"),
+        MISC("Miscellaneous", 2, "Miscellaneous commands for the bot"),
+        CARD_GAMES("Card Games", 3, "Card games for the bot"),
+        CURRENCY("Currency", 4, "Currency commands for the bot"),
+        CUSTOM_COMMAND("Custom Commands", 5, "Custom commands for the bot"),
+        SINON_ADMIN("Sinon Admin", 10, "Sinon Admin commands for the bot"),
+        SINON_OWNER("Sinon Owner", 11, "Sinon Owner commands for the bot"),
+        TRIP_ONLY("Trip Only", 12, "Trip Only commands for the bot");
 
         private final String name;
         private final int id;
+        private final String description;
 
-        CommandCategory(String name, int id) {
+        CommandCategory(String name, int id, String description) {
             this.name = name;
             this.id = id;
+            this.description = description;
         }
 
         @Nullable
@@ -106,6 +108,15 @@ public abstract class Command {
 
         public int getId() {
             return id;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        @Override
+        public String toString() {
+            return getName();
         }
     }
 

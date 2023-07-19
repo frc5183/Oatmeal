@@ -6,12 +6,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.commands.Command;
-import wtf.triplapeeck.oatmeal.commands.CommandHandler;
 import wtf.triplapeeck.oatmeal.commands.FakeCommand;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -71,9 +69,14 @@ public class Help extends Command {
             carriage.channel.sendMessageEmbeds(builder.build()).queue();
         }
 
-        String s = carriage.args[1];
+        StringBuilder sBuilder = new StringBuilder();
+        for (int i = 1; i < carriage.args.length; i++) {
+            sBuilder.append(carriage.args[i]);
+        }
 
-        CommandCategory category = null;
+        String s = sBuilder.toString();
+
+        CommandCategory category;
         try {
             category = CommandCategory.fromInt(Integer.parseInt(s));
         } catch (NumberFormatException e) {
@@ -81,12 +84,13 @@ public class Help extends Command {
         }
 
         if (category == null) {
-            if (getCommandList(carriage).containsValue(s)) {
+            if (getCommandList(carriage).containsKey(s)) {
                 Command command = getCommandList(carriage).get(s);
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.setTitle(command.getName());
                 builder.setDescription(command.getDocumentation());
                 builder.setColor(Color.CYAN);
+                carriage.channel.sendMessageEmbeds(builder.build()).queue();
                 return;
             }
             carriage.channel.sendMessage("Invalid category or command.").queue();
@@ -122,21 +126,25 @@ public class Help extends Command {
         return CommandCategory.ESSENTIAL;
     }
 
-    private void listCommands(@NotNull DataCarriage carriage, @NotNull CommandCategory page) {
+    private void listCommands(@NotNull DataCarriage carriage, @NotNull CommandCategory category) {
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle(page.getName());
+        builder.setTitle(category.getName());
+        builder.setDescription(category.getDescription());
+
+        StringBuilder commands = new StringBuilder();
         for (Command c : getCommandList(carriage).values()) {
-            if (c.hasPermission(carriage, carriage.user) && c.getCategory() == page) {
-                builder.appendDescription("\n`" + c.getName() + '`');
+            if (c.hasPermission(carriage, carriage.user) && c.getCategory() == category) {
+                commands.append("\n`").append(c.getName()).append('`');
             }
         }
+
+        builder.addField("Commands", commands.toString(), false);
         carriage.channel.sendMessageEmbeds(builder.build()).queue();
     }
 
     @NotNull
     private HashMap<String, Command> getCommandList(@NotNull DataCarriage carriage) {
-        HashMap<String, Command> list = new HashMap<>();
-        list.putAll(carriage.commandsList);
+        HashMap<String, Command> list = new HashMap<>(carriage.commandsList);
 
         if (carriage.guildEntity.getCustomCommands() == null) return list;
 
@@ -149,13 +157,11 @@ public class Help extends Command {
     }
 
     public @NotNull String getDocumentation() { return """
-            Used to gather info on Sinon's Commands
-            Usage: s!help
-            Gathers a list of available command pages
-            Usage: s!help [Number]
-            Gathers a list of available commands within a page group
-            Usage: s!help [Command]
-            Gathers specific info on a command""";}
+                    Used to get information about commands and categories.
+                    Usage:
+                    `s!help` - Get a list of all categories.
+                    `s!help <command>` - Get more information about a specific command.
+                    `s!help <category>` - to get a list of all commands in that category.""";}
 
     public @NotNull String getName() {
         return "help";
