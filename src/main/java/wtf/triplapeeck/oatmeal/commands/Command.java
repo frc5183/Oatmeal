@@ -236,7 +236,6 @@ public abstract class Command {
             carriage.channel.sendMessage("You are not allowed to do this command.").queue();
             return false;
         }
-
     }
 
     public boolean isTrip(@NotNull DataCarriage carriage) {

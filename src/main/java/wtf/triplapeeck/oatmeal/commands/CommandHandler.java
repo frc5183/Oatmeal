@@ -13,28 +13,23 @@ import wtf.triplapeeck.oatmeal.runnable.TableUpdate;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CommandHandler {
-    private static CommandHandler instance;
-    private ArrayList<Command> commandList = new ArrayList<>();
+    private HashMap<String, Command> commandList = new HashMap<>();
     private final String prefix;
     private final Random mainRandomizer = new Random();
     private final int level;
 
     public CommandHandler(@NotNull String pre, int level1) {
-        instance = this;
         prefix=pre;
         level=level1;
     }
 
-    public static ArrayList<Command> getCommandList() {
-        return instance.commandList;
-    }
-
     public void addCommand(@NotNull Command command) {
-        commandList.add(command);
+        commandList.put(command.getName(), command);
     }
 
     public void handle(@NotNull MessageReceivedEvent event, @NotNull JDA api, ThreadManager listener) {
@@ -49,12 +44,10 @@ public class CommandHandler {
         if (carriage.args[level].startsWith(prefix)) {
             String command = carriage.args[0].replace(prefix, "");
             AtomicBoolean caught= new AtomicBoolean(false);
-            commandList.forEach(c -> {
-                if (c.getName().equals(command)) {
-                    caught.set(true);
-                    c.handler(event, carriage, listener);
-                }
-            });
+            if (commandList.containsKey(command)) {
+                caught.set(true);
+                commandList.get(command).handler(event, carriage, listener);
+            }
 
             if (!caught.get()) {
                 String customCommand = carriage.guildEntity.getCustomCommands().get(carriage.args[level].substring(prefix.length()));

@@ -12,10 +12,11 @@ import wtf.triplapeeck.oatmeal.entities.MemberData;
 import wtf.triplapeeck.oatmeal.entities.UserData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class DataCarriage {
-    public ArrayList<Command> commandsList;
+    public HashMap<String, Command> commandsList;
     public String[] args;
     public String textAfterSubcommand;
     public Random random;

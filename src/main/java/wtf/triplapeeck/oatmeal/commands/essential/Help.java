@@ -12,47 +12,101 @@ import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class Help extends Command {
     public void handler(@NotNull MessageReceivedEvent event, @NotNull DataCarriage carriage, ThreadManager listener) {
-        String categoryString = carriage.args[1];
+        if (carriage.args.length < 2) {
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.setTitle("Help");
+            builder.setDescription("""
+                    Oatmeal is a multipurpose bot with many featuresYou can do s!help <command> to get more information about a specific command.
+                    You can also do s!help <category> to get a list of all commands in that category.
+                    If you would like to contribute to Oatmeal, visit our Github at https://github.com/frc5183/oatmeal""");
+            if (isTrip(carriage)) {
+                builder.addField("Categories", """
+                       1. Essential
+                       2. Miscellaneous
+                       3. Card Games
+                       4. Currency
+                       5. Custom Commands
+                                
+                       10. Sinon Admin
+                       11. Sinon Owner
+                       12. Trip Only
+                        """, false);
+            } else if (isOwner(carriage)) {
+                builder.addField("Categories", """
+                       1. Essential
+                       2. Miscellaneous
+                       3. Card Games
+                       4. Currency
+                       5. Custom Commands
+                                
+                       10. Sinon Admin
+                       11. Sinon Owner
+                        """, false);
+            } else if (isAdmin(carriage)) {
+                builder.addField("Categories", """
+                       1. Essential
+                       2. Miscellaneous
+                       3. Card Games
+                       4. Currency
+                       5. Custom Commands
+                               
+                       10. Sinon Admin
+                        """, false);
+            } else {
+                builder.addField("Categories", """
+                       1. Essential
+                       2. Miscellaneous
+                       3. Card Games
+                       4. Currency
+                       5. Custom Commands
+                        """, false);
+            }
+            builder.setColor(Color.CYAN);
+
+            carriage.channel.sendMessageEmbeds(builder.build()).queue();
+        }
+
+        String s = carriage.args[1];
 
         CommandCategory category = null;
         try {
-            category = CommandCategory.fromInt(Integer.parseInt(categoryString));
+            category = CommandCategory.fromInt(Integer.parseInt(s));
         } catch (NumberFormatException e) {
-            category = CommandCategory.fromString(categoryString);
+            category = CommandCategory.fromString(s);
         }
 
         if (category == null) {
-            for (Command c : getCommandList(carriage)) {
-                if (c.getName().equals(categoryString)) {
-                    EmbedBuilder builder = new EmbedBuilder();
-                    builder.setTitle(c.getName());
-                    builder.setDescription(c.getDocumentation());
-                    builder.setColor(Color.CYAN);
-                }
+            if (getCommandList(carriage).containsValue(s)) {
+                Command command = getCommandList(carriage).get(s);
+                EmbedBuilder builder = new EmbedBuilder();
+                builder.setTitle(command.getName());
+                builder.setDescription(command.getDocumentation());
+                builder.setColor(Color.CYAN);
                 return;
             }
-            carriage.channel.sendMessage("Invalid Category").queue();
+            carriage.channel.sendMessage("Invalid category or command.").queue();
             return;
         }
 
         if (category == CommandCategory.TRIP_ONLY) {
-            if (carriage.user.getIdLong()==222517551257747456L) {
+            if (isTrip(carriage)) {
                 listCommands(carriage, category);
             } else {
                 carriage.channel.sendMessage("This Page is reserved only for Trip-kun").queue();
             }
         } else if (category == CommandCategory.SINON_OWNER) {
-            if (carriage.userEntity.isOwner()) {
+            if (isOwner(carriage)) {
                 listCommands(carriage, category);
             } else {
                 carriage.channel.sendMessage("This Page is reserved only for Sinon's Owners").queue();
             }
         } else if (category == CommandCategory.SINON_ADMIN) {
-            if (carriage.userEntity.isAdmin()) {
+            if (isAdmin(carriage)) {
                 listCommands(carriage, category);
             } else {
                 carriage.channel.sendMessage("This Page is reserved only for Sinon's Admins").queue();
@@ -70,34 +124,38 @@ public class Help extends Command {
     private void listCommands(@NotNull DataCarriage carriage, @NotNull CommandCategory page) {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle(page.getName());
-        for (Command c : getCommandList(carriage)) {
+        for (Command c : getCommandList(carriage).values()) {
             if (c.hasPermission(carriage, carriage.user) && c.getCategory() == page) {
-                builder.addField(c.getName(), c.getDocumentation(), false);
+                builder.appendDescription("\n`" + c.getName() + '`');
             }
         }
         carriage.channel.sendMessageEmbeds(builder.build()).queue();
     }
 
-    public ArrayList<Command> getCommandList(DataCarriage carriage) {
-        ArrayList<Command> list = new ArrayList<>(CommandHandler.getCommandList());
+    @NotNull
+    private HashMap<String, Command> getCommandList(@NotNull DataCarriage carriage) {
+        HashMap<String, Command> list = new HashMap<>();
+        list.putAll(carriage.commandsList);
 
         if (carriage.guildEntity.getCustomCommands() == null) return list;
 
         for (Iterator<String> it = carriage.guildEntity.getCustomCommands().keys().asIterator(); it.hasNext(); ) {
             String str = it.next();
-            list.add(new FakeCommand(str));
+            list.put(str, new FakeCommand(str));
         }
 
         return list;
     }
 
-    public @NotNull String getDocumentation() { return "Used to gather info on Sinon's Commands"
-            +"\nUsage: s!help" +
-            "\nGathers a list of available command pages" +
-            "\nUsage: s!help [Number]" +
-            "\nGathers a list of available commands within a page group" +
-            "\nUsage: s!help [Command]" +
-            "\nGathers specific info on a command";}
+    public @NotNull String getDocumentation() { return """
+            Used to gather info on Sinon's Commands
+            Usage: s!help
+            Gathers a list of available command pages
+            Usage: s!help [Number]
+            Gathers a list of available commands within a page group
+            Usage: s!help [Command]
+            Gathers specific info on a command""";}
+
     public @NotNull String getName() {
         return "help";
     }
