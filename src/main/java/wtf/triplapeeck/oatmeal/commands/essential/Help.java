@@ -111,8 +111,9 @@ public class Help extends Command {
             } else {
                 carriage.channel.sendMessage("This Page is reserved only for Sinon's Admins").queue();
             }
+        } else {
+            listCommands(carriage, category);
         }
-        listCommands(carriage, category);
     }
 
     @NotNull
