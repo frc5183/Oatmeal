@@ -59,14 +59,24 @@ public class Main {
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);
 
 
+    /**
+     * The starting point of the program.
+     * @param args The first command line argument will be used as the token for the Discord Bot itself. If not included as a command line argument, it MUST be included in config.json
+     * @throws LoginException
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws SQLException
+     */
     public static void main(String[] args) throws LoginException, InterruptedException, IOException, SQLException {
+        //Instantiates the main Discord Event Handler
         listener=new DefaultListener();
+        //Instantiates the Thread Manager
         threadManager=new ThreadManager();
         api = JDABuilder.createLight(ConfigParser.getToken(args)).disableCache(new ArrayList<>(Arrays.asList(CacheFlag.values())))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(listener).build();
         api.awaitReady();
-        JSONStorableFactory sf = new JSONStorableFactory(0L);
+        //Adds Every Command to the Command Handler
         commandHandler.addCommand(new Balance());
         commandHandler.addCommand(new Ping());
         commandHandler.addCommand(new Help());
@@ -97,6 +107,7 @@ public class Main {
         commandHandler.addCommand(new Ban());
         commandHandler.addCommand(new Count());
         commandHandler.addCommand(new Remind());
+        //Adds the internal Heartbeat thread to the thread manager.
         threadManager.addTask(new Heartbeat());
     }
 }

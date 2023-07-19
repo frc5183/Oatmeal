@@ -68,6 +68,7 @@ public class Help extends Command {
             builder.setColor(Color.CYAN);
 
             carriage.channel.sendMessageEmbeds(builder.build()).queue();
+            return;
         }
 
         StringBuilder sBuilder = new StringBuilder();
