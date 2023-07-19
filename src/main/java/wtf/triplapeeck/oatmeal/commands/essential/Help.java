@@ -19,8 +19,9 @@ public class Help extends Command {
             EmbedBuilder builder = new EmbedBuilder();
             builder.setTitle("Help");
             builder.setDescription("""
-                    Oatmeal is a multipurpose bot with many featuresYou can do s!help <command> to get more information about a specific command.
-                    You can also do s!help <category> to get a list of all commands in that category.
+                    Oatmeal is a multipurpose bot with many features
+                    You can do `s!help <command>` to get more information about a specific command.
+                    You can also do `s!help <category>` to get a list of all commands in that category.
                     If you would like to contribute to Oatmeal, visit our Github at https://github.com/frc5183/oatmeal""");
             if (isTrip(carriage)) {
                 builder.addField("Categories", """
