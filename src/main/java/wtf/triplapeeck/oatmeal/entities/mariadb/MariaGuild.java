@@ -62,7 +62,7 @@ public class MariaGuild extends GuildData  {
     private @Nullable String starboardChannelID;
 
     @Column
-    private @Nullable Integer starboardLimit;
+    private @NotNull Integer starboardLimit;
 
     @Column(nullable = false)
     private @NotNull Boolean currencyEnabled;
@@ -77,6 +77,7 @@ public class MariaGuild extends GuildData  {
         this.starboardLimit = null;
         this.currencyEnabled = true;
         this.testingEnabled = false;
+        this.starboardLimit=2;
     }
 
     @Deprecated
@@ -138,8 +139,11 @@ public class MariaGuild extends GuildData  {
         this.starboardChannelID = starboardChannelID;
     }
 
-    @Nullable
+    @NotNull
     public synchronized Integer getStarboardLimit() {
+        if (starboardLimit==null) {
+            starboardLimit=2;
+        }
         return starboardLimit;
     }
 

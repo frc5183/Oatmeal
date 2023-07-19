@@ -2,9 +2,13 @@ package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.requests.RestAction;
 import wtf.triplapeeck.oatmeal.Main;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 public class NukeRunnable implements NamedRunnable {
@@ -39,8 +43,14 @@ public class NukeRunnable implements NamedRunnable {
                 messageSend.complete();
             }
         } while (toClear>0);
-        for (Message message : history.getRetrievedHistory()) {
-            message.delete().queue();
+        if (history.getRetrievedHistory().size()<=1){
+            for (Message message : history.getRetrievedHistory()) {
+                message.delete().queue();
+            }
+        } else {
+            List<CompletableFuture<Void>> list = channel.purgeMessages(history.getRetrievedHistory());
+            CompletableFuture.allOf(list.toArray(new CompletableFuture[0])).complete(null);
+
         }
         channel.sendMessage("Nuking Complete!").complete();
     }

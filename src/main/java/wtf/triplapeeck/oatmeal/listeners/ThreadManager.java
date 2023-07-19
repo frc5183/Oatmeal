@@ -62,6 +62,11 @@ public class ThreadManager extends Thread {
             if ((!stillFinishing) && requestToEnd) {
                 break;
             }
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+
+            }
         }
         Logger.customLog("ThreadManager", "Complete");
     }
