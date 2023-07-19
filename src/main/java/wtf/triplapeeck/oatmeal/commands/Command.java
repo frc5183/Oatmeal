@@ -132,7 +132,7 @@ public abstract class Command {
     public abstract void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener);
 
     public abstract @NotNull CommandCategory getCategory();
-    public abstract @NotNull java.lang.String getDocumentation();
+    public abstract @NotNull String getDocumentation();
     public abstract @NotNull String getName();
 
     public abstract @NotNull boolean hasPermission(DataCarriage carriage, User user);
