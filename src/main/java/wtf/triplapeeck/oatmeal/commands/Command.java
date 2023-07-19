@@ -70,31 +70,30 @@ public abstract class Command {
 
         @Nullable
         public static CommandCategory fromString(String value) {
-            value = value.toLowerCase();
-            switch (value) {
-                case "miscellaneous" -> {
+            switch (value.toLowerCase()) {
+                case "essential" -> {
+                    return ESSENTIAL;
+                }
+                case "misc", "miscellaneous" -> {
                     return MISC;
                 }
-                case "owner" -> {
-                    return SINON_OWNER;
-                }
-                case "admin" -> {
-                    return SINON_ADMIN;
-                }
-                case "card" -> {
+                case "card games", "card" -> {
                     return CARD_GAMES;
                 }
                 case "currency" -> {
                     return CURRENCY;
                 }
-                case "essential" -> {
-                    return ESSENTIAL;
-                }
-                case "trip" -> {
-                    return TRIP_ONLY;
-                }
-                case "custom" -> {
+                case "custom commands", "custom command" -> {
                     return CUSTOM_COMMAND;
+                }
+                case "sinon admin", "admin" -> {
+                    return SINON_ADMIN;
+                }
+                case "sinon owner", "owner" -> {
+                    return SINON_OWNER;
+                }
+                case "trip only", "trip" -> {
+                    return TRIP_ONLY;
                 }
                 default -> {
                     return null;

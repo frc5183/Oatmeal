@@ -71,7 +71,11 @@ public class Help extends Command {
 
         StringBuilder sBuilder = new StringBuilder();
         for (int i = 1; i < carriage.args.length; i++) {
-            sBuilder.append(carriage.args[i]);
+            if (i == 1) {
+                sBuilder.append(carriage.args[i]);
+            } else {
+                sBuilder.append(" ").append(carriage.args[i]);
+            }
         }
 
         String s = sBuilder.toString();
