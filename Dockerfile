@@ -6,6 +6,6 @@ RUN gradle --no-daemon shadowJar
 
 FROM openjdk:17-slim
 WORKDIR /app
-COPY --from=BUILD /build/build/libs/oatmeal-1.0.jar oatmeal.jar
+COPY --from=BUILD /build/build/libs/oatmeal-1.0-all.jar oatmeal.jar
 WORKDIR /app/work
 ENTRYPOINT java -jar /app/oatmeal.jar
