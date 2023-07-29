@@ -41,9 +41,11 @@ public class MariaManager extends DataManager {
         return userEntity;
     }
 
-    public void saveGuildData(String key) {
+    public void saveGuildData(String key, boolean remove) {
         MariaGuild guildEntity =(MariaGuild) guildCache.get(key);
-        guildCache.remove(key);
+        if (remove) {
+            guildCache.remove(key);
+        }
         try {
             HashMap<String, String> step = new HashMap<>();
             for (String k : guildEntity.getCustomCommands().keySet()) {
@@ -60,9 +62,11 @@ public class MariaManager extends DataManager {
             throw new RuntimeException(e);
         }
     }
-    public void saveUserData(String key) {
+    public void saveUserData(String key, boolean remove) {
         MariaUser userEntity =  (MariaUser) userCache.get(key);
-        userCache.remove(key);
+        if (remove) {
+            userCache.remove(key);
+        }
         try {
             String step = gson.toJson(userEntity.getReminderMap());
             userEntity.setJsonReminders(step);
@@ -84,9 +88,11 @@ public class MariaManager extends DataManager {
         }
         return mariaChannel;
     }
-    public void saveChannelData(String key) {
+    public void saveChannelData(String key, boolean remove) {
         MariaChannel mariaChannel =  (MariaChannel) channelCache.get(key);
-        channelCache.remove(key);
+        if (remove) {
+            channelCache.remove(key);
+        }
         try {
             String step;
             while (true) {
@@ -117,9 +123,11 @@ public class MariaManager extends DataManager {
         }
         return mariaMember;
     }
-    public void saveMemberData(String key) {
+    public void saveMemberData(String key, boolean remove) {
         MariaMember mariaMember = (MariaMember) memberCache.get(key);
-        memberCache.remove(key);
+        if (remove) {
+            memberCache.remove(key);
+        }
         try {
             DatabaseUtil.updateMemberEntity(mariaMember);
         } catch (SQLException e) {
@@ -139,9 +147,11 @@ public class MariaManager extends DataManager {
         }
         return mariaGeneric;
     }
-    public void saveGenericData(String key) {
+    public void saveGenericData(String key, boolean remove) {
         MariaGeneric mariaGeneric = (MariaGeneric) genericCache.get(key);
-        genericCache.remove(mariaGeneric);
+        if (remove) {
+            genericCache.remove(mariaGeneric);
+        }
         try {
             HashMap<String, String> step = new HashMap<>();
             for (String k: mariaGeneric.getKnownUserList().keySet()) {

@@ -26,15 +26,15 @@ public abstract class DataManager extends Thread {
     public final Gson gson = gsonBuilder.create();
 
     protected abstract GuildData getRawGuildData(String id);
-    protected abstract void saveGuildData(String id);
+    protected abstract void saveGuildData(String id, boolean remove);
     protected abstract UserData getRawUserData(String id);
-    protected abstract void saveUserData(String id);
+    protected abstract void saveUserData(String id, boolean remove);
     protected abstract ChannelData getRawChannelData(String id);
-    protected abstract void saveChannelData(String id);
+    protected abstract void saveChannelData(String id, boolean remove);
     protected abstract MemberData getRawMemberData(String id);
-    protected abstract void saveMemberData(String id);
+    protected abstract void saveMemberData(String id, boolean remove);
     protected abstract GenericData getRawGenericData(String id);
-    protected abstract void saveGenericData(String id);
+    protected abstract void saveGenericData(String id, boolean remove);
 
     public GuildData getGuildData(String id) {
         GuildData guildData;
@@ -105,22 +105,22 @@ public abstract class DataManager extends Thread {
                 }
                 temp.addAll(guildCache.keySet());
                 for (String key: temp) {
-                    saveGuildData(key);
+                    saveGuildData(key, true);
                 }
                 temp.clear();
                 temp.addAll(userCache.keySet());
                 for (String key: temp) {
-                    saveUserData(key);
+                    saveUserData(key, true);
                 }
                 temp.clear();
                 temp.addAll(channelCache.keySet());
                 for (String key: temp) {
-                    saveChannelData(key);
+                    saveChannelData(key, true);
                 }
                 temp.clear();
                 temp.addAll(memberCache.keySet());
                 for (String key: temp) {
-                    saveMemberData(key);
+                    saveMemberData(key, true);
                 }
                 temp.clear();
                 break;
@@ -134,6 +134,10 @@ public abstract class DataManager extends Thread {
             for (String key: guildCache.keySet()) {
                 GuildData guildData = guildCache.get(key);
                 if (guildData.getEpoch()!=0 && guildData.getAccessCount()==0) {
+                    if (!guildData.getSaved() ) {
+                        saveGuildData(key, false);
+                        guildData.saved();
+                    }
                     if (Instant.now().getEpochSecond() > 30 + guildData.getEpoch()) {
                         temp.add(key);
                     }
@@ -144,13 +148,17 @@ public abstract class DataManager extends Thread {
             for (String key: temp) {
                 GuildData guildData = guildCache.get(key);
                 if (guildData.getAccessCount()==0) {
-                    saveGuildData(key);
+                    saveGuildData(key, true);
                 }
             }
             temp.clear();
             for (String key: userCache.keySet()) {
                 UserData userData = userCache.get(key);
                 if (userData.getEpoch()!=0 && userData.getAccessCount()==0) {
+                    if (!userData.getSaved()) {
+                        saveUserData(key, false);
+                        userData.saved();
+                    }
                     if (Instant.now().getEpochSecond()>30 + userData.getEpoch()) {
                         temp.add(key);
                     }
@@ -161,13 +169,17 @@ public abstract class DataManager extends Thread {
             for (String key: temp) {
                 UserData userData = userCache.get(key);
                 if (userData.getAccessCount()==0) {
-                    saveUserData(key);
+                    saveUserData(key, true);
                 }
             }
             temp.clear();
             for (String key: channelCache.keySet()) {
                 ChannelData channelData = channelCache.get(key);
                 if (channelData.getEpoch()!=0 && channelData.getAccessCount()==0) {
+                    if (!channelData.getSaved()) {
+                        saveChannelData(key, false);
+                        channelData.saved();
+                    }
                     if (Instant.now().getEpochSecond()>30 + channelData.getEpoch()) {
                         temp.add(key);
                     }
@@ -176,13 +188,17 @@ public abstract class DataManager extends Thread {
             for (String key: temp) {
                 ChannelData channelData = channelCache.get(key);
                 if (channelData.getAccessCount()==0) {
-                    saveChannelData(key);
+                    saveChannelData(key, true);
                 }
             }
             temp.clear();
             for (String key: memberCache.keySet()) {
                 MemberData memberData = memberCache.get(key);
                 if (memberData.getEpoch()!=0 && memberData.getAccessCount()==0) {
+                    if (!memberData.getSaved()) {
+                        saveMemberData(key, false);
+                        memberData.saved();
+                    }
                     if (Instant.now().getEpochSecond()>30 + memberData.getEpoch()) {
                         temp.add(key);
                     }
@@ -191,7 +207,7 @@ public abstract class DataManager extends Thread {
             for (String key: temp) {
                 MemberData memberData = memberCache.get(key);
                 if (memberData.getAccessCount()==0) {
-                    saveMemberData(key);
+                    saveMemberData(key, true);
                 }
             }
             temp.clear();
