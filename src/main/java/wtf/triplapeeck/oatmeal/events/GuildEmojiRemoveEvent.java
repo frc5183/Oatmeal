@@ -26,6 +26,10 @@ public class GuildEmojiRemoveEvent implements NamedRunnable {
     @Override
     public void run() {
         GuildData guildEntity = Main.dataManager.getGuildData(event.getGuild().getId());
+        if (guildEntity.getStarboardChannelID()==null) {
+            guildEntity.release();
+            return;
+        }
         TextChannel starboard = event.getGuild().getTextChannelById(guildEntity.getStarboardChannelID());
         if (event.getReaction().getEmoji().getType()== Emoji.Type.CUSTOM) {
             guildEntity.release();
@@ -98,9 +102,9 @@ public class GuildEmojiRemoveEvent implements NamedRunnable {
             } catch (NullPointerException e) {
                 Link.remove(message.getIdLong());
             }
-            guildEntity.release();
-        }
 
+        }
+        guildEntity.release();
     }
 
 }
