@@ -1,0 +1,10 @@
+services:
+    oatmeal:
+        build: .
+        environment:
+            TOKEN: ""
+            DATABASE_ADDRESS: ""
+            DATABASE_PORT: ""
+            DATABASE_USER: ""
+            DATABASE_PASSWORD: ""
+            DATABASE_NAME: ""
