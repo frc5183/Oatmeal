@@ -14,10 +14,12 @@ public class JSONManager extends DataManager {
 
     }
 
-    protected void saveGuildData(String id) {
+    protected void saveGuildData(String id, boolean remove) {
         GuildJSONStorable guildData;
         guildData = (GuildJSONStorable) guildCache.get(id);
-        guildCache.remove(id);
+        if (remove) {
+            guildCache.remove(id);
+        }
         guildData.Store();
     }
 
@@ -28,10 +30,12 @@ public class JSONManager extends DataManager {
         return userData;
     }
 
-    protected void saveUserData(String id) {
+    protected void saveUserData(String id, boolean remove) {
         UserJSONStorable userData;
         userData = (UserJSONStorable) userCache.get(id);
-        userCache.remove(id);
+        if (remove) {
+            userCache.remove(id);
+        }
         userData.Store();
     }
     public ChannelJSONStorable getRawChannelData(String id) {
@@ -40,10 +44,12 @@ public class JSONManager extends DataManager {
         channelData.load();
         return channelData;
     }
-    protected void saveChannelData(String id) {
+    protected void saveChannelData(String id, boolean remove) {
         ChannelJSONStorable channelData;
         channelData = (ChannelJSONStorable) channelCache.get(id);
-        channelCache.remove(id);
+        if (remove) {
+            channelCache.remove(id);
+        }
         channelData.Store();
     }
     public MemberJSONStorable getRawMemberData(String id) {
@@ -52,10 +58,12 @@ public class JSONManager extends DataManager {
         memberData.load();
         return memberData;
     }
-    protected void saveMemberData(String id) {
+    protected void saveMemberData(String id, boolean remove) {
         MemberJSONStorable memberData;
         memberData = (MemberJSONStorable) memberCache.get(id);
-        memberCache.remove(id);
+        if (remove) {
+            memberCache.remove(id);
+        }
         memberData.Store();
     }
     public GenericJSONStorable getRawGenericData(String id) {
@@ -64,10 +72,12 @@ public class JSONManager extends DataManager {
         genericData.load();
         return genericData;
     }
-    protected void saveGenericData(String id) {
+    protected void saveGenericData(String id, boolean remove) {
         GenericJSONStorable genericData;
         genericData = (GenericJSONStorable) genericCache.get(id);
-        genericCache.remove(id);
+        if (remove) {
+            genericCache.remove(id);
+        }
         genericData.Store();
     }
 }

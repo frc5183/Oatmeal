@@ -27,8 +27,12 @@ public class GuildEmojiAddEvent implements NamedRunnable {
 
         GuildData guildEntity;
             guildEntity = Main.dataManager.getGuildData(event.getGuild().getId());
+        if (guildEntity.getStarboardChannelID()==null) {
+            guildEntity.release();
+            return;
+        }
         if (guildEntity.getStarboardChannelID()!=null) {
-            assert guildEntity.getStarboardChannelID() != null;
+
             TextChannel starboard = event.getGuild().getTextChannelById(guildEntity.getStarboardChannelID());
             if (event.getReaction().getEmoji().getType() == Emoji.Type.CUSTOM) {
                 guildEntity.release();
@@ -92,10 +96,11 @@ public class GuildEmojiAddEvent implements NamedRunnable {
                     starboardMessage.editMessage("Stars: " + count + " " + message.getChannel().getAsMention()).setEmbeds(embed).queue();
                 } finally {
                     Link.put(message.getId(), starboardMessage.getId());
-                    guildEntity.release();
+
                 }
 
             }
+            guildEntity.release();
         }
     }
 
