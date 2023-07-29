@@ -18,7 +18,6 @@ public class SetAdmin extends Command {
                 ensureIsOwner(carriage) &&
                 ensureTaggedUserListNotEmpty(carriage) &&
                 ensureOnlyOneTaggedUser(carriage) &&
-                ensureOnlyOneTaggedIsNotTrip(carriage) &&
                 ensureOnlyOneTaggedIsNotOwner(carriage)
         ) {
 

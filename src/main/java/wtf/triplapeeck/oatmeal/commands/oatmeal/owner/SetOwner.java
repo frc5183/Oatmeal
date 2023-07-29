@@ -14,10 +14,9 @@ import java.util.List;
 
 public class SetOwner extends Command {
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
-        if (ensureIsTrip(carriage) &&
+        if (ensureIsOwner(carriage) &&
             ensureTaggedUserListNotEmpty(carriage) &&
-            ensureOnlyOneTaggedUser(carriage) &&
-            ensureOnlyOneTaggedIsNotTrip(carriage)) {
+            ensureOnlyOneTaggedUser(carriage)) {
             List<User> userList = carriage.message.getMentions().getUsers();
             User user = userList.get(0);
             UserData usUsr = Main.dataManager.getUserData(user.getId());
@@ -42,7 +41,7 @@ public class SetOwner extends Command {
 
     @Override
     public @NotNull boolean hasPermission(DataCarriage carriage, User user) {
-        return isTrip(carriage);
+        return isOwner(carriage);
     }
 
 }

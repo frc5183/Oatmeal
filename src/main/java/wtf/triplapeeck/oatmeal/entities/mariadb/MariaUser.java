@@ -3,6 +3,7 @@ package wtf.triplapeeck.oatmeal.entities.mariadb;
 import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wtf.triplapeeck.oatmeal.Config;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 import wtf.triplapeeck.oatmeal.entities.UserData;
@@ -83,7 +84,7 @@ public class MariaUser extends UserData {
 
     @NotNull
     public synchronized Boolean isAdmin() {
-        return admin;
+        return (admin || isOwner());
     }
 
     @Override
@@ -92,12 +93,12 @@ public class MariaUser extends UserData {
     }
 
     public synchronized void setAdmin(@NotNull boolean admin) {
-        this.admin = admin;
+        this.admin = (admin || isOwner());
     }
 
     @NotNull
     public synchronized Boolean isOwner() {
-        return owner;
+        return (owner || Config.getConfig().owners.contains(Long.parseLong(userId)));
     }
 
     @Override
@@ -106,7 +107,7 @@ public class MariaUser extends UserData {
     }
 
     public synchronized void setOwner(@NotNull boolean owner) {
-        this.owner = owner;
+        this.owner = (owner || Config.getConfig().owners.contains(userId));
     }
 
     public Boolean isCurrencyPreference() {

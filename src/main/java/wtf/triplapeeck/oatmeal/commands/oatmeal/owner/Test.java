@@ -36,6 +36,6 @@ public class Test extends Command
 
     @Override
     public boolean hasPermission(DataCarriage carriage, User user) {
-        return true;
+        return isOwner(carriage);
     }
 }

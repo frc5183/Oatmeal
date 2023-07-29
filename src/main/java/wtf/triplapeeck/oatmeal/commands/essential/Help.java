@@ -23,19 +23,7 @@ public class Help extends Command {
                     You can do `s!help <command>` to get more information about a specific command.
                     You can also do `s!help <category>` to get a list of all commands in that category.
                     If you would like to contribute to Oatmeal, visit our Github at https://github.com/frc5183/oatmeal""");
-            if (isTrip(carriage)) {
-                builder.addField("Categories", """
-                       1. Essential
-                       2. Miscellaneous
-                       3. Card Games
-                       4. Currency
-                       5. Custom Commands
-                                
-                       10. Sinon Admin
-                       11. Sinon Owner
-                       12. Trip Only
-                        """, false);
-            } else if (isOwner(carriage)) {
+            if (isOwner(carriage)) {
                 builder.addField("Categories", """
                        1. Essential
                        2. Miscellaneous
@@ -103,13 +91,7 @@ public class Help extends Command {
             return;
         }
 
-        if (category == CommandCategory.TRIP_ONLY) {
-            if (isTrip(carriage)) {
-                listCommands(carriage, category);
-            } else {
-                carriage.channel.sendMessage("This Page is reserved only for Trip-kun").queue();
-            }
-        } else if (category == CommandCategory.SINON_OWNER) {
+         if (category == CommandCategory.SINON_OWNER) {
             if (isOwner(carriage)) {
                 listCommands(carriage, category);
             } else {

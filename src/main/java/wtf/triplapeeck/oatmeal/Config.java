@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Config {
     //TODO: Add System Dependent Config File Placement
@@ -17,6 +19,7 @@ public class Config {
     protected static GsonBuilder jsonBuilder = new GsonBuilder();
     protected static Gson json = jsonBuilder.create();
     public String token  = "";
+    public List<Long> owners = new ArrayList<>();
     public static FileRW fileRW;
     public DataMode dataMode = DataMode.JSON;
 
@@ -44,7 +47,7 @@ public class Config {
             String data = fileRW.readAll();
 
             if (data == null || data.length() == 0 || data.equals("null")) {
-                data = "{token:\"\"}";
+                data = "{\"token\":\"\", \"owners\":[1234567890,1234567890]}";
             }
             config = json.fromJson(data, Config.class);
             return config;

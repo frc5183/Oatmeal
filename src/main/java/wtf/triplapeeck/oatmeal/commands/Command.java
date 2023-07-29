@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wtf.triplapeeck.oatmeal.Config;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
@@ -22,8 +23,7 @@ public abstract class Command {
         CURRENCY("Currency", 4, "Currency commands for the bot"),
         CUSTOM_COMMAND("Custom Commands", 5, "Custom commands for the bot"),
         SINON_ADMIN("Sinon Admin", 10, "Sinon Admin commands for the bot"),
-        SINON_OWNER("Sinon Owner", 11, "Sinon Owner commands for the bot"),
-        TRIP_ONLY("Trip Only", 12, "Trip Only commands for the bot");
+        SINON_OWNER("Sinon Owner", 11, "Sinon Owner commands for the bot");
 
         private final String name;
         private final int id;
@@ -59,9 +59,6 @@ public abstract class Command {
                 case 11 -> {
                     return SINON_OWNER;
                 }
-                case 12 -> {
-                    return TRIP_ONLY;
-                }
                 default -> {
                     return null;
                 }
@@ -91,9 +88,6 @@ public abstract class Command {
                 }
                 case "sinon owner", "owner" -> {
                     return SINON_OWNER;
-                }
-                case "trip only", "trip" -> {
-                    return TRIP_ONLY;
                 }
                 default -> {
                     return null;
@@ -136,7 +130,7 @@ public abstract class Command {
 
     public abstract @NotNull boolean hasPermission(DataCarriage carriage, User user);
     public boolean ensureIsAdmin(@NotNull DataCarriage carriage) {
-        if (carriage.userEntity.isAdmin()) {
+        if (isAdmin(carriage)) {
             return true;
         } else {
             carriage.channel.sendMessage("You are not allowed to do this command.").queue();
@@ -151,7 +145,7 @@ public abstract class Command {
         return carriage.userEntity.isAdmin();
     }
     public boolean ensureIsOwner(@NotNull DataCarriage carriage) {
-        if (carriage.userEntity.isOwner()) {
+        if (isOwner(carriage)) {
             return true;
         } else {
             carriage.channel.sendMessage("You are not allowed to do this command.").queue();
@@ -216,14 +210,6 @@ public abstract class Command {
             return false;
         }
     }
-    public boolean ensureOnlyOneTaggedIsNotTrip(@NotNull DataCarriage carriage) {
-        if (carriage.message.getMentions().getUsers().get(0).getIdLong()!=222517551257747456L)
-            return true;
-        else {
-            carriage.channel.sendMessage("You cannot target Trip-kun with this command.").queue();
-            return false;
-        }
-    }
     public boolean getOwnerStatusOfOnlyOneTagged(@NotNull DataCarriage carriage) {
         List<User> userList = carriage.message.getMentions().getUsers();
         User user = userList.get(0);
@@ -238,18 +224,6 @@ public abstract class Command {
             carriage.channel.sendMessage("You cannot target an Owner with this command.").queue();
             return false;
         }
-    }
-    public boolean ensureIsTrip(@NotNull DataCarriage carriage) {
-        if (carriage.user.getIdLong()==222517551257747456L) {
-            return true;
-        } else {
-            carriage.channel.sendMessage("You are not allowed to do this command.").queue();
-            return false;
-        }
-    }
-
-    public boolean isTrip(@NotNull DataCarriage carriage) {
-        return carriage.user.getIdLong()==222517551257747456L;
     }
     public boolean currencyEnabled(@NotNull DataCarriage carriage) {
         return carriage.guildEntity.isCurrencyEnabled();
@@ -335,7 +309,7 @@ public abstract class Command {
     }
     public boolean canBan(@NotNull DataCarriage carriage) {
         if (!isGuild(carriage)) { return false;}
-        return carriage.message.getMember().hasPermission(Permission.BAN_MEMBERS) || isTrip(carriage);
+        return carriage.message.getMember().hasPermission(Permission.BAN_MEMBERS) || isOwner(carriage);
     }
     public boolean ensureBan(@NotNull DataCarriage carriage) {
         if (canBan(carriage)) {

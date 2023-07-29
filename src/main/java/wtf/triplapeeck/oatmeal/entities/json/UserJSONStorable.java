@@ -1,5 +1,6 @@
 package wtf.triplapeeck.oatmeal.entities.json;
 
+import wtf.triplapeeck.oatmeal.Config;
 import wtf.triplapeeck.oatmeal.FileRW;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
@@ -58,20 +59,19 @@ public class UserJSONStorable extends UserData {
         return (isAdmin || isOwner());
     }
     public synchronized Boolean isOwner() {
-        return (isOwner || BigInteger.valueOf(222517551257747456L).equals(getID()));
+        return (isOwner || Config.getConfig().owners.contains(idLong));
     }
 
     public synchronized void setOwner(Boolean is) {
-        isOwner=(is || BigInteger.valueOf(222517551257747456L).equals(getID()));
+        isOwner=(is || Config.getConfig().owners.contains(idLong));
     }
 
     public synchronized void setAdmin(Boolean is) {
-        isAdmin=(is || BigInteger.valueOf(222517551257747456L).equals(getID()) || isOwner);
+        isAdmin=(is || Config.getConfig().owners.contains(idLong) || isOwner());
     }
 
 
     public void Store() {
         factory.saveStorable(this);
-
     }
 }
