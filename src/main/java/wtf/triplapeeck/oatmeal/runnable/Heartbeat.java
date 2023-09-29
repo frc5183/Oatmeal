@@ -64,6 +64,7 @@ public class Heartbeat implements NamedRunnable {
                 us.release();
             }
             gs.release();
+            Main.dataManager.saveAll();
             try {
                 Thread.sleep(300000);
             } catch (InterruptedException ignored) {

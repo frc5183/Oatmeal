@@ -92,6 +92,24 @@ public abstract class DataManager extends Thread {
         return genericData;
 
     }
+    public void saveAll() {
+        temp.addAll(guildCache.keySet());
+        for (String key: temp) {
+            saveGuildData(key, false);
+        }
+        temp.addAll(userCache.keySet());
+        for (String key: temp) {
+            saveUserData(key, false);
+        }
+        temp.addAll(channelCache.keySet());
+        for (String key: temp) {
+            saveChannelData(key, false);
+        }
+        temp.addAll(memberCache.keySet());
+        for (String key: temp) {
+            saveMemberData(key, false);
+        }
+    }
     @Override
     public void run() {
         while(true) {
