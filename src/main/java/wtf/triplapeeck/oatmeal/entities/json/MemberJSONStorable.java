@@ -6,7 +6,7 @@ import wtf.triplapeeck.oatmeal.entities.MemberData;
 import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
 
 import java.math.BigInteger;
-
+@Deprecated
 public class MemberJSONStorable extends MemberData {
     public void load() {}
     protected transient JSONStorableFactory factory;

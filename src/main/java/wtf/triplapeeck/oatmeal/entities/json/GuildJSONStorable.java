@@ -7,7 +7,7 @@ import wtf.triplapeeck.oatmeal.entities.GuildData;
 import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+@Deprecated
 public class GuildJSONStorable extends GuildData {
     protected transient JSONStorableFactory factory;
     public synchronized void setFactory(JSONStorableFactory factory1) {

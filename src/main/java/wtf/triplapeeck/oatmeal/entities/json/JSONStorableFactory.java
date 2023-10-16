@@ -9,7 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
+@Deprecated
 public class JSONStorableFactory {
     private String id;
     protected transient Gson json;

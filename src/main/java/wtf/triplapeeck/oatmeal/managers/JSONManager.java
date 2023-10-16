@@ -3,7 +3,7 @@ package wtf.triplapeeck.oatmeal.managers;
 import wtf.triplapeeck.oatmeal.entities.GuildData;
 import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.entities.json.*;
-
+@Deprecated
 public class JSONManager extends DataManager {
 
     public synchronized GuildJSONStorable getRawGuildData(String id) {
