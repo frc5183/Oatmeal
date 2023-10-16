@@ -7,7 +7,7 @@ import wtf.triplapeeck.oatmeal.entities.DataID;
 import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
 
 import java.math.BigInteger;
-
+@Deprecated
 public abstract class JSONStorable extends AccessibleEntity implements DataID {
 
 

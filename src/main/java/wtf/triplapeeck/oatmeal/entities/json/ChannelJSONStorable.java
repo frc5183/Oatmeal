@@ -8,7 +8,7 @@ import wtf.triplapeeck.oatmeal.errors.ValidTableException;
 import wtf.triplapeeck.oatmeal.cards.Table;
 
 import java.math.BigInteger;
-
+@Deprecated
 public class ChannelJSONStorable extends ChannelData {
     protected transient JSONStorableFactory factory;
     public synchronized void setFactory(JSONStorableFactory factory1) {

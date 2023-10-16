@@ -8,7 +8,7 @@ import wtf.triplapeeck.oatmeal.entities.UserData;
 
 import java.math.BigInteger;
 import java.util.concurrent.ConcurrentHashMap;
-
+@Deprecated
 public class UserJSONStorable extends UserData {
     protected transient JSONStorableFactory factory;
     public synchronized void setFactory(JSONStorableFactory factory1) {
