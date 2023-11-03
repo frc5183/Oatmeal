@@ -17,36 +17,6 @@ public class MariaUser extends UserData {
     @Id
     public @NotNull String userId;
 
-    private transient ReminderMap reminders = new ReminderMap();
-    @Column
-    private String jsonReminders = "{}";
-
-    public void setJsonReminders(String jsonReminders) {
-        this.jsonReminders = jsonReminders;
-    }
-
-    public String getJsonReminders() {
-        return jsonReminders;
-    }
-
-    public void setReminderMap(ReminderMap reminders) {
-        this.reminders = reminders;
-    }
-
-    public ReminderMap getReminderMap() {
-        return this.reminders;
-    }
-    public static class ReminderMap {
-        private ConcurrentHashMap<String, Remind.Reminder> reminders = new ConcurrentHashMap<>();
-
-        public ConcurrentHashMap<String, Remind.Reminder> getReminders() {
-            return reminders;
-        }
-
-        public void setReminders(ConcurrentHashMap<String, Remind.Reminder> reminders) {
-            this.reminders = reminders;
-        }
-    }
     @Column(nullable = false)
     private @NotNull boolean admin;
 
@@ -71,15 +41,6 @@ public class MariaUser extends UserData {
         return userId;
     }
 
-    @Nullable
-    public synchronized ConcurrentHashMap<String, Remind.Reminder> getReminders() {
-        return reminders.getReminders();
-    }
-
-    @Override
-    public void setReminders(ConcurrentHashMap<String, Remind.Reminder> reminders) {
-
-    }
 
 
     @NotNull
@@ -121,16 +82,6 @@ public class MariaUser extends UserData {
 
     @Override
     public void load() {
-        MariaUser.ReminderMap out;
-        try {
-            out = Main.dataManager.gson.fromJson(this.getJsonReminders(), MariaUser.ReminderMap.class);
-        } catch (JsonSyntaxException e) {
-            out = new MariaUser.ReminderMap();
-        }
-        if (out==null) {
-            out=new MariaUser.ReminderMap();
-        }
-        this.setReminderMap(out);
     }
 
     public void setCurrencyPreference(boolean currencyPreference) {

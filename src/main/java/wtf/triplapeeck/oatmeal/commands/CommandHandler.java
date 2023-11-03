@@ -3,16 +3,13 @@ package wtf.triplapeeck.oatmeal.commands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
-import wtf.triplapeeck.oatmeal.entities.GenericData;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
-import wtf.triplapeeck.oatmeal.entities.json.GenericJSONStorable;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.runnable.TableUpdate;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -92,9 +89,6 @@ public class CommandHandler {
 
         carriage.channelStorable = Main.dataManager.getChannelData(carriage.channel.getId());
         carriage.memberStorable = Main.dataManager.getMemberData(String.valueOf(carriage.user.getIdLong()) + carriage.guildEntity.getID());
-        GenericData gs = Main.dataManager.getGenericData("0");
-        gs.getKnownUserList().put(carriage.user.getId(), carriage.user.getId());
-        gs.release();
     }
     private void HandleMessage(MessageReceivedEvent event, DataCarriage carriage) {
         carriage.memberStorable.setMessageCount(carriage.memberStorable.getMessageCount()+1);

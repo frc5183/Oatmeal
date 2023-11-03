@@ -1,12 +1,13 @@
 package wtf.triplapeeck.oatmeal.managers;
 
-import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.entities.ReminderData;
 import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 
 public class MariaManager extends DataManager {
 
@@ -66,13 +67,6 @@ public class MariaManager extends DataManager {
         MariaUser userEntity =  (MariaUser) userCache.get(key);
         if (remove) {
             userCache.remove(key);
-        }
-        try {
-            String step = gson.toJson(userEntity.getReminderMap());
-            userEntity.setJsonReminders(step);
-            DatabaseUtil.updateUserEntity(userEntity);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
     public MariaChannel getRawChannelData(String id) {
@@ -134,33 +128,43 @@ public class MariaManager extends DataManager {
             throw new RuntimeException(e);
         }
     }
-    public MariaGeneric getRawGenericData(String id) {
-        MariaGeneric mariaGeneric;
+
+
+    public void removeReminderData(Long id) {
         try {
-            mariaGeneric = DatabaseUtil.getGenericEntity(id);
-            if (mariaGeneric==null) {
-                mariaGeneric=new MariaGeneric(id);
-            }
-            mariaGeneric.load();
+            DatabaseUtil.deleteReminderEntity(id);
+        } catch (SQLException ignored) {
+
+        }
+    }
+
+    @Override
+    public void saveReminderData(ReminderData reminderData) {
+        MariaReminder reminderEntity = (MariaReminder) reminderData;
+        try {
+            DatabaseUtil.updateReminderEntity(reminderEntity);
+        } catch(SQLException ignored) {
+
+        }
+    }
+
+    @Override
+    public ReminderData createReminder(String text, Long unix, String userId) {
+        return new MariaReminder(unix, text, userId);
+    }
+
+    public void saveReminderData(MariaReminder reminderEntity) {
+
+    }
+
+    @Override
+    public List<? extends ReminderData> getAllReminderDatas() {
+        try {
+            return DatabaseUtil.getAllReminderEntity();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return mariaGeneric;
     }
-    public void saveGenericData(String key, boolean remove) {
-        MariaGeneric mariaGeneric = (MariaGeneric) genericCache.get(key);
-        if (remove) {
-            genericCache.remove(mariaGeneric);
-        }
-        try {
-            HashMap<String, String> step = new HashMap<>();
-            for (String k: mariaGeneric.getKnownUserList().keySet()) {
-                step.put(k, mariaGeneric.getKnownUserList().get(key));
-            }
-            mariaGeneric.setJsonUsers(gson.toJson(step));
-            DatabaseUtil.updateGenericEntity(mariaGeneric);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
+
 }

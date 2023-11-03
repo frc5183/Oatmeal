@@ -5,7 +5,6 @@ import wtf.triplapeeck.oatmeal.cards.Table;
 import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.errors.ValidTableException;
-import wtf.triplapeeck.oatmeal.entities.json.ChannelJSONStorable;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
 
@@ -16,7 +15,6 @@ public class NewTable implements NamedRunnable {
     }
     private long id;
     Table table;
-    ChannelJSONStorable channelStorable;
     public NewTable(long ID) {
         id=ID;
     }
