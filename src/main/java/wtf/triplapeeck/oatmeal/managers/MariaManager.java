@@ -133,8 +133,8 @@ public class MariaManager extends DataManager {
     public void removeReminderData(Long id) {
         try {
             DatabaseUtil.deleteReminderEntity(id);
-        } catch (SQLException ignored) {
-
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -143,8 +143,8 @@ public class MariaManager extends DataManager {
         MariaReminder reminderEntity = (MariaReminder) reminderData;
         try {
             DatabaseUtil.updateReminderEntity(reminderEntity);
-        } catch(SQLException ignored) {
-
+        } catch(SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
