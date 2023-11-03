@@ -31,17 +31,17 @@ public class MariaReminder extends ReminderData {
 
     @Override
     public String getText() {
-        return null;
+        return text;
     }
 
     @Override
     public Long getUnix() {
-        return null;
+        return unix;
     }
 
     @Override
     public String getUserId() {
-        return null;
+        return userId;
     }
 
     public void setId(Long id) {
