@@ -3,12 +3,9 @@ package wtf.triplapeeck.oatmeal.managers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 import wtf.triplapeeck.oatmeal.entities.*;
-import wtf.triplapeeck.oatmeal.entities.mariadb.MariaReminder;
 
 
-import java.lang.reflect.Member;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +36,7 @@ public abstract class DataManager extends Thread {
     public abstract void removeReminderData(Long id);
     public abstract void saveReminderData(ReminderData reminderData);
     public abstract ReminderData createReminder(String text, Long unix, String userId);
-    public abstract List<? extends ReminderData> getAllReminderDatas();
+    public abstract List<? extends ReminderData> getAllReminderData();
 
     public GuildData getGuildData(String id) {
         GuildData guildData;

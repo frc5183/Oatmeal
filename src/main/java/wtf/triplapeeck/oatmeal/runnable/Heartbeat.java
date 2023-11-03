@@ -2,10 +2,8 @@ package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.PrivateChannel;
 import wtf.triplapeeck.oatmeal.entities.ReminderData;
-import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 
 import java.time.DateTimeException;
 import java.time.Instant;
@@ -27,7 +25,7 @@ public class Heartbeat implements NamedRunnable {
         while (true) {
             Logger.customLog("Heartbeat", "beep");
             ArrayList<Long> temp = new ArrayList<>();
-            for (ReminderData reminder : Main.dataManager.getAllReminderDatas()) {
+            for (ReminderData reminder : Main.dataManager.getAllReminderData()) {
                 try {
                     if (Instant.now().compareTo(Instant.ofEpochSecond(reminder.getUnix())) > 0) {
                         temp.add(Long.valueOf(reminder.getId()));

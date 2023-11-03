@@ -158,7 +158,7 @@ public class MariaManager extends DataManager {
     }
 
     @Override
-    public List<? extends ReminderData> getAllReminderDatas() {
+    public List<? extends ReminderData> getAllReminderData() {
         try {
             return DatabaseUtil.getAllReminderEntity();
         } catch (SQLException e) {
