@@ -153,10 +153,6 @@ public class MariaManager extends DataManager {
         return new MariaReminder(unix, text, user);
     }
 
-    public void saveReminderData(MariaReminder reminderEntity) {
-
-    }
-
     @Override
     public List<? extends ReminderData> getAllReminderData() {
         try {
