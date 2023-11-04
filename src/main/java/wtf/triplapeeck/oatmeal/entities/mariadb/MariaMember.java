@@ -25,6 +25,11 @@ public class MariaMember extends MemberData {
         this.messageCount = 0;
     }
 
+    /**
+     * This constructor is only used by ORMLite.
+     */
+    public MariaMember() {}
+
     @NotNull
     public synchronized BigInteger getRak() {
         return rak;

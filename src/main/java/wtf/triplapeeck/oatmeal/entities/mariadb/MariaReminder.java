@@ -25,6 +25,11 @@ public class MariaReminder extends ReminderData {
         this.user = user;
     }
 
+    /**
+     * This constructor is only used by ORMLite.
+     */
+    public MariaReminder() {}
+
     @NotNull
     @Override
     public String getText() {

@@ -58,6 +58,11 @@ public class MariaBan extends AccessibleEntity {
         super.request();
     }
 
+    /**
+     * This constructor is only used by ORMLite.
+     */
+    public MariaBan() {}
+
     @NotNull
     public synchronized Long getId() {
         return id;

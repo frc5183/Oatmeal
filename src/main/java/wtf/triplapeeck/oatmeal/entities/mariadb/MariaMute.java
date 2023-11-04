@@ -58,6 +58,11 @@ public class MariaMute extends AccessibleEntity {
         this.permanent = true;
     }
 
+    /**
+     * This constructor is only used by ORMLite.
+     */
+    public MariaMute() {}
+
     @NotNull
     public synchronized Long getId() {
         return id;

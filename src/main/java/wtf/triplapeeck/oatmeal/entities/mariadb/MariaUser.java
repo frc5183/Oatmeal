@@ -37,6 +37,11 @@ public class MariaUser extends UserData {
         this.owner = false;
     }
 
+    /**
+     * This constructor is only used by ORMLite.
+     */
+    public MariaUser() {}
+
     @NotNull
     public synchronized String getID() {
         return userId;

@@ -79,6 +79,11 @@ public class MariaGuild extends GuildData  {
         this.starboardLimit=2;
     }
 
+    /**
+     * This constructor is only used by ORMLite.
+     */
+    public MariaGuild() {}
+
     @NotNull
     public synchronized String getID() {
         return id;

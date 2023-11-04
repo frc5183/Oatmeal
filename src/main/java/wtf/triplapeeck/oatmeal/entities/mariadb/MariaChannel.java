@@ -33,6 +33,9 @@ public class MariaChannel extends ChannelData {
         this.tableInsuring = false;
     }
 
+    /**
+     * This constructor is only used by ORMLite.
+     */
     public MariaChannel() {}
 
 
