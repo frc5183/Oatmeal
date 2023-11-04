@@ -4,11 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.entities.*;
+import wtf.triplapeeck.oatmeal.entities.mariadb.MariaUser;
 
 
-import java.lang.reflect.Member;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class DataManager extends Thread {
@@ -18,7 +19,6 @@ public abstract class DataManager extends Thread {
     protected static final ConcurrentHashMap<String, UserData> userCache = new ConcurrentHashMap<>();
     protected static final ConcurrentHashMap<String, ChannelData> channelCache = new ConcurrentHashMap<>();
     protected static final ConcurrentHashMap<String, MemberData> memberCache = new ConcurrentHashMap<>();
-    protected static final ConcurrentHashMap<String, GenericData> genericCache = new ConcurrentHashMap<>();
     protected final GsonBuilder gsonBuilder = new GsonBuilder();
     public synchronized void requestToEnd() {
         requestToEnd=true;
@@ -33,8 +33,11 @@ public abstract class DataManager extends Thread {
     protected abstract void saveChannelData(String id, boolean remove);
     protected abstract MemberData getRawMemberData(String id);
     protected abstract void saveMemberData(String id, boolean remove);
-    protected abstract GenericData getRawGenericData(String id);
-    protected abstract void saveGenericData(String id, boolean remove);
+
+    public abstract void removeReminderData(Long id);
+    public abstract void saveReminderData(ReminderData reminderData);
+    public abstract ReminderData createReminder(String text, Long unix, MariaUser user);
+    public abstract List<? extends ReminderData> getAllReminderData();
 
     public GuildData getGuildData(String id) {
         GuildData guildData;
@@ -79,18 +82,6 @@ public abstract class DataManager extends Thread {
         }
         memberData.request();
         return memberData;
-    }
-    public GenericData getGenericData(String id) {
-        GenericData genericData;
-        if (genericCache.get(id)==null) {
-            genericData=getRawGenericData(id);
-            genericCache.put(id, genericData);
-        } else {
-            genericData=genericCache.get(id);
-        }
-        genericData.request();
-        return genericData;
-
     }
     public void saveAll() {
         temp.addAll(guildCache.keySet());

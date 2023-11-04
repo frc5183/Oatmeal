@@ -2,7 +2,6 @@ package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import wtf.triplapeeck.oatmeal.entities.ChannelData;
-import wtf.triplapeeck.oatmeal.errors.ClosedStorableError;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
@@ -25,12 +24,8 @@ public class TableUpdate implements NamedRunnable {
     public void run() {
         Logger.customLog("TableUpdate", "Starting. Waiting On Table.");
         ChannelData channelStorable = null;
-        try {
             channelStorable =  Main.dataManager.getChannelData(String.valueOf(ChannelID));
             channelStorable.release();
-        } catch (ClosedStorableError e) {
-
-        }
         int count=0;
         TextChannel channel = null;
         while (true) {
@@ -42,8 +37,6 @@ public class TableUpdate implements NamedRunnable {
                     complete = true;
             } catch (UsedTableException ignored) {
                 channelStorable.release();
-            } catch (ClosedStorableError e) {
-
             }
             if (complete) {
                 break;

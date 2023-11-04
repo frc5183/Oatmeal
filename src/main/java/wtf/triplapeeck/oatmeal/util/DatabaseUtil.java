@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class DatabaseUtil {
     private static JdbcPooledConnectionSource connectionSource;
@@ -22,7 +23,7 @@ public class DatabaseUtil {
     private static Dao<MariaBan, Long> banDao;
     private static Dao<MariaMute, Long> muteDao;
     private static Dao<MariaMember, String> memberDao;
-    private static Dao<MariaGeneric, String> genericDao;
+    private static Dao<MariaReminder, Long> reminderDao;
     public DatabaseUtil() throws SQLException {
         // init database
         databaseConfiguration = ConfigParser.getDatabaseConfiguration();
@@ -36,7 +37,7 @@ public class DatabaseUtil {
         TableUtils.createTableIfNotExists(connectionSource, MariaBan.class);
         TableUtils.createTableIfNotExists(connectionSource, MariaMute.class);
         TableUtils.createTableIfNotExists(connectionSource, MariaMember.class);
-        TableUtils.createTableIfNotExists(connectionSource, MariaGeneric.class);
+        TableUtils.createTableIfNotExists(connectionSource, MariaReminder.class);
         // init dao
         guildDao = DaoManager.createDao(connectionSource, MariaGuild.class);
         userDao = DaoManager.createDao(connectionSource, MariaUser.class);
@@ -44,7 +45,7 @@ public class DatabaseUtil {
         banDao = DaoManager.createDao(connectionSource, MariaBan.class);
         muteDao = DaoManager.createDao(connectionSource, MariaMute.class);
         memberDao = DaoManager.createDao(connectionSource, MariaMember.class);
-        genericDao = DaoManager.createDao(connectionSource, MariaGeneric.class);
+        reminderDao = DaoManager.createDao(connectionSource, MariaReminder.class);
     }
 
     public JdbcPooledConnectionSource getConnectionSource() {
@@ -81,7 +82,22 @@ public class DatabaseUtil {
 
         userDao.delete(userEntity);
     }
-
+    @Nullable
+    public static MariaReminder getReminderEntity(@NotNull Long id) throws SQLException {
+        return reminderDao.queryForId(id);
+    }
+    public static List<MariaReminder> getAllReminderEntity() throws SQLException {
+        return reminderDao.queryForAll();
+    }
+    public static void updateReminderEntity(@NotNull MariaReminder reminderEntity) throws SQLException {
+        reminderDao.createOrUpdate(reminderEntity);
+    }
+    public static void deleteReminderEntity(@NotNull MariaReminder reminderEntity) throws SQLException {
+        reminderDao.delete(reminderEntity);
+    }
+    public static void deleteReminderEntity(@NotNull Long id) throws SQLException {
+        reminderDao.deleteById(id);
+    }
     @Nullable
     public static MariaChannel getChannelEntity(@NotNull String id) throws SQLException {
         return channelDao.queryForId(id);
@@ -131,15 +147,5 @@ public class DatabaseUtil {
     }
     public static void deleteMemberEntity(@NotNull MariaMember memberEntity) throws SQLException {
         memberDao.delete(memberEntity);
-    }
-    @Nullable
-    public static MariaGeneric getGenericEntity(@NotNull String id) throws SQLException {
-        return genericDao.queryForId(id);
-    }
-    public static void updateGenericEntity(@NotNull MariaGeneric mariaGeneric) throws SQLException {
-        genericDao.createOrUpdate(mariaGeneric);
-    }
-    public static void deleteGenericEntity(@NotNull MariaGeneric mariaGeneric) throws SQLException {
-        genericDao.delete(mariaGeneric);
     }
 }

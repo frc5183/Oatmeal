@@ -18,14 +18,11 @@ import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.Count;
 import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.RebootOatmeal;
 import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetOwner;
 import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetStatus;
-import wtf.triplapeeck.oatmeal.entities.DataMode;
 import wtf.triplapeeck.oatmeal.listeners.DefaultListener;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.managers.DataManager;
-import wtf.triplapeeck.oatmeal.managers.JSONManager;
 import wtf.triplapeeck.oatmeal.managers.MariaManager;
 import wtf.triplapeeck.oatmeal.runnable.Heartbeat;
-import wtf.triplapeeck.oatmeal.entities.json.JSONStorableFactory;
 import wtf.triplapeeck.oatmeal.util.ConfigParser;
 import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
 
@@ -42,7 +39,6 @@ public class Main {
     public static DatabaseUtil dbUtil;
 
     static {
-        if (Config.getConfig().dataMode== DataMode.MARIADB) {
             try {
                 dbUtil = new DatabaseUtil();
                 dataManager = new MariaManager();
@@ -50,10 +46,6 @@ public class Main {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        } else if (Config.getConfig().dataMode == DataMode.JSON) {
-            dataManager= new JSONManager();
-            dataManager.start();
-        }
     }
 
     public static CommandHandler commandHandler = new CommandHandler("s!", 0);

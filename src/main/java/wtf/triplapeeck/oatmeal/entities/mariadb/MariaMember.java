@@ -1,29 +1,33 @@
 package wtf.triplapeeck.oatmeal.entities.mariadb;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.entities.MemberData;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.math.BigInteger;
 
-@Entity
-@Table(name = "oatmeal_members")
+@DatabaseTable(tableName = "oatmeal_members")
 public class MariaMember extends MemberData {
-    @Id
+    @DatabaseField(id = true)
     public @NotNull String id;
-    @Column(nullable=false)
+
+    @DatabaseField(canBeNull = false)
     public @NotNull BigInteger rak;
-    @Column(nullable=false)
+
+    @DatabaseField(canBeNull = false)
     public @NotNull Integer messageCount;
+
     public MariaMember(@NotNull String id) {
         super();
-        this.id=id;
-        this.rak=BigInteger.ZERO;
-        this.messageCount=0;
+        this.id = id;
+        this.rak = BigInteger.ZERO;
+        this.messageCount = 0;
     }
+
+    /**
+     * This constructor is only used by ORMLite.
+     */
     public MariaMember() {}
 
     @NotNull

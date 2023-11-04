@@ -1,12 +1,9 @@
 package wtf.triplapeeck.oatmeal.runnable;
 
 import net.dv8tion.jda.api.entities.channel.concrete.PrivateChannel;
-import wtf.triplapeeck.oatmeal.entities.GenericData;
-import wtf.triplapeeck.oatmeal.entities.UserData;
-import wtf.triplapeeck.oatmeal.entities.json.GenericJSONStorable;
+import wtf.triplapeeck.oatmeal.entities.ReminderData;
 import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.Main;
-import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 
 import java.time.DateTimeException;
 import java.time.Instant;
@@ -28,42 +25,34 @@ public class Heartbeat implements NamedRunnable {
         while (true) {
             Logger.customLog("Heartbeat", "beep");
             ArrayList<Long> temp = new ArrayList<>();
-            GenericData gs = Main.dataManager.getGenericData("0");
-            for (String i : gs.getKnownUserList().keySet()) {
-                UserData us = Main.dataManager.getUserData(String.valueOf(i));
+            for (ReminderData reminder : Main.dataManager.getAllReminderData()) {
+                try {
+                    if (Instant.now().compareTo(Instant.ofEpochSecond(reminder.getUnix())) > 0) {
+                        temp.add(Long.valueOf(reminder.getId()));
+                        String s = "I am here to remind you of the following: " + reminder.getText();
+                        int y = s.length();
+                        PrivateChannel channel = Main.api.openPrivateChannelById(reminder.getUser().getID()).complete();
+                        do {
+                            if (y <= 2000) {
+                                channel.sendMessage(s).queue();
+                                y -= y;
+                                s = "";
+                            } else {
+                                channel.sendMessage(s.substring(0, 1999)).queue();
+                                s = s.substring(2000);
+                            }
+                            y -= 2000;
 
-                for (String l: us.getReminders().keySet()) {
-                    Remind.Reminder r = us.getReminders().get(l);
-                    try {
-                        if (Instant.now().compareTo(Instant.ofEpochSecond(r.getUnix())) >= 0) {
-                            temp.add(Long.valueOf(l));
-                            String s = "I am here to remind you of the following: " + r.getText();
-                            int y = s.length();
-                            PrivateChannel channel = Main.api.openPrivateChannelById(us.getID()).complete();
-                            do {
-                                if (y <= 2000) {
-                                    channel.sendMessage(s).queue();
-                                    y -= y;
-                                    s = "";
-                                } else {
-                                    channel.sendMessage(s.substring(0, 1999)).queue();
-                                    s = s.substring(2000);
-                                }
-                                y -= 2000;
-
-                            } while (y > 0);
-                        }
-                    } catch (DateTimeException e) {
-                        temp.add(Long.valueOf(l));
+                        } while (y > 0);
                     }
+                } catch (DateTimeException e) {
+                    temp.add(reminder.getId());
                 }
-                for (Long r: temp) {
-                    us.getReminders().remove(String.valueOf(r));
-                }
-                temp.clear();
-                us.release();
             }
-            gs.release();
+            for (Long r : temp) {
+                Main.dataManager.removeReminderData(r);
+            }
+            temp.clear();
             Main.dataManager.saveAll();
             try {
                 Thread.sleep(300000);

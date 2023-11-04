@@ -3,7 +3,6 @@ package wtf.triplapeeck.oatmeal;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.j256.ormlite.db.DatabaseType;
-import wtf.triplapeeck.oatmeal.entities.DataMode;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -21,7 +20,6 @@ public class Config {
     public String token  = "";
     public List<Long> owners = new ArrayList<>();
     public static FileRW fileRW;
-    public DataMode dataMode = DataMode.JSON;
 
     //DATABASE CONFIGURATION
     public String address = "";
