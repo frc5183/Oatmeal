@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.entities.ReminderData;
+import wtf.triplapeeck.oatmeal.entities.mariadb.MariaUser;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.util.Utils;
@@ -22,7 +23,7 @@ public class Remind extends Command {
             Long num = Long.valueOf(carriage.args[1]);
             Long time = Utils.parseTimeOffset(num, carriage.args[2]);
             Reminder r = new Reminder(Instant.now().getEpochSecond()+time, carriage.textAfterSubcommand.substring(carriage.args[2].length()+1));
-            Main.dataManager.saveReminderData(Main.dataManager.createReminder(r.text, r.unix, carriage.user.getId()));
+            Main.dataManager.saveReminderData(Main.dataManager.createReminder(r.text, r.unix, (MariaUser) carriage.userEntity));
             carriage.channel.sendMessage("Will remind you in " + num + " " + carriage.args[2]+ "!"+
                     "\nNote: the reminder system only updates every 5 minutes" +
                     "\nNote: the reminder system should not be relied on for important reminders. " +

@@ -149,8 +149,8 @@ public class MariaManager extends DataManager {
     }
 
     @Override
-    public ReminderData createReminder(String text, Long unix, String userId) {
-        return new MariaReminder(unix, text, userId);
+    public ReminderData createReminder(String text, Long unix, MariaUser user) {
+        return new MariaReminder(unix, text, user);
     }
 
     public void saveReminderData(MariaReminder reminderEntity) {

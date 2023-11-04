@@ -1,7 +1,9 @@
 package wtf.triplapeeck.oatmeal.entities.mariadb;
 
 import com.google.gson.JsonSyntaxException;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +26,9 @@ public class MariaUser extends UserData {
 
     @DatabaseField(canBeNull = false)
     private @NotNull boolean currencyPreference;
+
+    @ForeignCollectionField(eager = false)
+    private ForeignCollection<MariaReminder> reminders;
 
     public MariaUser(@NotNull String userId) {
         super();
@@ -74,6 +79,14 @@ public class MariaUser extends UserData {
     @Override
     public void setCurrencyPreference(Boolean currencyPreference) {
 
+    }
+
+    public ForeignCollection<MariaReminder> getReminders() {
+        return this.reminders;
+    }
+
+    public void addReminder(MariaReminder reminder) {
+        reminders.add(reminder);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class Heartbeat implements NamedRunnable {
                         temp.add(Long.valueOf(reminder.getId()));
                         String s = "I am here to remind you of the following: " + reminder.getText();
                         int y = s.length();
-                        PrivateChannel channel = Main.api.openPrivateChannelById(reminder.getUserId()).complete();
+                        PrivateChannel channel = Main.api.openPrivateChannelById(reminder.getUser().getID()).complete();
                         do {
                             if (y <= 2000) {
                                 channel.sendMessage(s).queue();

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.entities.*;
+import wtf.triplapeeck.oatmeal.entities.mariadb.MariaUser;
 
 
 import java.time.Instant;
@@ -35,7 +36,7 @@ public abstract class DataManager extends Thread {
 
     public abstract void removeReminderData(Long id);
     public abstract void saveReminderData(ReminderData reminderData);
-    public abstract ReminderData createReminder(String text, Long unix, String userId);
+    public abstract ReminderData createReminder(String text, Long unix, MariaUser user);
     public abstract List<? extends ReminderData> getAllReminderData();
 
     public GuildData getGuildData(String id) {

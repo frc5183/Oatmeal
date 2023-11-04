@@ -9,8 +9,8 @@ public class MariaReminder extends ReminderData {
     @DatabaseField(generatedId = true)
     private Long id;
 
-    @DatabaseField(canBeNull = false)
-    private @NotNull String userId;
+    @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    private @NotNull MariaUser user;
 
     @DatabaseField(canBeNull = false)
     private @NotNull String text;
@@ -18,11 +18,11 @@ public class MariaReminder extends ReminderData {
     @DatabaseField(canBeNull = false)
     private @NotNull Long unix;
 
-    public MariaReminder(@NotNull Long unix, @NotNull String text, @NotNull String userId) {
-        super(text, unix, userId);
-        this.unix=unix;
-        this.text=text;
-        this.userId=userId;
+    public MariaReminder(@NotNull Long unix, @NotNull String text, @NotNull MariaUser user) {
+        super(text, unix, user);
+        this.unix = unix;
+        this.text = text;
+        this.user = user;
     }
 
     @NotNull
@@ -39,8 +39,8 @@ public class MariaReminder extends ReminderData {
 
     @NotNull
     @Override
-    public String getUserId() {
-        return userId;
+    public MariaUser getUser() {
+        return user;
     }
 
     public void setId(@NotNull Long id) {
