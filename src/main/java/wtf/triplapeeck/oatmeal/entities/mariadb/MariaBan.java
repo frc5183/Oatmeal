@@ -1,39 +1,39 @@
 package wtf.triplapeeck.oatmeal.entities.mariadb;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.entities.AccessibleEntity;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "oatmeal_bans")
+@DatabaseTable(tableName = "oatmeal_bans")
 public class MariaBan extends AccessibleEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @DatabaseField(generatedId = true)
     private Long id;
 
-    @Column(nullable = false)
+    @DatabaseField(canBeNull = false)
     private @NotNull String userId;
 
-    @Column(nullable = false)
+    @DatabaseField(canBeNull = false)
     private @NotNull String guildId;
 
-    @Column(nullable = false)
+    @DatabaseField(canBeNull = false)
     private @NotNull String reason;
 
-    @Column(nullable = false)
+    @DatabaseField(canBeNull = false)
     private @NotNull Long startTimestamp;
 
-    @Column
+    @DatabaseField(canBeNull = true)
     private @Nullable Long endTimestamp;
 
-    @Column(nullable = false)
+    @DatabaseField(canBeNull = false)
     private @NotNull Boolean active;
 
-    @Column(nullable = false)
+    @DatabaseField(canBeNull = false, columnName = "isPermanent")
     private @NotNull Boolean permanent;
 
     public MariaBan(@NotNull String userId, @NotNull String guildId, @NotNull String reason, @NotNull Long endTimestamp) {
@@ -57,9 +57,6 @@ public class MariaBan extends AccessibleEntity {
         this.permanent = true;
         super.request();
     }
-
-    @Deprecated
-    public MariaBan() {}
 
     @NotNull
     public synchronized Long getId() {

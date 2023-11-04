@@ -1,29 +1,28 @@
 package wtf.triplapeeck.oatmeal.entities.mariadb;
 
 import com.google.gson.JsonSyntaxException;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.Config;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 import wtf.triplapeeck.oatmeal.entities.UserData;
-
-import javax.persistence.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Entity
-@Table(name = "oatmeal_users")
+@DatabaseTable(tableName = "oatmeal_users")
 public class MariaUser extends UserData {
-    @Id
+    @DatabaseField(id = true)
     public @NotNull String userId;
 
-    @Column(nullable = false)
+    @DatabaseField(canBeNull = false)
     private @NotNull boolean admin;
 
-    @Column(nullable = false)
+    @DatabaseField(canBeNull = false)
     private @NotNull boolean owner;
 
-    @Column(nullable=false)
+    @DatabaseField(canBeNull = false)
     private @NotNull boolean currencyPreference;
 
     public MariaUser(@NotNull String userId) {
@@ -32,9 +31,6 @@ public class MariaUser extends UserData {
         this.admin = false;
         this.owner = false;
     }
-
-
-    public MariaUser() {}
 
     @NotNull
     public synchronized String getID() {

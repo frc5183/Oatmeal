@@ -1,5 +1,7 @@
 package wtf.triplapeeck.oatmeal.entities.mariadb;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.Logger;
@@ -10,17 +12,12 @@ import wtf.triplapeeck.oatmeal.entities.ChannelData;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.errors.ValidTableException;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
-@javax.persistence.Table(name = "oatmeal_channels")
+@DatabaseTable(tableName = "oatmeal_channels")
 public class MariaChannel extends ChannelData {
-    @Id
+    @DatabaseField(generatedId = true)
     public @NotNull String id;
 
-    @Column(nullable=true)
+    @DatabaseField(canBeNull = true)
     public @Nullable String tableJson;
 
     public transient Table table;

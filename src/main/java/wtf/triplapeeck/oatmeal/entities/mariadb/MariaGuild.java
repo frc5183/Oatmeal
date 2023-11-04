@@ -1,18 +1,17 @@
 package wtf.triplapeeck.oatmeal.entities.mariadb;
 
 import com.google.gson.JsonSyntaxException;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.entities.GuildData;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Table(name = "oatmeal_guilds")
+@DatabaseTable(tableName = "oatmeal_guilds")
 public class MariaGuild extends GuildData  {
     public void load() {
         try {
@@ -44,30 +43,30 @@ public class MariaGuild extends GuildData  {
     }
 
 
-    @Id
+    @DatabaseField(id = true)
     private @NotNull String id;
 
     private transient @Nullable ConcurrentHashMap<String, String> customCommands;
 
     private transient @Nullable ConcurrentHashMap<String, String> starboardLink;
 
-    @Column
+    @DatabaseField(canBeNull = true)
     private @Nullable String jsonCustomCommands;
 
-    @Column
+    @DatabaseField(canBeNull = true)
     private @Nullable String jsonStarboardLink;
 
 
-    @Column
+    @DatabaseField(canBeNull = true)
     private @Nullable String starboardChannelID;
 
-    @Column
-    private @NotNull Integer starboardLimit;
+    @DatabaseField(canBeNull = true)
+    private @Nullable Integer starboardLimit;
 
-    @Column(nullable = false)
+    @DatabaseField(canBeNull = false)
     private @NotNull Boolean currencyEnabled;
 
-    @Column(nullable = false)
+    @DatabaseField(canBeNull = false)
     private @NotNull Boolean testingEnabled;
 
     public MariaGuild(@NotNull String guildId) {
@@ -79,9 +78,6 @@ public class MariaGuild extends GuildData  {
         this.testingEnabled = false;
         this.starboardLimit=2;
     }
-
-    @Deprecated
-    public MariaGuild() {}
 
     @NotNull
     public synchronized String getID() {
