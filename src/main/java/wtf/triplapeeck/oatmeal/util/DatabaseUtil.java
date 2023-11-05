@@ -48,6 +48,7 @@ public class DatabaseUtil {
         muteDao = DaoManager.createDao(connectionSource, MariaMute.class);
         memberDao = DaoManager.createDao(connectionSource, MariaMember.class);
         reminderDao = DaoManager.createDao(connectionSource, MariaReminder.class);
+        upgrade();
     }
 
     private static final int VERSION=2;
@@ -55,8 +56,19 @@ public class DatabaseUtil {
     public static int getVersion() {
         return VERSION;
     }
+/**
+ * Upgrades the database schema to the latest version.
+ * <p>
+ * This method modifies the {@link Config} object to update the version number and saves it.
+ * If the current version is greater than the latest version, the program will inform the user of this and exit.
+ * </p>
+ */
     public static void upgrade() {
         Config config = Config.getConfig();
+        if (config.version>VERSION) {
+            Logger.basicLog(Logger.Level.FATAL, "Database version is newer than program. Please upgrade the program!");
+            throw new RuntimeException("Database version is newer than program. Please upgrade the program!");
+        }
         switch (config.version) {
             case 1: // No Break: Will run all needed upgrades consecutively. Should allow an upgrade from 1 to newest in one go.
                 Logger.basicLog(Logger.Level.INFO, "Upgrading Database from ORM Version 1 to 2");
