@@ -6,6 +6,7 @@ import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -134,6 +135,15 @@ public class MariaManager extends DataManager {
         try {
             DatabaseUtil.deleteReminderEntity(id);
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void removeReminderDatas(Collection<Long> ids) {
+        try {
+            DatabaseUtil.deleteReminderEntities(ids);
+        } catch(SQLException e) {
             throw new RuntimeException(e);
         }
     }

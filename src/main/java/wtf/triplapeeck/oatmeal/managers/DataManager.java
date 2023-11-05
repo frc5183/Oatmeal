@@ -9,6 +9,7 @@ import wtf.triplapeeck.oatmeal.entities.mariadb.MariaUser;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -35,6 +36,7 @@ public abstract class DataManager extends Thread {
     protected abstract void saveMemberData(String id, boolean remove);
 
     public abstract void removeReminderData(Long id);
+    public abstract void removeReminderDatas(Collection<Long> ids);
     public abstract void saveReminderData(ReminderData reminderData);
     public abstract ReminderData createReminder(String text, Long unix, MariaUser user);
     public abstract List<? extends ReminderData> getAllReminderData();
