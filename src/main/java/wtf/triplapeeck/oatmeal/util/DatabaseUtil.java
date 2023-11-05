@@ -50,7 +50,11 @@ public class DatabaseUtil {
         reminderDao = DaoManager.createDao(connectionSource, MariaReminder.class);
     }
 
-    public static final int VERSION=2;
+    private static final int VERSION=2;
+
+    public static int getVersion() {
+        return VERSION;
+    }
     public static void upgrade() {
         Config config = Config.getConfig();
         switch (config.version) {
