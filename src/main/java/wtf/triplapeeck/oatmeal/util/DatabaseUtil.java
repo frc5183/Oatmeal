@@ -6,6 +6,8 @@ import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wtf.triplapeeck.oatmeal.Config;
+import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 
 import java.sql.SQLException;
@@ -48,6 +50,24 @@ public class DatabaseUtil {
         reminderDao = DaoManager.createDao(connectionSource, MariaReminder.class);
     }
 
+    public static final int VERSION=2;
+    public static void upgrade() {
+        Config config = Config.getConfig();
+        switch (config.version) {
+            case 1: // No Break: Will run all needed upgrades consecutively. Should allow an upgrade from 1 to newest in one go.
+                Logger.basicLog(Logger.Level.INFO, "Upgrading Database from ORM Version 1 to 2");
+                try {
+                    userDao.executeRaw("ALTER TABLE oatmeal_users DROP COLUMN jsonReminders;");
+                    //reminderDao is new, so it is handled via a createTableIfNotExists;
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            case 2:
+                Logger.basicLog(Logger.Level.INFO, "Database now ORM Version 2");
+        }
+        config.version=VERSION;
+        Config.saveConfig();
+    }
     public JdbcPooledConnectionSource getConnectionSource() {
         return connectionSource;
     }

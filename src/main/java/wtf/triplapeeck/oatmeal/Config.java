@@ -22,6 +22,7 @@ public class Config {
     public static FileRW fileRW;
 
     //DATABASE CONFIGURATION
+    public int version = 1; // BOOTSTRAP. FOR FUTURE VERSION THIS WILL MATCH DatabaseUtil.VERSION
     public String address = "";
     public String path = "D:\\sinondata\\";
     public int port = 0;
