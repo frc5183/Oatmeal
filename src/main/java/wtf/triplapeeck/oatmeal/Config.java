@@ -2,9 +2,6 @@ package wtf.triplapeeck.oatmeal;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.j256.ormlite.db.DatabaseType;
-
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +19,7 @@ public class Config {
     public static FileRW fileRW;
 
     //DATABASE CONFIGURATION
+    public int version = 1; // BOOTSTRAP. FOR FUTURE VERSION THIS WILL MATCH DatabaseUtil.VERSION
     public String address = "";
     public String path = "D:\\sinondata\\";
     public int port = 0;
