@@ -14,7 +14,7 @@ import wtf.triplapeeck.oatmeal.errors.ValidTableException;
 
 @DatabaseTable(tableName = "oatmeal_channels")
 public class MariaChannel extends ChannelData {
-    @DatabaseField(generatedId = true)
+    @DatabaseField(id=true)
     public @NotNull String id;
 
     @DatabaseField(canBeNull = true)
