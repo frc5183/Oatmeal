@@ -6,13 +6,15 @@ import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import wtf.triplapeeck.oatmeal.Config;
+import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-public class DatabaseUtil {
+public class ORMLiteDatabaseUtil {
     private static JdbcPooledConnectionSource connectionSource;
     private static ConfigParser.DatabaseConfiguration databaseConfiguration;
 
@@ -25,7 +27,7 @@ public class DatabaseUtil {
     private static Dao<MariaMute, Long> muteDao;
     private static Dao<MariaMember, String> memberDao;
     private static Dao<MariaReminder, Long> reminderDao;
-    public DatabaseUtil() throws SQLException {
+    public ORMLiteDatabaseUtil() throws SQLException {
         // init database
         databaseConfiguration = ConfigParser.getDatabaseConfiguration();
         connectionSource = new JdbcPooledConnectionSource("jdbc:mariadb://" + databaseConfiguration.getAddress() + ":" + databaseConfiguration.getPort() + "/" + databaseConfiguration.getDatabase() + "?user="+ databaseConfiguration.getUsername() + "&password=" + databaseConfiguration.getPassword(), databaseConfiguration.getType());
@@ -47,8 +49,42 @@ public class DatabaseUtil {
         muteDao = DaoManager.createDao(connectionSource, MariaMute.class);
         memberDao = DaoManager.createDao(connectionSource, MariaMember.class);
         reminderDao = DaoManager.createDao(connectionSource, MariaReminder.class);
+        upgrade();
     }
 
+    private static final int VERSION=2;
+
+    public static int getVersion() {
+        return VERSION;
+    }
+/**
+ * Upgrades the database schema to the latest version.
+ * <p>
+ * This method modifies the {@link Config} object to update the version number and saves it.
+ * If the current version is greater than the latest version, the program will inform the user of this and exit.
+ * </p>
+ */
+    public static void upgrade() {
+        Config config = Config.getConfig();
+        if (config.version>VERSION) {
+            Logger.basicLog(Logger.Level.FATAL, "Database version is newer than program. Please upgrade the program!");
+            throw new RuntimeException("Database version is newer than program. Please upgrade the program!");
+        }
+        switch (config.version) {
+            case 1: // No Break: Will run all needed upgrades consecutively. Should allow an upgrade from 1 to newest in one go.
+                Logger.basicLog(Logger.Level.INFO, "Upgrading Database from ORM Version 1 to 2");
+                try {
+                    userDao.executeRaw("ALTER TABLE oatmeal_users DROP COLUMN jsonReminders;");
+                    //reminderDao is new, so it is handled via a createTableIfNotExists;
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            case 2:
+                Logger.basicLog(Logger.Level.INFO, "Database now ORM Version 2");
+        }
+        config.version=VERSION;
+        Config.saveConfig();
+    }
     public JdbcPooledConnectionSource getConnectionSource() {
         return connectionSource;
     }
