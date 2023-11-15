@@ -142,7 +142,7 @@ public class MariaManager extends DataManager {
 
     public void removeReminderDatas(Collection<Long> ids) {
         try {
-            DatabaseUtil.deleteReminderEntities(ids);
+            ORMLiteDatabaseUtil.deleteReminderEntities(ids);
         } catch(SQLException e) {
             throw new RuntimeException(e);
         }
