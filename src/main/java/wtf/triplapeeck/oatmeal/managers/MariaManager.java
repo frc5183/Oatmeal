@@ -3,7 +3,7 @@ package wtf.triplapeeck.oatmeal.managers;
 import wtf.triplapeeck.oatmeal.entities.ReminderData;
 import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
-import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
+import wtf.triplapeeck.oatmeal.util.ORMLiteDatabaseUtil;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class MariaManager extends DataManager {
     public synchronized MariaGuild getRawGuildData(String id)  {
         MariaGuild guildEntity;
         try {
-            guildEntity = DatabaseUtil.getGuildEntity(id);
+            guildEntity = ORMLiteDatabaseUtil.getGuildEntity(id);
             if (guildEntity==null) {
                 guildEntity = new MariaGuild(id);
             }
@@ -31,7 +31,7 @@ public class MariaManager extends DataManager {
     public synchronized MariaUser getRawUserData(String id) {
         MariaUser userEntity;
         try {
-            userEntity = DatabaseUtil.getUserEntity(id);
+            userEntity = ORMLiteDatabaseUtil.getUserEntity(id);
             if (userEntity==null) {
                 userEntity = new MariaUser(id);
             }
@@ -58,7 +58,7 @@ public class MariaManager extends DataManager {
                 step2.put(k, guildEntity.getStarboardLink().get(k));
             }
             guildEntity.setJsonStarboardLink(gson.toJson(step2));
-            DatabaseUtil.updateGuildEntity(guildEntity);
+            ORMLiteDatabaseUtil.updateGuildEntity(guildEntity);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -72,7 +72,7 @@ public class MariaManager extends DataManager {
     public MariaChannel getRawChannelData(String id) {
         MariaChannel mariaChannel;
         try {
-            mariaChannel = DatabaseUtil.getChannelEntity(id);
+            mariaChannel = ORMLiteDatabaseUtil.getChannelEntity(id);
             if (mariaChannel==null) {
                 mariaChannel = new MariaChannel(id);
             }
@@ -99,7 +99,7 @@ public class MariaManager extends DataManager {
 
             }
             mariaChannel.tableJson=step;
-            DatabaseUtil.updateChannelEntity(mariaChannel);
+            ORMLiteDatabaseUtil.updateChannelEntity(mariaChannel);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -107,7 +107,7 @@ public class MariaManager extends DataManager {
     public MariaMember getRawMemberData(String id) {
         MariaMember mariaMember;
         try {
-            mariaMember = DatabaseUtil.getMemberEntity(id);
+            mariaMember = ORMLiteDatabaseUtil.getMemberEntity(id);
             if (mariaMember==null) {
                 mariaMember=new MariaMember(id);
             }
@@ -123,7 +123,7 @@ public class MariaManager extends DataManager {
             memberCache.remove(key);
         }
         try {
-            DatabaseUtil.updateMemberEntity(mariaMember);
+            ORMLiteDatabaseUtil.updateMemberEntity(mariaMember);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -132,7 +132,7 @@ public class MariaManager extends DataManager {
 
     public void removeReminderData(Long id) {
         try {
-            DatabaseUtil.deleteReminderEntity(id);
+            ORMLiteDatabaseUtil.deleteReminderEntity(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -142,7 +142,7 @@ public class MariaManager extends DataManager {
     public void saveReminderData(ReminderData reminderData) {
         MariaReminder reminderEntity = (MariaReminder) reminderData;
         try {
-            DatabaseUtil.updateReminderEntity(reminderEntity);
+            ORMLiteDatabaseUtil.updateReminderEntity(reminderEntity);
         } catch(SQLException e) {
             throw new RuntimeException(e);
         }
@@ -156,7 +156,7 @@ public class MariaManager extends DataManager {
     @Override
     public List<? extends ReminderData> getAllReminderData() {
         try {
-            return DatabaseUtil.getAllReminderEntity();
+            return ORMLiteDatabaseUtil.getAllReminderEntity();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

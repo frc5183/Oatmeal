@@ -24,7 +24,7 @@ import wtf.triplapeeck.oatmeal.managers.DataManager;
 import wtf.triplapeeck.oatmeal.managers.MariaManager;
 import wtf.triplapeeck.oatmeal.runnable.Heartbeat;
 import wtf.triplapeeck.oatmeal.util.ConfigParser;
-import wtf.triplapeeck.oatmeal.util.DatabaseUtil;
+import wtf.triplapeeck.oatmeal.util.ORMLiteDatabaseUtil;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -36,11 +36,11 @@ public class Main {
     public static ThreadManager threadManager;
     public static DataManager dataManager;
     public static JDA api;
-    public static DatabaseUtil dbUtil;
+    public static ORMLiteDatabaseUtil dbUtil;
 
     static {
             try {
-                dbUtil = new DatabaseUtil();
+                dbUtil = new ORMLiteDatabaseUtil();
                 dataManager = new MariaManager();
                 dataManager.start();
             } catch (SQLException e) {

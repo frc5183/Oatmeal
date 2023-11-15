@@ -13,7 +13,7 @@ import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 import java.sql.SQLException;
 import java.util.List;
 
-public class DatabaseUtil {
+public class ORMLiteDatabaseUtil {
     private static JdbcPooledConnectionSource connectionSource;
     private static ConfigParser.DatabaseConfiguration databaseConfiguration;
 
@@ -26,7 +26,7 @@ public class DatabaseUtil {
     private static Dao<MariaMute, Long> muteDao;
     private static Dao<MariaMember, String> memberDao;
     private static Dao<MariaReminder, Long> reminderDao;
-    public DatabaseUtil() throws SQLException {
+    public ORMLiteDatabaseUtil() throws SQLException {
         // init database
         databaseConfiguration = ConfigParser.getDatabaseConfiguration();
         connectionSource = new JdbcPooledConnectionSource("jdbc:mariadb://" + databaseConfiguration.getAddress() + ":" + databaseConfiguration.getPort() + "/" + databaseConfiguration.getDatabase() + "?user="+ databaseConfiguration.getUsername() + "&password=" + databaseConfiguration.getPassword(), databaseConfiguration.getType());

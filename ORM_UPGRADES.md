@@ -7,3 +7,9 @@ This version is a simply incrementing integer, and will increase only when the O
 This allows for upgrade scripts to be written efficiently.
 An ORM version number is finalized when it is pushed to master.
 In the rare case where this conflicts with ongoing PRs, those PRs should increment their version number accordingly.
+
+Currently, the upgrade scripts are found in ORMLiteDatabaseUtil
+
+If another database type is implemented, separate upgrade scripts will be found in its own util class.
+
+Database Numbers are stored in the config. 
