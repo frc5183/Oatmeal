@@ -28,7 +28,7 @@ public class Heartbeat implements NamedRunnable {
             for (ReminderData reminder : Main.dataManager.getAllReminderData()) {
                 try {
                     if (Instant.now().compareTo(Instant.ofEpochSecond(reminder.getUnix())) > 0) {
-                        temp.add(Long.valueOf(reminder.getId()));
+                        temp.add(reminder.getId());
                         String s = "I am here to remind you of the following: " + reminder.getText();
                         int y = s.length();
                         PrivateChannel channel = Main.api.openPrivateChannelById(reminder.getUser().getID()).complete();
@@ -49,9 +49,7 @@ public class Heartbeat implements NamedRunnable {
                     temp.add(reminder.getId());
                 }
             }
-            for (Long r : temp) {
-                Main.dataManager.removeReminderData(r);
-            }
+            Main.dataManager.removeReminderDatas(temp);
             temp.clear();
             Main.dataManager.saveAll();
             try {

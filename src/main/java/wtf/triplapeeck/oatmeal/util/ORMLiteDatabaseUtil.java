@@ -11,6 +11,7 @@ import wtf.triplapeeck.oatmeal.Logger;
 import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 public class ORMLiteDatabaseUtil {
@@ -133,6 +134,9 @@ public class ORMLiteDatabaseUtil {
     }
     public static void deleteReminderEntity(@NotNull Long id) throws SQLException {
         reminderDao.deleteById(id);
+    }
+    public static void deleteReminderEntities(@NotNull Collection<Long> id) throws SQLException {
+        reminderDao.deleteIds(id);
     }
     @Nullable
     public static MariaChannel getChannelEntity(@NotNull String id) throws SQLException {
