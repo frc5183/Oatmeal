@@ -20,6 +20,7 @@ public class FileRW {
         return new String(bytes, StandardCharsets.UTF_8);
     }
     public void writeAll(String string) throws IOException {
+        Files.deleteIfExists(path);
         outputstream=Files.newOutputStream(path);
         outputstream.write(string.getBytes(StandardCharsets.UTF_8));
         outputstream.flush();
