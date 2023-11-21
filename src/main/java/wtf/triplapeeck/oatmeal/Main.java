@@ -15,7 +15,6 @@ import wtf.triplapeeck.oatmeal.commands.miscellaneous.Ping;
 import wtf.triplapeeck.oatmeal.commands.miscellaneous.Remind;
 import wtf.triplapeeck.oatmeal.commands.oatmeal.admin.SetAdmin;
 import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.Count;
-import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.RebootOatmeal;
 import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetOwner;
 import wtf.triplapeeck.oatmeal.commands.oatmeal.owner.SetStatus;
 import wtf.triplapeeck.oatmeal.listeners.DefaultListener;
@@ -75,7 +74,6 @@ public class Main {
         commandHandler.addCommand(new PrintDeck());
         commandHandler.addCommand(new SetAdmin());
         commandHandler.addCommand(new SetOwner());
-        commandHandler.addCommand(new RebootOatmeal());
         commandHandler.addCommand(new TestHand());
         //commandHandler.addCommand(new Test());
         commandHandler.addCommand(new CreateBlackjackTable());
