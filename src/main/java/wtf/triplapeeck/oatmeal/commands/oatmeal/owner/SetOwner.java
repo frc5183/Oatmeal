@@ -26,7 +26,7 @@ public class SetOwner extends Command {
                 return;
             }
             usUsr.setOwner(!usUsr.isOwner());
-            carriage.channel.sendMessage(user.getName() + " now " + Utils.isNot(usUsr.isAdmin()) + " an Owner").queue();
+            carriage.channel.sendMessage(user.getName() + " now " + Utils.isNot(usUsr.isOwner()) + " an Owner").queue();
         }
     }
 

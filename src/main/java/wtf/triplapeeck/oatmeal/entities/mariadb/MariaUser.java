@@ -55,13 +55,10 @@ public class MariaUser extends UserData {
     }
 
     @Override
-    public void setAdmin(Boolean admin) {
+    public void setAdmin(@NotNull Boolean admin) {
         this.admin=admin;
     }
 
-    public synchronized void setAdmin(@NotNull boolean admin) {
-        this.admin = (admin || isOwner());
-    }
 
     @NotNull
     public synchronized Boolean isOwner() {
