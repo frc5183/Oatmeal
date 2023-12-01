@@ -27,7 +27,7 @@ public class SetAdmin extends Command {
             User user = userList.get(0);
             UserData usUsr = Main.dataManager.getUserData(user.getId());
             if (Config.getConfig().owners.contains(Long.valueOf(usUsr.getID()))) {
-                carriage.channel.sendMessage(user.getName() + " is in the Owner Config, cannot change").queue();
+                carriage.channel.sendMessage(user.getName() + " is in the Owner Config, cannot change as owner config also allows for admin status").queue();
                 return;
             }
             usUsr.setAdmin(!usUsr.isAdmin());
