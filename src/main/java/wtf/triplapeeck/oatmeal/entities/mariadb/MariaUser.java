@@ -55,13 +55,10 @@ public class MariaUser extends UserData {
     }
 
     @Override
-    public void setAdmin(Boolean admin) {
-
+    public void setAdmin(@NotNull Boolean admin) {
+        this.admin=admin;
     }
 
-    public synchronized void setAdmin(@NotNull boolean admin) {
-        this.admin = (admin || isOwner());
-    }
 
     @NotNull
     public synchronized Boolean isOwner() {
@@ -74,7 +71,7 @@ public class MariaUser extends UserData {
     }
 
     public synchronized void setOwner(@NotNull boolean owner) {
-        this.owner = (owner || Config.getConfig().owners.contains(userId));
+        this.owner = owner;
     }
 
     public Boolean isCurrencyPreference() {
