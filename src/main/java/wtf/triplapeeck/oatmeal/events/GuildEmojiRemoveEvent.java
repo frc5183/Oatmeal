@@ -53,8 +53,10 @@ public class GuildEmojiRemoveEvent implements NamedRunnable {
                 try {
                 if (messageReaction.getEmoji().asUnicode().getAsCodepoints().equalsIgnoreCase("U+2b50")) {
                     for (Iterator<User> it = messageReaction.retrieveUsers().stream().iterator(); count >= guildEntity.getStarboardLimit() || it.hasNext(); ) {
-                        it.next();
-                        count++;
+                        User user = it.next();
+                        if (user.getIdLong()!= event.getUserIdLong()) {
+                            count++;
+                        }
 
                     }
                 }
