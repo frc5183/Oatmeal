@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * This class is used to interact with the database from ORMLite
+ */
 public class ORMLiteDatabaseUtil {
     private static JdbcPooledConnectionSource connectionSource;
     private static ConfigParser.DatabaseConfiguration databaseConfiguration;
@@ -54,6 +57,10 @@ public class ORMLiteDatabaseUtil {
 
     private static final int VERSION=2;
 
+    /**
+     * Gets the current version of the database schema
+     * @return The current version of the database schema
+     */
     public static int getVersion() {
         return VERSION;
     }
@@ -93,98 +100,211 @@ public class ORMLiteDatabaseUtil {
         return databaseConfiguration;
     }
 
+    /** Gets the guild entity from the database
+     * @param id The id of the guild
+     * @return The guild entity
+     * @throws SQLException If there is an error getting the guild entity
+     */
     @Nullable
     public static MariaGuild getGuildEntity(@NotNull String id) throws SQLException{
         return guildDao.queryForId(id);
     }
 
+    /** Updates the guild entity in the database
+     * @param guildEntity  The guild entity to update
+     * @throws SQLException If there is an error updating the guild entity
+     */
     public static void updateGuildEntity(@NotNull MariaGuild guildEntity) throws SQLException {
         guildDao.createOrUpdate(guildEntity);
     }
 
+    /** Deletes the guild entity from the database
+     * @param guildEntity The guild entity to delete
+     * @throws SQLException If there is an error deleting the guild entity
+     */
     public static void deleteGuildEntity(@NotNull MariaGuild guildEntity) throws SQLException {
         guildDao.delete(guildEntity);
     }
 
+    /**
+     * Gets the user entity from the database
+     * @param id The id of the user
+     * @return The user entity
+     * @throws SQLException If there is an error getting the user entity
+     */
     @Nullable
     public static MariaUser getUserEntity(@NotNull String id) throws SQLException {
         return userDao.queryForId(id);
     }
 
+    /** Updates the user entity in the database
+     * @param userEntity The user entity to update
+     * @throws SQLException If there is an error updating the user entity
+     */
     public static void updateUserEntity(@NotNull MariaUser userEntity) throws SQLException {
         userDao.createOrUpdate(userEntity);
     }
 
+    /** Deletes the user entity from the database
+     * @param userEntity The user entity to delete
+     * @throws SQLException If there is an error deleting the user entity
+     */
     public static void deleteUserEntity(@NotNull MariaUser userEntity) throws SQLException {
-
         userDao.delete(userEntity);
     }
+
+    /** Gets the reminder entity from the database
+     * @param id The id of the reminder
+     * @return The reminder entity
+     * @throws SQLException If there is an error getting the reminder entity
+     */
     @Nullable
     public static MariaReminder getReminderEntity(@NotNull Long id) throws SQLException {
         return reminderDao.queryForId(id);
     }
+
+    /** Gets all reminder entities from the database
+     * @return All reminder entities in the database
+     * @throws SQLException If there is an error getting the reminder entities
+     */
     public static List<MariaReminder> getAllReminderEntity() throws SQLException {
         return reminderDao.queryForAll();
     }
+
+    /** Updates the reminder entity in the database
+     * @param reminderEntity The reminder entity to update
+     * @throws SQLException If there is an error updating the reminder entity
+     */
     public static void updateReminderEntity(@NotNull MariaReminder reminderEntity) throws SQLException {
         reminderDao.createOrUpdate(reminderEntity);
     }
+
+    /** Deletes the reminder entity from the database
+     * @param reminderEntity The reminder entity to delete
+     * @throws SQLException If there is an error deleting the reminder entity
+     */
     public static void deleteReminderEntity(@NotNull MariaReminder reminderEntity) throws SQLException {
         reminderDao.delete(reminderEntity);
     }
+
+    /** Deletes the reminder entity from the database
+     * @param id The id of the reminder to delete
+     * @throws SQLException If there is an error deleting the reminder entity
+     */
     public static void deleteReminderEntity(@NotNull Long id) throws SQLException {
         reminderDao.deleteById(id);
     }
+
+    /** Deletes the reminder entity from the database
+     * @param id The id of the reminder to delete
+     * @throws SQLException If there is an error deleting the reminder entity
+     */
     public static void deleteReminderEntities(@NotNull Collection<Long> id) throws SQLException {
         reminderDao.deleteIds(id);
     }
+
+    /** Gets the channel entity from the database
+     * @param id The id of the channel
+     * @return The channel entity
+     * @throws SQLException If there is an error getting the channel entity
+     */
     @Nullable
     public static MariaChannel getChannelEntity(@NotNull String id) throws SQLException {
         return channelDao.queryForId(id);
     }
 
+    /** Updates the channel entity in the database
+     * @param channelEntity The channel entity to update
+     * @throws SQLException If there is an error updating the channel entity
+     */
     public static void updateChannelEntity(@NotNull MariaChannel channelEntity) throws SQLException {
         channelDao.createOrUpdate(channelEntity);
     }
 
+    /** Deletes the channel entity from the database
+     * @param channelEntity The channel entity to delete
+     * @throws SQLException If there is an error deleting the channel entity
+     */
     public static void deleteChannelEntity(@NotNull MariaChannel channelEntity) throws SQLException {
 
         channelDao.delete(channelEntity);
     }
 
+    /** Gets the ban entity from the database
+     * @param id The id of the ban
+     * @return The ban entity
+     * @throws SQLException If there is an error getting the ban entity
+     */
     @Nullable
     public static MariaBan getBanEntity(@NotNull Long id) throws SQLException {
         return banDao.queryForId(id);
     }
 
+    /** Updates the ban entity in the database
+     * @param banEntity  The ban entity to update
+     * @throws SQLException If there is an error updating the ban entity
+     */
     public static void updateBanEntity(@NotNull MariaBan banEntity) throws SQLException {
         banDao.createOrUpdate(banEntity);
     }
 
+    /** Deletes the ban entity from the database
+     * @param banEntity The ban entity to delete
+     * @throws SQLException If there is an error deleting the ban entity
+     */
     public static void deleteBanEntity(@NotNull MariaBan banEntity) throws SQLException {
         banDao.delete(banEntity);
     }
 
+    /** Gets the mute entity from the database
+     * @param id The id of the mute
+     * @return The mute entity
+     * @throws SQLException If there is an error getting the mute entity
+     */
     @Nullable
     public static MariaMute getMuteEntity(@NotNull Long id) throws SQLException {
         return muteDao.queryForId(id);
     }
 
+    /** Updates the mute entity in the database
+     * @param muteEntity The mute entity to update
+     * @throws SQLException If there is an error updating the mute entity
+     */
     public static void updateMuteEntity(@NotNull MariaMute muteEntity) throws SQLException {
         muteDao.createOrUpdate(muteEntity);
     }
 
+    /** Deletes the mute entity from the database
+     * @param muteEntity The mute entity to delete
+     * @throws SQLException If there is an error deleting the mute entity
+     */
     public static void deleteMuteEntity(@NotNull MariaMute muteEntity) throws SQLException {
 
         muteDao.delete(muteEntity);
     }
+
+    /** Gets the member entity from the database
+     * @param id The id of the member
+     * @return The member entity
+     * @throws SQLException If there is an error getting the member entity
+     */
     @Nullable
     public static MariaMember getMemberEntity(@NotNull String id) throws SQLException {
         return memberDao.queryForId(id);
     }
+
+    /** Updates the member entity in the database
+     * @param memberEntity The member entity to update
+     * @throws SQLException If there is an error updating the member entity
+     */
     public static void updateMemberEntity(@NotNull MariaMember memberEntity) throws SQLException {
         memberDao.createOrUpdate(memberEntity);
     }
+
+    /** Deletes the member entity from the database
+     * @param memberEntity The member entity to delete
+     * @throws SQLException If there is an error deleting the member entity
+     */
     public static void deleteMemberEntity(@NotNull MariaMember memberEntity) throws SQLException {
         memberDao.delete(memberEntity);
     }

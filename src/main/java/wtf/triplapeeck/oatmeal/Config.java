@@ -9,6 +9,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is used to store the configuration of the bot.
+ * This class stores the token, owners, and database configuration.
+ * It stores it in the current working directory in a file called config.json
+ */
 public class Config {
     //TODO: Add System Dependent Config File Placement
     public static Config config;
@@ -29,12 +34,21 @@ public class Config {
     public int maxConnections = 10;
 
 
+    /**
+     * Gets the config object from the config.json file in the current working directory.
+     * If the object has already been fetched, it returns the cached version
+     * This is the ONLY method that should be used to get a Config object
+     * @return The config object
+     */
     public static synchronized Config getConfig() {
 
         if (config != null) return config;
         String sPath = System.getProperty("user.dir") + "/config.json";
         Path path = Path.of(sPath);
         boolean fileExists = Files.exists(path);
+        /*
+          if the file does not exist, create a new config based on the default values
+         */
         try {
             if (!fileExists) {
                 new FileOutputStream(sPath, true).close();
@@ -53,7 +67,9 @@ public class Config {
     }
 
 
-
+    /**
+     * Saves the config object to the config.json file in the current working directory.
+     */
     public static synchronized void saveConfig() {
         try {
             fileRW.writeAll(json.toJson(config));

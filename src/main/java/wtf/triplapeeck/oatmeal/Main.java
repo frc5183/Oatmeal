@@ -36,7 +36,7 @@ public class Main {
     public static DataManager dataManager;
     public static JDA api;
     public static ORMLiteDatabaseUtil dbUtil;
-
+    // Database/DataManager Initialization, static allows us to initialize stuff outside a method with exceptions
     static {
             try {
                 dbUtil = new ORMLiteDatabaseUtil();
@@ -63,11 +63,13 @@ public class Main {
         listener=new DefaultListener();
         //Instantiates the Thread Manager
         threadManager=new ThreadManager();
+        // Creates the main JDA object with the settings that we require for the bot to function correctly. This includes disabling the cache, and enabling the intents that we need.
         api = JDABuilder.createLight(ConfigParser.getToken(args)).disableCache(new ArrayList<>(Arrays.asList(CacheFlag.values())))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(listener).build();
         api.awaitReady();
         //Adds Every Command to the Command Handler
+        //TODO: Make this loading not suck and have command just add themselves. This is a lot of copy paste.
         commandHandler.addCommand(new Balance());
         commandHandler.addCommand(new Ping());
         commandHandler.addCommand(new Help());

@@ -15,6 +15,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * This class is used to pass data between the CommandHandler and the Command classes.
+ * This class contains a multitude of variables that are used in the Command classes.
+ * This allows data to be collected in one place for convenience, rather than creating many parameters for each method.
+ */
 public class DataCarriage {
     public HashMap<String, Command> commandsList;
     public String[] args;
