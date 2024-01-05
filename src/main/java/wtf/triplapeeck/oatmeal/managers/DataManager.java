@@ -41,7 +41,7 @@ public abstract class DataManager extends Thread {
     public abstract ReminderData createReminder(String text, Long unix, MariaUser user);
     public abstract List<? extends ReminderData> getAllReminderData();
 
-    public GuildData getGuildData(String id) {
+    public synchronized GuildData getGuildData(String id) {
         GuildData guildData;
         if (guildCache.get(id)==null) {
             guildData=getRawGuildData(id);
@@ -52,7 +52,7 @@ public abstract class DataManager extends Thread {
         guildData.request();
         return guildData;
     }
-    public UserData getUserData(String id) {
+    public synchronized UserData getUserData(String id) {
         UserData userData;
         if (userCache.get(id)==null) {
             userData=getRawUserData(id);
@@ -63,7 +63,7 @@ public abstract class DataManager extends Thread {
         userData.request();
         return userData;
     }
-    public ChannelData getChannelData(String id) {
+    public synchronized ChannelData getChannelData(String id) {
         ChannelData channelData;
         if (channelCache.get(id)==null) {
             channelData = getRawChannelData(id);
@@ -74,7 +74,7 @@ public abstract class DataManager extends Thread {
         channelData.request();
         return channelData;
     }
-    public MemberData getMemberData(String id) {
+    public synchronized MemberData getMemberData(String id) {
         MemberData memberData;
         if (memberCache.get(id)==null) {
             memberData = getRawMemberData(id);
@@ -85,7 +85,7 @@ public abstract class DataManager extends Thread {
         memberData.request();
         return memberData;
     }
-    public void saveAll() {
+    public synchronized void saveAll() {
         temp.addAll(guildCache.keySet());
         for (String key: temp) {
             saveGuildData(key, false);

@@ -12,7 +12,7 @@ public class MariaReminder extends ReminderData {
     @DatabaseField(canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private @NotNull MariaUser user;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, width=5000)
     private @NotNull String text;
 
     @DatabaseField(canBeNull = false)
