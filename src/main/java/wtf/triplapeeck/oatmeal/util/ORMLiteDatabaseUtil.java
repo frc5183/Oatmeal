@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import org.apache.commons.logging.Log;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.Config;
@@ -52,7 +53,7 @@ public class ORMLiteDatabaseUtil {
         upgrade();
     }
 
-    private static final int VERSION=2;
+    private static final int VERSION=3;
 
     public static int getVersion() {
         return VERSION;
@@ -81,6 +82,13 @@ public class ORMLiteDatabaseUtil {
                 }
             case 2:
                 Logger.basicLog(Logger.Level.INFO, "Database now ORM Version 2");
+                try {
+                    userDao.executeRaw("ALTER TABLE oatmeal_reminders MODIFY COLUMN text VARCHAR (5000);");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            case 3:
+                Logger.basicLog(Logger.Level.INFO, "Database now ORM Version 3");
         }
         config.version=VERSION;
         Config.saveConfig();
