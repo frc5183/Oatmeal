@@ -78,7 +78,7 @@ public class GuildEmojiAddEvent implements NamedRunnable {
                 int height = 0;
                 int width = 0;
                 for (Message.Attachment a : message.getAttachments()) {
-                    if (url == "") {
+                    if (url.isBlank()) {
                         url = a.getUrl();
                         height = a.getHeight();
                         width = a.getWidth();
