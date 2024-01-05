@@ -57,7 +57,7 @@ public class GuildEmojiAddEvent implements NamedRunnable {
                         if (messageReaction.getEmoji().asUnicode().getAsCodepoints().equalsIgnoreCase("U+2b50")) {
                             for (Iterator<User> it = messageReaction.retrieveUsers().stream().iterator(); count >= guildEntity.getStarboardLimit() || it.hasNext(); ) {
                                 User user = it.next();
-                                if (user.getIdLong()!= event.getUserIdLong()) {
+                                if (user.getIdLong()!= event.retrieveMessage().complete().getIdLong()) {
                                     count++;
                                 }
 
