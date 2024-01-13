@@ -35,24 +35,7 @@ public class HitBlackjack implements NamedRunnable {
         Logger.customLog("Hit","Starting. Waiting On Table.");
 
         TextChannel channel;
-        while (true) {
-            boolean complete=false;
-
-
-            try {
-                //noinspection InfiniteLoopStatement
-                while (true) {
-                    table = channelStorable.getTable();
-                    complete = true;
-                }
-            } catch (UsedTableException ignored) {
-
-            }
-            if (complete) {
-                break;
-            }
-
-        }
+        table=channelStorable.loadTable();
         Logger.customLog("Hit", "Table Requested. Now Owner");
         channel= Main.api.getTextChannelById(ChannelID);
         if (table==null) {

@@ -29,24 +29,7 @@ public class SplitBlackjack implements NamedRunnable {
         Logger.customLog("Split","Starting. Waiting On Table.");
 
         TextChannel channel;
-        while (true) {
-            boolean complete=false;
-
-
-            try {
-                //noinspection InfiniteLoopStatement
-                while (true) {
-                    table = channelStorable.getTable();
-                    complete = true;
-                }
-            } catch (UsedTableException ignored) {
-
-            }
-            if (complete) {
-                break;
-            }
-
-        }
+        table=channelStorable.loadTable();
         Logger.customLog("Split", "Table Requested. Now Owner");
         channel= Main.api.getTextChannelById(ChannelID);
         if (table==null) {

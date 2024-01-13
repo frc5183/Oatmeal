@@ -29,23 +29,7 @@ public class InsureBlackjack implements NamedRunnable {
 
         Logger.customLog("Insure","Starting. Waiting On Table.");
         TextChannel channel;
-        while (true) {
-            boolean complete=false;
-
-
-            try {
-                //noinspection InfiniteLoopStatement
-                while (true) {
-                    table = channelStorable.getTable();
-                    complete = true;
-                }
-            } catch (UsedTableException ignored) {
-
-            }
-            if (complete) {
-                break;
-            }
-        }
+        table=channelStorable.loadTable();
         Logger.customLog("Insure", "Table Requested. Now Owner");
         channel= Main.api.getTextChannelById(channelId);
         if (table==null) {

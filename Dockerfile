@@ -8,4 +8,4 @@ FROM openjdk:17-slim
 WORKDIR /app
 COPY --from=BUILD /build/build/libs/oatmeal-1.0-all.jar oatmeal.jar
 WORKDIR /app/work
-ENTRYPOINT java -jar /app/oatmeal.jar -Xms1024m -Xmx4096m
+ENTRYPOINT java -jar /app/oatmeal.jar

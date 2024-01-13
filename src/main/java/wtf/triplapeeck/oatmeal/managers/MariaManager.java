@@ -1,5 +1,6 @@
 package wtf.triplapeeck.oatmeal.managers;
 
+import wtf.triplapeeck.oatmeal.cards.Table;
 import wtf.triplapeeck.oatmeal.entities.ReminderData;
 import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
@@ -90,23 +91,15 @@ public class MariaManager extends DataManager {
         }
         try {
             String step;
-            while (true) {
-                if (mariaChannel==null) {
-                    return;
-                }
-                try {
-                    step = gson.toJson(mariaChannel.getTable());
-                    break;
-                } catch (UsedTableException e) {
-
-                }
-
-            }
+            Table table = mariaChannel.loadTable();
+            step = gson.toJson(table);
+            mariaChannel.releaseTable();
             mariaChannel.tableJson=step;
             ORMLiteDatabaseUtil.updateChannelEntity(mariaChannel);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        mariaChannel.release();
     }
     public synchronized MariaMember getRawMemberData(String id) {
         MariaMember mariaMember;
