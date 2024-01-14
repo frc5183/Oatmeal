@@ -16,7 +16,8 @@ import wtf.triplapeeck.oatmeal.errors.ValidTableException;
 public class MariaChannel extends ChannelData {
     @DatabaseField(id=true)
     public @NotNull String id;
-
+    @DatabaseField(canBeNull=false)
+    public boolean autoThread=false;
     @DatabaseField(canBeNull = true)
     public @Nullable String tableJson;
 
@@ -76,5 +77,13 @@ public class MariaChannel extends ChannelData {
     @Override
     public String getID() {
         return null;
+    }
+    @Override
+    public synchronized boolean getAutoThread() {
+        return autoThread;
+    }
+    @Override
+    public synchronized void setAutoThread(boolean enabled) {
+        this.autoThread=enabled;
     }
 }

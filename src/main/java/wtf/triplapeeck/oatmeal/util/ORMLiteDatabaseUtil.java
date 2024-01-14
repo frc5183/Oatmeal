@@ -53,7 +53,7 @@ public class ORMLiteDatabaseUtil {
         upgrade();
     }
 
-    private static final int VERSION=3;
+    private static final int VERSION=4;
 
     public static int getVersion() {
         return VERSION;
@@ -89,6 +89,14 @@ public class ORMLiteDatabaseUtil {
                 }
             case 3:
                 Logger.basicLog(Logger.Level.INFO, "Database now ORM Version 3");
+                try {
+                    userDao.executeRaw("ALTER TABLE oatmeal_channels ADD COLUMN autoThread TINYINT(1);");
+                    userDao.executeRaw("ALTER TABLE oatmeal_channels MODIFY COLUMN autoThread TINYINT(1) NOT NULL;");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            case 4:
+                Logger.basicLog(Logger.Level.INFO, "Database now ORM Version 4");
         }
         config.version=VERSION;
         Config.saveConfig();

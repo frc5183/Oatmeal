@@ -49,5 +49,7 @@ public abstract class ChannelData extends AccessibleEntity implements DataID {
     public abstract void setTable(Table tbl) throws ValidTableException;
     public abstract void removeTable() throws UsedTableException;
     public abstract void releaseTable();
+    public abstract void setAutoThread(boolean enabled);
+    public abstract boolean getAutoThread();
     public abstract void load();
 }

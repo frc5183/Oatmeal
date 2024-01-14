@@ -2,6 +2,7 @@ package wtf.triplapeeck.oatmeal.commands;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -263,8 +264,18 @@ public abstract class Command {
 
 
     }
-
-
+    public boolean isThreadable(@NotNull DataCarriage carriage) {
+        ChannelType type = carriage.channel.getType();
+        return type == ChannelType.TEXT;
+    }
+    public boolean ensureThreadable(@NotNull DataCarriage carriage) {
+        if (isThreadable(carriage)) {
+            return true;
+        } else {
+            carriage.channel.sendMessage("You cannot use this command unless threads are available, such as within normal guild channels!").queue();
+            return false;
+        }
+    }
     public boolean isFirstArgument(@NotNull DataCarriage carriage) {
         try {
             return (carriage.args[1] != "" && carriage.args[1] != null);
