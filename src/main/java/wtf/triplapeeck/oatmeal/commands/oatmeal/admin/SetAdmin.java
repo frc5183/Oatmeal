@@ -3,6 +3,7 @@ package wtf.triplapeeck.oatmeal.commands.oatmeal.admin;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import wtf.triplapeeck.oatmeal.Config;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.entities.UserData;
@@ -25,6 +26,10 @@ public class SetAdmin extends Command {
             List<User> userList = carriage.message.getMentions().getUsers();
             User user = userList.get(0);
             UserData usUsr = Main.dataManager.getUserData(user.getId());
+            if (Config.getConfig().owners.contains(Long.valueOf(usUsr.getID()))) {
+                carriage.channel.sendMessage(user.getName() + " is in the Owner Config, cannot change as owner config also allows for admin status").queue();
+                return;
+            }
             usUsr.setAdmin(!usUsr.isAdmin());
             carriage.channel.sendMessage(user.getName() + " now " + Utils.isNot(usUsr.isAdmin()) + " an Admin").queue();
 

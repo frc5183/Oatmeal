@@ -43,7 +43,7 @@ public class MariaManager extends DataManager {
         return userEntity;
     }
 
-    public void saveGuildData(String key, boolean remove) {
+    public synchronized void saveGuildData(String key, boolean remove) {
         MariaGuild guildEntity =(MariaGuild) guildCache.get(key);
         if (remove) {
             guildCache.remove(key);
@@ -64,13 +64,13 @@ public class MariaManager extends DataManager {
             throw new RuntimeException(e);
         }
     }
-    public void saveUserData(String key, boolean remove) {
+    public synchronized void saveUserData(String key, boolean remove) {
         MariaUser userEntity =  (MariaUser) userCache.get(key);
         if (remove) {
             userCache.remove(key);
         }
     }
-    public MariaChannel getRawChannelData(String id) {
+    public synchronized MariaChannel getRawChannelData(String id) {
         MariaChannel mariaChannel;
         try {
             mariaChannel = ORMLiteDatabaseUtil.getChannelEntity(id);
@@ -83,7 +83,7 @@ public class MariaManager extends DataManager {
         }
         return mariaChannel;
     }
-    public void saveChannelData(String key, boolean remove) {
+    public synchronized void saveChannelData(String key, boolean remove) {
         MariaChannel mariaChannel =  (MariaChannel) channelCache.get(key);
         if (remove) {
             channelCache.remove(key);
@@ -91,6 +91,9 @@ public class MariaManager extends DataManager {
         try {
             String step;
             while (true) {
+                if (mariaChannel==null) {
+                    return;
+                }
                 try {
                     step = gson.toJson(mariaChannel.getTable());
                     break;
@@ -105,7 +108,7 @@ public class MariaManager extends DataManager {
             throw new RuntimeException(e);
         }
     }
-    public MariaMember getRawMemberData(String id) {
+    public synchronized MariaMember getRawMemberData(String id) {
         MariaMember mariaMember;
         try {
             mariaMember = ORMLiteDatabaseUtil.getMemberEntity(id);
@@ -118,7 +121,7 @@ public class MariaManager extends DataManager {
         }
         return mariaMember;
     }
-    public void saveMemberData(String key, boolean remove) {
+    public synchronized void saveMemberData(String key, boolean remove) {
         MariaMember mariaMember = (MariaMember) memberCache.get(key);
         if (remove) {
             memberCache.remove(key);
@@ -131,7 +134,7 @@ public class MariaManager extends DataManager {
     }
 
 
-    public void removeReminderData(Long id) {
+    public synchronized void removeReminderData(Long id) {
         try {
             ORMLiteDatabaseUtil.deleteReminderEntity(id);
         } catch (SQLException e) {
@@ -140,7 +143,7 @@ public class MariaManager extends DataManager {
     }
 
 
-    public void removeReminderDatas(Collection<Long> ids) {
+    public synchronized void removeReminderDatas(Collection<Long> ids) {
         try {
             ORMLiteDatabaseUtil.deleteReminderEntities(ids);
         } catch(SQLException e) {
@@ -149,7 +152,7 @@ public class MariaManager extends DataManager {
     }
 
     @Override
-    public void saveReminderData(ReminderData reminderData) {
+    public synchronized void saveReminderData(ReminderData reminderData) {
         MariaReminder reminderEntity = (MariaReminder) reminderData;
         try {
             ORMLiteDatabaseUtil.updateReminderEntity(reminderEntity);
@@ -159,12 +162,12 @@ public class MariaManager extends DataManager {
     }
 
     @Override
-    public ReminderData createReminder(String text, Long unix, MariaUser user) {
+    public synchronized ReminderData createReminder(String text, Long unix, MariaUser user) {
         return new MariaReminder(unix, text, user);
     }
 
     @Override
-    public List<? extends ReminderData> getAllReminderData() {
+    public synchronized List<? extends ReminderData> getAllReminderData() {
         try {
             return ORMLiteDatabaseUtil.getAllReminderEntity();
         } catch (SQLException e) {
