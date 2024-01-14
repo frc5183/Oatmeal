@@ -24,33 +24,14 @@ public class TableUpdate implements NamedRunnable {
     public void run() {
         Logger.customLog("TableUpdate", "Starting. Waiting On Table.");
         ChannelData channelStorable = null;
-            channelStorable =  Main.dataManager.getChannelData(String.valueOf(ChannelID));
-            channelStorable.release();
-        int count=0;
-        TextChannel channel = null;
-        while (true) {
-            boolean complete = false;
-
-            try {
-                channelStorable =  Main.dataManager.getChannelData(String.valueOf(ChannelID));
-                    table = channelStorable.getTable();
-                    complete = true;
-            } catch (UsedTableException ignored) {
-                channelStorable.release();
-            }
-            if (complete) {
-                break;
-            }
-
-        }
+        channelStorable =  Main.dataManager.getChannelData(String.valueOf(ChannelID));
+        table = channelStorable.loadTable();
        if (table==null) {
             channelStorable.releaseTable();
             channelStorable.release();
             return;
         }
        table.Update();
-
-        channel= Main.api.getTextChannelById(ChannelID);
         try {
             if (table.state == TableState.RECRUITING && !channelStorable.isTableRecruiting()) {
                  Main.threadManager.addTask((new TimeoutBlackjackTable(ChannelID)));
@@ -64,7 +45,7 @@ public class TableUpdate implements NamedRunnable {
         } catch (Exception e) {
 
         }
-                channelStorable.releaseTable();
+        channelStorable.releaseTable();
         channelStorable.release();
 
         }

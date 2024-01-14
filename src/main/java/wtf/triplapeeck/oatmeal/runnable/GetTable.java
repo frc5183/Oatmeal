@@ -27,24 +27,7 @@ public class GetTable implements NamedRunnable {
 
 
         TextChannel channel;
-        while (true) {
-            boolean complete=false;
-
-
-            try {
-                //noinspection InfiniteLoopStatement
-                while (true) {
-                    table = channelStorable.getTable();
-                    complete = true;
-                }
-            } catch (UsedTableException ignored) {
-
-            }
-            if (complete) {
-                break;
-            }
-
-        }
+        table=channelStorable.loadTable();
         Logger.customLog("GetTable", "Table Requested. Now Owner");
         channel= Main.api.getTextChannelById(ChannelID);
         if (table==null) {

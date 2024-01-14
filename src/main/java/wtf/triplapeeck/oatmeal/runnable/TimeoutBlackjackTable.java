@@ -31,22 +31,7 @@ public class TimeoutBlackjackTable implements NamedRunnable {
     public void run() {
         channelStorable =  Main.dataManager.getChannelData(String.valueOf(id));
         Logger.customLog("Timeout","Starting. Waiting On Table.");
-        while (true) {
-            boolean complete=false;
-
-
-            try {
-                //noinspection InfiniteLoopStatement
-                while (true) {
-                    table = channelStorable.getTable();
-                    complete = true;
-                }
-            } catch (UsedTableException ignored) {
-            }
-            if (complete) {
-                break;
-            }
-        }
+        table=channelStorable.loadTable();
         Logger.customLog("Timeout", "Table Requested. Now Owner");
         channel=Main.api.getTextChannelById(id);
         if (table==null) {
@@ -83,23 +68,7 @@ public class TimeoutBlackjackTable implements NamedRunnable {
             sleep(Utils.threadSeconds(30));
         } catch (InterruptedException ignored) {
         }
-        while (true) {
-            boolean complete=false;
-
-
-            try {
-                //noinspection InfiniteLoopStatement
-                while (true) {
-                    table = channelStorable.getTable();
-                    complete=true;
-                }
-            } catch (UsedTableException ignored) {
-
-            }
-            if (complete) {
-                break;
-            }
-        }
+        table=channelStorable.loadTable();
         Logger.basicLog(Logger.Level.INFO, "Paused");
         if (table.getNumberOfPlayers()>0) {
             channelStorable.setTableRecruiting(false);
