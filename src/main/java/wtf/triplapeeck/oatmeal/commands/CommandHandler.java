@@ -32,9 +32,18 @@ public class CommandHandler {
     public void handle(@NotNull MessageReceivedEvent event, @NotNull JDA api, ThreadManager listener) {
         DataCarriage carriage;
         carriage = new DataCarriage();
-        if ( event.getAuthor().getIdLong()==564635010917859332L) return;
+        if ( event.getAuthor().getIdLong()==api.getSelfUser().getIdLong()) return;
         Logger.customLog("Listener", "Prepare");
         Prepare(event, api, carriage);
+        if (carriage.channelStorable.getAutoThread()) {
+            String name;
+            if (carriage.message.getContentRaw().length()>50) {
+                name=carriage.message.getContentRaw().substring(1, 50);
+            } else {
+                name=carriage.message.getContentRaw();
+            }
+            carriage.message.createThreadChannel(name).queue();
+        }
         Logger.customLog("Listener", "HandleMessage");
         HandleMessage(event, carriage);
         Logger.customLog("Listener", "Main");
