@@ -85,7 +85,7 @@ public abstract class DataManager extends Thread {
         memberData.request();
         return memberData;
     }
-    public synchronized void saveAll(boolean remove =false) {
+    public synchronized void saveAll(boolean remove) {
         temp.addAll(guildCache.keySet());
         for (String key: temp) {
             saveGuildData(key, remove);
