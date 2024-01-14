@@ -113,16 +113,18 @@ public abstract class DataManager extends Thread {
     public synchronized void saveAndRemoveAllGuildDatas() {
         for (String key: guildCache.keySet()) {
             GuildData guildData = guildCache.get(key);
-            if (guildData.getEpoch()!=0 && guildData.getAccessCount()==0) {
-                if (!guildData.getSaved() ) {
-                    saveGuildData(key, false);
-                    guildData.saved();
+            synchronized (guildData) {
+                if (guildData.getEpoch() != 0 && guildData.getAccessCount() == 0) {
+                    if (!guildData.getSaved()) {
+                        saveGuildData(key, false);
+                        guildData.saved();
+                    }
+                    if (Instant.now().getEpochSecond() > 30 + guildData.getEpoch()) {
+                        temp.add(key);
+                    }
+                } else {
+                    guildData.resetEpoch();
                 }
-                if (Instant.now().getEpochSecond() > 30 + guildData.getEpoch()) {
-                    temp.add(key);
-                }
-            } else {
-                guildData.resetEpoch();
             }
         }
         for (String key: temp) {
@@ -136,16 +138,18 @@ public abstract class DataManager extends Thread {
     public synchronized void saveAndRemoveAllUserDatas() {
         for (String key: userCache.keySet()) {
             UserData userData = userCache.get(key);
-            if (userData.getEpoch()!=0 && userData.getAccessCount()==0) {
-                if (!userData.getSaved()) {
-                    saveUserData(key, false);
-                    userData.saved();
+            synchronized(userData) {
+                if (userData.getEpoch() != 0 && userData.getAccessCount() == 0) {
+                    if (!userData.getSaved()) {
+                        saveUserData(key, false);
+                        userData.saved();
+                    }
+                    if (Instant.now().getEpochSecond() > 30 + userData.getEpoch()) {
+                        temp.add(key);
+                    }
+                } else {
+                    userData.resetEpoch();
                 }
-                if (Instant.now().getEpochSecond()>30 + userData.getEpoch()) {
-                    temp.add(key);
-                }
-            } else {
-                userData.resetEpoch();
             }
         }
         for (String key: temp) {
@@ -159,13 +163,15 @@ public abstract class DataManager extends Thread {
     public synchronized void saveAndRemoveAllChannelDatas() {
         for (String key: channelCache.keySet()) {
             ChannelData channelData = channelCache.get(key);
-            if (channelData.getEpoch()!=0 && channelData.getAccessCount()==0) {
-                if (!channelData.getSaved()) {
-                    saveChannelData(key, false);
-                    channelData.saved();
-                }
-                if (Instant.now().getEpochSecond()>30 + channelData.getEpoch()) {
-                    temp.add(key);
+            synchronized (channelData) {
+                if (channelData.getEpoch() != 0 && channelData.getAccessCount() == 0) {
+                    if (!channelData.getSaved()) {
+                        saveChannelData(key, false);
+                        channelData.saved();
+                    }
+                    if (Instant.now().getEpochSecond() > 30 + channelData.getEpoch()) {
+                        temp.add(key);
+                    }
                 }
             }
         }
@@ -180,13 +186,15 @@ public abstract class DataManager extends Thread {
     public synchronized void saveAndRemoveAllMemberDatas() {
         for (String key: memberCache.keySet()) {
             MemberData memberData = memberCache.get(key);
-            if (memberData.getEpoch()!=0 && memberData.getAccessCount()==0) {
-                if (!memberData.getSaved()) {
-                    saveMemberData(key, false);
-                    memberData.saved();
-                }
-                if (Instant.now().getEpochSecond()>30 + memberData.getEpoch()) {
-                    temp.add(key);
+            synchronized (memberData) {
+                if (memberData.getEpoch() != 0 && memberData.getAccessCount() == 0) {
+                    if (!memberData.getSaved()) {
+                        saveMemberData(key, false);
+                        memberData.saved();
+                    }
+                    if (Instant.now().getEpochSecond() > 30 + memberData.getEpoch()) {
+                        temp.add(key);
+                    }
                 }
             }
         }
