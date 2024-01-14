@@ -85,23 +85,126 @@ public abstract class DataManager extends Thread {
         memberData.request();
         return memberData;
     }
-    public synchronized void saveAll() {
+    public synchronized void saveAll(boolean remove) {
         temp.addAll(guildCache.keySet());
         for (String key: temp) {
-            saveGuildData(key, false);
+            saveGuildData(key, remove);
         }
+        temp.clear();
         temp.addAll(userCache.keySet());
         for (String key: temp) {
-            saveUserData(key, false);
+            saveUserData(key, remove);
         }
+        temp.clear();
         temp.addAll(channelCache.keySet());
         for (String key: temp) {
-            saveChannelData(key, false);
+            saveChannelData(key, remove);
         }
+        temp.clear();
         temp.addAll(memberCache.keySet());
         for (String key: temp) {
-            saveMemberData(key, false);
+            saveMemberData(key, remove);
         }
+        temp.clear();
+    }
+    public synchronized void saveAll() {
+        saveAll(false);
+    }
+    public synchronized void saveAndRemoveAllGuildDatas() {
+        for (String key: guildCache.keySet()) {
+            GuildData guildData = guildCache.get(key);
+            synchronized (guildData) {
+                if (guildData.getEpoch() != 0 && guildData.getAccessCount() == 0) {
+                    if (!guildData.getSaved()) {
+                        saveGuildData(key, false);
+                        guildData.saved();
+                    }
+                    if (Instant.now().getEpochSecond() > 30 + guildData.getEpoch()) {
+                        temp.add(key);
+                    }
+                } else {
+                    guildData.resetEpoch();
+                }
+            }
+        }
+        for (String key: temp) {
+            GuildData guildData = guildCache.get(key);
+            if (guildData.getAccessCount()==0) {
+                saveGuildData(key, true);
+            }
+        }
+        temp.clear();
+    }
+    public synchronized void saveAndRemoveAllUserDatas() {
+        for (String key: userCache.keySet()) {
+            UserData userData = userCache.get(key);
+            synchronized(userData) {
+                if (userData.getEpoch() != 0 && userData.getAccessCount() == 0) {
+                    if (!userData.getSaved()) {
+                        saveUserData(key, false);
+                        userData.saved();
+                    }
+                    if (Instant.now().getEpochSecond() > 30 + userData.getEpoch()) {
+                        temp.add(key);
+                    }
+                } else {
+                    userData.resetEpoch();
+                }
+            }
+        }
+        for (String key: temp) {
+            UserData userData = userCache.get(key);
+            if (userData.getAccessCount()==0) {
+                saveUserData(key, true);
+            }
+        }
+        temp.clear();
+    }
+    public synchronized void saveAndRemoveAllChannelDatas() {
+        for (String key: channelCache.keySet()) {
+            ChannelData channelData = channelCache.get(key);
+            synchronized (channelData) {
+                if (channelData.getEpoch() != 0 && channelData.getAccessCount() == 0) {
+                    if (!channelData.getSaved()) {
+                        saveChannelData(key, false);
+                        channelData.saved();
+                    }
+                    if (Instant.now().getEpochSecond() > 30 + channelData.getEpoch()) {
+                        temp.add(key);
+                    }
+                }
+            }
+        }
+        for (String key: temp) {
+            ChannelData channelData = channelCache.get(key);
+            if (channelData.getAccessCount()==0) {
+                saveChannelData(key, true);
+            }
+        }
+        temp.clear();
+    }
+    public synchronized void saveAndRemoveAllMemberDatas() {
+        for (String key: memberCache.keySet()) {
+            MemberData memberData = memberCache.get(key);
+            synchronized (memberData) {
+                if (memberData.getEpoch() != 0 && memberData.getAccessCount() == 0) {
+                    if (!memberData.getSaved()) {
+                        saveMemberData(key, false);
+                        memberData.saved();
+                    }
+                    if (Instant.now().getEpochSecond() > 30 + memberData.getEpoch()) {
+                        temp.add(key);
+                    }
+                }
+            }
+        }
+        for (String key: temp) {
+            MemberData memberData = memberCache.get(key);
+            if (memberData.getAccessCount()==0) {
+                saveMemberData(key, true);
+            }
+        }
+        temp.clear();
     }
     @Override
     public void run() {
@@ -114,26 +217,7 @@ public abstract class DataManager extends Thread {
                         throw new RuntimeException(e);
                     }
                 }
-                temp.addAll(guildCache.keySet());
-                for (String key: temp) {
-                    saveGuildData(key, true);
-                }
-                temp.clear();
-                temp.addAll(userCache.keySet());
-                for (String key: temp) {
-                    saveUserData(key, true);
-                }
-                temp.clear();
-                temp.addAll(channelCache.keySet());
-                for (String key: temp) {
-                    saveChannelData(key, true);
-                }
-                temp.clear();
-                temp.addAll(memberCache.keySet());
-                for (String key: temp) {
-                    saveMemberData(key, true);
-                }
-                temp.clear();
+                saveAll(true);
                 break;
             }
 
@@ -142,86 +226,10 @@ public abstract class DataManager extends Thread {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            for (String key: guildCache.keySet()) {
-                GuildData guildData = guildCache.get(key);
-                if (guildData.getEpoch()!=0 && guildData.getAccessCount()==0) {
-                    if (!guildData.getSaved() ) {
-                        saveGuildData(key, false);
-                        guildData.saved();
-                    }
-                    if (Instant.now().getEpochSecond() > 30 + guildData.getEpoch()) {
-                        temp.add(key);
-                    }
-                } else {
-                    guildData.resetEpoch();
-                }
-            }
-            for (String key: temp) {
-                GuildData guildData = guildCache.get(key);
-                if (guildData.getAccessCount()==0) {
-                    saveGuildData(key, true);
-                }
-            }
-            temp.clear();
-            for (String key: userCache.keySet()) {
-                UserData userData = userCache.get(key);
-                if (userData.getEpoch()!=0 && userData.getAccessCount()==0) {
-                    if (!userData.getSaved()) {
-                        saveUserData(key, false);
-                        userData.saved();
-                    }
-                    if (Instant.now().getEpochSecond()>30 + userData.getEpoch()) {
-                        temp.add(key);
-                    }
-                } else {
-                    userData.resetEpoch();
-                }
-            }
-            for (String key: temp) {
-                UserData userData = userCache.get(key);
-                if (userData.getAccessCount()==0) {
-                    saveUserData(key, true);
-                }
-            }
-            temp.clear();
-            for (String key: channelCache.keySet()) {
-                ChannelData channelData = channelCache.get(key);
-                if (channelData.getEpoch()!=0 && channelData.getAccessCount()==0) {
-                    if (!channelData.getSaved()) {
-                        saveChannelData(key, false);
-                        channelData.saved();
-                    }
-                    if (Instant.now().getEpochSecond()>30 + channelData.getEpoch()) {
-                        temp.add(key);
-                    }
-                }
-            }
-            for (String key: temp) {
-                ChannelData channelData = channelCache.get(key);
-                if (channelData.getAccessCount()==0) {
-                    saveChannelData(key, true);
-                }
-            }
-            temp.clear();
-            for (String key: memberCache.keySet()) {
-                MemberData memberData = memberCache.get(key);
-                if (memberData.getEpoch()!=0 && memberData.getAccessCount()==0) {
-                    if (!memberData.getSaved()) {
-                        saveMemberData(key, false);
-                        memberData.saved();
-                    }
-                    if (Instant.now().getEpochSecond()>30 + memberData.getEpoch()) {
-                        temp.add(key);
-                    }
-                }
-            }
-            for (String key: temp) {
-                MemberData memberData = memberCache.get(key);
-                if (memberData.getAccessCount()==0) {
-                    saveMemberData(key, true);
-                }
-            }
-            temp.clear();
+            saveAndRemoveAllGuildDatas();
+            saveAndRemoveAllUserDatas();
+            saveAndRemoveAllChannelDatas();
+            saveAndRemoveAllMemberDatas();
             //TODO: REPEAT FOR ALL ENTITY TYPES
         }
     }
