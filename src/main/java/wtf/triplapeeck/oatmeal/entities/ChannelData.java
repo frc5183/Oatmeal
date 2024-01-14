@@ -1,5 +1,6 @@
 package wtf.triplapeeck.oatmeal.entities;
 
+import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.cards.Table;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.errors.ValidTableException;
@@ -23,6 +24,19 @@ public abstract class ChannelData extends AccessibleEntity implements DataID {
     }
     public synchronized void setTableInsuring(Boolean val) {
         tableInsuring=val;
+    }
+    public synchronized @Nullable Table loadTable() {
+        Table table;
+        while (true) {
+            boolean complete = false;
+
+            try {
+                table = this.getTable();
+                return table;
+            } catch (UsedTableException ignored) {
+            }
+
+        }
     }
 
     public abstract Table getTable() throws UsedTableException;

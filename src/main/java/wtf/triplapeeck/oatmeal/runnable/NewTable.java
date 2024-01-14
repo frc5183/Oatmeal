@@ -22,21 +22,7 @@ public class NewTable implements NamedRunnable {
     public void run() {
         ChannelData channelStorable = Main.dataManager.getChannelData(String.valueOf(id));
         Logger.customLog("NewTable","Starting. Waiting On Table.");
-        while (true) {
-            boolean complete=false;
-
-
-            try {
-                while (true) {
-                    table = channelStorable.getTable();
-                    complete=true;
-                }
-            } catch (UsedTableException e) {
-            }
-            if (complete) {
-                break;
-            }
-        }
+        table=channelStorable.loadTable();
 
         Logger.customLog("NewTable", "Table Requested. Now Owner");
         if (table==null) {

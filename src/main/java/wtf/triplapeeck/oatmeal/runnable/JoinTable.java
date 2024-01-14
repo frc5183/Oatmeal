@@ -37,22 +37,7 @@ public class JoinTable implements NamedRunnable {
         Logger.customLog("JoinTable","Starting. Waiting On Table.");
 
         TextChannel channel;
-        while (true) {
-            boolean complete=false;
-
-
-            try {
-                //noinspection InfiniteLoopStatement
-                while (true) {
-                    table = channelStorable.getTable();
-                    complete = true;
-                }
-            } catch (UsedTableException ignored) {
-            }
-            if (complete) {
-                break;
-            }
-        }
+        table=channelStorable.loadTable();
         Logger.customLog("JoinTable", "Table Requested. Now Owner");
         channel= Main.api.getTextChannelById(channelId);
         if (table==null) {
