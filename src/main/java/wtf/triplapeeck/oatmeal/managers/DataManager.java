@@ -90,18 +90,22 @@ public abstract class DataManager extends Thread {
         for (String key: temp) {
             saveGuildData(key, false);
         }
+        temp.clear();
         temp.addAll(userCache.keySet());
         for (String key: temp) {
             saveUserData(key, false);
         }
+        temp.clear();
         temp.addAll(channelCache.keySet());
         for (String key: temp) {
             saveChannelData(key, false);
         }
+        temp.clear();
         temp.addAll(memberCache.keySet());
         for (String key: temp) {
             saveMemberData(key, false);
         }
+        temp.clear();
     }
     @Override
     public void run() {
@@ -158,8 +162,8 @@ public abstract class DataManager extends Thread {
             }
             for (String key: temp) {
                 GuildData guildData = guildCache.get(key);
-                if (guildData.getAccessCount()==0) {
-                    saveGuildData(key, true);
+                if (guildData!=null && guildData.getAccessCount()==0) {
+                        saveGuildData(key, true);
                 }
             }
             temp.clear();
@@ -179,8 +183,8 @@ public abstract class DataManager extends Thread {
             }
             for (String key: temp) {
                 UserData userData = userCache.get(key);
-                if (userData.getAccessCount()==0) {
-                    saveUserData(key, true);
+                if (userData!=null && (userData.getAccessCount() == 0)) {
+                        saveUserData(key, true);
                 }
             }
             temp.clear();
@@ -198,8 +202,8 @@ public abstract class DataManager extends Thread {
             }
             for (String key: temp) {
                 ChannelData channelData = channelCache.get(key);
-                if (channelData.getAccessCount()==0) {
-                    saveChannelData(key, true);
+                if (channelData!=null && channelData.getAccessCount() == 0) {
+                        saveChannelData(key, true);
                 }
             }
             temp.clear();
@@ -217,8 +221,8 @@ public abstract class DataManager extends Thread {
             }
             for (String key: temp) {
                 MemberData memberData = memberCache.get(key);
-                if (memberData.getAccessCount()==0) {
-                    saveMemberData(key, true);
+                if (memberData!=null && memberData.getAccessCount() == 0) {
+                        saveMemberData(key, true);
                 }
             }
             temp.clear();

@@ -1,6 +1,7 @@
 package wtf.triplapeeck.oatmeal.entities.mariadb;
 
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MariaGuild extends GuildData  {
     public void load() {
         try {
-            HashMap<String, String> step = Main.dataManager.gson.fromJson(this.getJsonCustomCommands(), HashMap.class);
+            HashMap<String, String> step = Main.dataManager.gson.fromJson(this.getJsonCustomCommands(), new TypeToken<HashMap<String, String>>(){}.getType());
             if (step==null) {
                 step=new HashMap<>();
             }
@@ -28,7 +29,7 @@ public class MariaGuild extends GuildData  {
             this.setCustomCommands(new ConcurrentHashMap<>());
         }
         try {
-            HashMap<String, String> step = Main.dataManager.gson.fromJson(this.getJsonStarboardLink(), HashMap.class);
+            HashMap<String, String> step = Main.dataManager.gson.fromJson(this.getJsonStarboardLink(), new TypeToken<HashMap<String, String>>(){}.getType());
             if (step==null) {
                 step=new HashMap<>();
             }
