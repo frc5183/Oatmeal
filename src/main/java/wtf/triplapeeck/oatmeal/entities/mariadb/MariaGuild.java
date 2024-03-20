@@ -11,13 +11,14 @@ import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.entities.GuildData;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 @DatabaseTable(tableName = "oatmeal_guilds")
 public class MariaGuild extends GuildData  {
-    @ForeignCollectionField(eager=false)
-    public ForeignCollection<MariaCustomResponse> customResponses;
+    @ForeignCollectionField(eager=true)
+    public Collection<MariaCustomResponse> customResponses;
     public void load() {
         try {
             HashMap<String, String> step = Main.dataManager.gson.fromJson(this.getJsonCustomCommands(), new TypeToken<HashMap<String, String>>(){}.getType());
@@ -177,5 +178,23 @@ public class MariaGuild extends GuildData  {
         this.testingEnabled = testingEnabled;
     }
 
+    @Override
+    public Collection<MariaCustomResponse> getCustomResponses() {
+        return customResponses;
+    }
 
+    @Override
+    public void setCustomResponses(@Nullable Collection<MariaCustomResponse> customResponses) {
+        this.customResponses = customResponses;
+    }
+
+    @Override
+    public void addCustomResponse(MariaCustomResponse customResponse) {
+        this.customResponses.add(customResponse);
+    }
+
+    @Override
+    public void removeCustomResponse(MariaCustomResponse customResponse) {
+        this.customResponses.remove(customResponse);
+    }
 }

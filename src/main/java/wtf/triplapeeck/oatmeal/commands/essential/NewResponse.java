@@ -8,8 +8,10 @@ import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.entities.CustomResponseData;
+import wtf.triplapeeck.oatmeal.entities.mariadb.MariaCustomResponse;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,23 +21,19 @@ public class NewResponse extends Command {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage) && ensureSecondArgument(carriage)) {
             String trigger = carriage.args[1];
             String content = carriage.textAfterSubcommand;
-            List<? extends CustomResponseData> list = Main.dataManager.getAllCustomResponseData(carriage.guildEntity);
-            int count = 0;
-            for (CustomResponseData data : list) {
-                count++;
-            }
+            Collection<MariaCustomResponse> list = carriage.guildEntity.getCustomResponses();
             Config config = Config.getConfig();
-            if (count>config.maxResponses) {
+            if (list.size()>config.maxResponses) {
                 carriage.channel.sendMessage("You can only have " + config.maxResponses +" custom responses! Search time isn't cheap, after all!").queue();
                 return;
             }
-            for (CustomResponseData data : list) {
+            for (MariaCustomResponse data : list) {
                 if (Objects.equals(data.getTrigger(), trigger)) {
-                    Main.dataManager.removeCustomResponseData(Long.valueOf(data.getID()));
+                    carriage.guildEntity.removeCustomResponse(data);
                 }
             }
             CustomResponseData data = Main.dataManager.createCustomResponse(trigger, content, carriage.guildEntity);
-            Main.dataManager.saveCustomResponseData(data);
+            carriage.guildEntity.addCustomResponse((MariaCustomResponse) data);
             carriage.channel.sendMessage("Added Custom Response!").queue();
         }
     }
