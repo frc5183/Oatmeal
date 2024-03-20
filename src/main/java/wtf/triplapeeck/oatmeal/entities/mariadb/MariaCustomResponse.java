@@ -20,6 +20,7 @@ public class MariaCustomResponse extends CustomResponseData {
         this.response=response;
         this.guild=guild;
     }
+    public MariaCustomResponse() {}
     @NotNull
     @Override
     public String getTrigger() {
