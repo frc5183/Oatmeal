@@ -2,7 +2,9 @@ package wtf.triplapeeck.oatmeal.entities.mariadb;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @DatabaseTable(tableName = "oatmeal_guilds")
 public class MariaGuild extends GuildData  {
+    @ForeignCollectionField(eager=false)
+    public ForeignCollection<MariaCustomResponse> customResponses;
     public void load() {
         try {
             HashMap<String, String> step = Main.dataManager.gson.fromJson(this.getJsonCustomCommands(), new TypeToken<HashMap<String, String>>(){}.getType());

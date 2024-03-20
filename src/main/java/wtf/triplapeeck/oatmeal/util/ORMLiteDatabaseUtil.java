@@ -28,6 +28,7 @@ public class ORMLiteDatabaseUtil {
     private static Dao<MariaMute, Long> muteDao;
     private static Dao<MariaMember, String> memberDao;
     private static Dao<MariaReminder, Long> reminderDao;
+    private static Dao<MariaCustomResponse, Long> customResponseDao;
     public ORMLiteDatabaseUtil() throws SQLException {
         // init database
         databaseConfiguration = ConfigParser.getDatabaseConfiguration();
@@ -50,6 +51,7 @@ public class ORMLiteDatabaseUtil {
         muteDao = DaoManager.createDao(connectionSource, MariaMute.class);
         memberDao = DaoManager.createDao(connectionSource, MariaMember.class);
         reminderDao = DaoManager.createDao(connectionSource, MariaReminder.class);
+        customResponseDao = DaoManager.createDao(connectionSource, MariaCustomResponse.class);
         upgrade();
     }
 
@@ -101,6 +103,8 @@ public class ORMLiteDatabaseUtil {
         config.version=VERSION;
         Config.saveConfig();
     }
+
+
     public JdbcPooledConnectionSource getConnectionSource() {
         return connectionSource;
     }
@@ -147,6 +151,28 @@ public class ORMLiteDatabaseUtil {
     }
     public static void deleteReminderEntity(@NotNull MariaReminder reminderEntity) throws SQLException {
         reminderDao.delete(reminderEntity);
+    }
+    @Nullable
+    public static MariaCustomResponse getCustomResponseEntity(@NotNull Long id) throws SQLException {
+        return customResponseDao.queryForId(id);
+    }
+    public static List<MariaCustomResponse> getAllCustomResponseEntity() throws SQLException {
+        return customResponseDao.queryForAll();
+    }
+    public static List<MariaCustomResponse> queryAllCustomResponseEntity(MariaGuild data) throws SQLException {
+        return customResponseDao.queryForEq("guild", data);
+    }
+    public static void updateCustomResponseEntity(@NotNull MariaCustomResponse customResponse) throws SQLException {
+        customResponseDao.createOrUpdate(customResponse);
+    }
+    public static void deleteCustomResponseEntity(@NotNull MariaCustomResponse customResponse) throws SQLException {
+        customResponseDao.delete(customResponse);
+    }
+    public static void deleteCustomResponseEntity(@NotNull Long id) throws SQLException {
+        customResponseDao.deleteById(id);
+    }
+    public static void deleteCustomResponseEntities(@NotNull Collection<Long> id) throws SQLException {
+        customResponseDao.deleteIds(id);
     }
     public static void deleteReminderEntity(@NotNull Long id) throws SQLException {
         reminderDao.deleteById(id);
