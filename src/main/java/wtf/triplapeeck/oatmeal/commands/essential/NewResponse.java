@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.Objects;
 
 public class NewResponse extends Command {
+    private static final int MIN_TRIGGER_LENGTH = 3;
     @Override
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage) && ensureSecondArgument(carriage)) {
             String trigger = carriage.args[1];
             String content = carriage.textAfterSubcommand;
 
-            private static final int MIN_TRIGGER_LENGTH = 3;
 
             if (trigger.length() < MIN_TRIGGER_LENGTH) {
                 carriage.channel.sendMessage("Trigger must be at least " + MIN_TRIGGER_LENGTH + " characters long.").queue();
