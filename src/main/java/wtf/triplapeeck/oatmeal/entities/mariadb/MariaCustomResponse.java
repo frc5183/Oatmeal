@@ -1,10 +1,11 @@
 package wtf.triplapeeck.oatmeal.entities.mariadb;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.entities.CustomResponseData;
 import wtf.triplapeeck.oatmeal.entities.GuildData;
-
+@DatabaseTable(tableName = "oatmeal_custom_responses")
 public class MariaCustomResponse extends CustomResponseData {
     @DatabaseField(generatedId = true)
     private Long id;

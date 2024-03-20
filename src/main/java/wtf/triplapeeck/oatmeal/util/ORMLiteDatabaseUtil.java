@@ -43,6 +43,7 @@ public class ORMLiteDatabaseUtil {
         TableUtils.createTableIfNotExists(connectionSource, MariaMute.class);
         TableUtils.createTableIfNotExists(connectionSource, MariaMember.class);
         TableUtils.createTableIfNotExists(connectionSource, MariaReminder.class);
+        TableUtils.createTableIfNotExists(connectionSource, MariaCustomResponse.class);
         // init dao
         guildDao = DaoManager.createDao(connectionSource, MariaGuild.class);
         userDao = DaoManager.createDao(connectionSource, MariaUser.class);
