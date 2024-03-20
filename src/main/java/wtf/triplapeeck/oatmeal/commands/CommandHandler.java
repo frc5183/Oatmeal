@@ -42,7 +42,6 @@ public class CommandHandler {
         if ( event.getAuthor().getIdLong()==api.getSelfUser().getIdLong()) return;
         Logger.customLog("Listener", "Prepare");
         Prepare(event, api, carriage);
-        HandleResponse(carriage);
         if (carriage.channelStorable.getAutoThread()) {
             String name;
             if (carriage.message.getContentRaw().length()>50) {
@@ -73,6 +72,7 @@ public class CommandHandler {
             Clean(carriage);
 
         } else {
+            HandleResponse(carriage);
             Logger.customLog("Listener", "Message Clean");
             Clean(carriage);
         }

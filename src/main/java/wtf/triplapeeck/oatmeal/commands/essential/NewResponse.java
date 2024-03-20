@@ -34,9 +34,9 @@ public class NewResponse extends Command {
                     Main.dataManager.removeCustomResponseData(Long.valueOf(data.getID()));
                 }
             }
-            carriage.channel.sendMessage("Added Custom Response!").queue();
             CustomResponseData data = Main.dataManager.createCustomResponse(trigger, content, carriage.guildEntity);
             Main.dataManager.saveCustomResponseData(data);
+            carriage.channel.sendMessage("Added Custom Response!").queue();
         }
     }
 
