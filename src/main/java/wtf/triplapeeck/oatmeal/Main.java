@@ -97,6 +97,8 @@ public class Main {
         commandHandler.addCommand(new Ban());
         commandHandler.addCommand(new Count());
         commandHandler.addCommand(new Remind());
+        commandHandler.addCommand(new NewCustom());
+        commandHandler.addCommand(new RemoveCustom());
         //Adds the internal Heartbeat thread to the thread manager.
         threadManager.addTask(new Heartbeat());
     }
