@@ -9,15 +9,18 @@ import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.entities.CustomResponseData;
 import wtf.triplapeeck.oatmeal.entities.GuildData;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 @DatabaseTable(tableName = "oatmeal_guilds")
 public class MariaGuild extends GuildData  {
-    @ForeignCollectionField(eager=false)
-    public ForeignCollection<MariaCustomResponse> customResponses;
+    @ForeignCollectionField(eager=true)
+    public Collection<MariaCustomResponse> customResponses;
     public void load() {
         try {
             HashMap<String, String> step = Main.dataManager.gson.fromJson(this.getJsonCustomCommands(), new TypeToken<HashMap<String, String>>(){}.getType());
@@ -82,6 +85,7 @@ public class MariaGuild extends GuildData  {
         this.currencyEnabled = true;
         this.testingEnabled = false;
         this.starboardLimit=2;
+        this.customResponses = new ArrayList<>();
     }
 
     /**
@@ -177,5 +181,28 @@ public class MariaGuild extends GuildData  {
         this.testingEnabled = testingEnabled;
     }
 
+    @Override
+    public Collection<CustomResponseData> getCustomResponses() {
+        ArrayList<CustomResponseData> list = new ArrayList<>(customResponses);
+        return list;
+    }
 
+    @Override
+    public void setCustomResponses(Collection<CustomResponseData> customResponses) {
+        ArrayList<MariaCustomResponse> list = new ArrayList<>();
+        for (CustomResponseData data: customResponses) {
+            list.add((MariaCustomResponse) data);
+        }
+        this.customResponses = list;
+    }
+
+    @Override
+    public void addCustomResponse(CustomResponseData customResponse) {
+        this.customResponses.add((MariaCustomResponse) customResponse);
+    }
+
+    @Override
+    public void removeCustomResponse(CustomResponseData customResponse) {
+        this.customResponses.remove((MariaCustomResponse) customResponse);
+    }
 }

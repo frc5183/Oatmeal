@@ -1,7 +1,9 @@
 package wtf.triplapeeck.oatmeal.entities;
 
 import org.jetbrains.annotations.Nullable;
+import wtf.triplapeeck.oatmeal.entities.mariadb.MariaCustomResponse;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class GuildData extends AccessibleEntity implements DataID {
@@ -23,6 +25,10 @@ public abstract class GuildData extends AccessibleEntity implements DataID {
     @Nullable
     public abstract Boolean isTestingEnabled();
     public abstract void setTestingEnabled(@Nullable Boolean testingEnabled);
+    public abstract Collection<CustomResponseData> getCustomResponses();
+    public abstract void setCustomResponses(Collection<CustomResponseData> customResponses);
+    public abstract void addCustomResponse(CustomResponseData customResponse);
+    public abstract void removeCustomResponse(CustomResponseData customResponse);
     public abstract void load();
 
 }

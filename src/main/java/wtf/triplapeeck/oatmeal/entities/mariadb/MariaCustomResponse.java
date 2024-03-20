@@ -37,6 +37,15 @@ public class MariaCustomResponse extends CustomResponseData {
         return guild;
     }
 
+    @Override
+    public void setTrigger(@NotNull String trigger) {
+        this.trigger = trigger;
+    }
+
+    @Override
+    public void setResponse(@NotNull String response) {
+        this.response = response;
+    }
 
     public String getID() {
         return id.toString();

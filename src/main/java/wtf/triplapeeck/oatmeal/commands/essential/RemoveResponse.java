@@ -2,13 +2,16 @@ package wtf.triplapeeck.oatmeal.commands.essential;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.internal.requests.restaction.operator.MapRestAction;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.commands.Command;
 import wtf.triplapeeck.oatmeal.entities.CustomResponseData;
+import wtf.triplapeeck.oatmeal.entities.mariadb.MariaCustomResponse;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,11 +20,11 @@ public class RemoveResponse extends Command {
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage)) {
             String trigger = carriage.args[1];
-            List<? extends CustomResponseData> list = Main.dataManager.getAllCustomResponseData(carriage.guildEntity);
+            Collection<CustomResponseData> list = carriage.guildEntity.getCustomResponses();
             boolean found = false;
             for (CustomResponseData data : list) {
                 if (Objects.equals(data.getTrigger(), trigger)) {
-                    Main.dataManager.removeCustomResponseData(Long.valueOf(data.getID()));
+                    carriage.guildEntity.removeCustomResponse(data);
                     found = true;
                     // This should only ever trigger once, but letting it loop helps clean up mistakes.
                 }
