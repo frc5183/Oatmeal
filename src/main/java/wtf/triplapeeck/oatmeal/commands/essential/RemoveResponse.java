@@ -20,9 +20,9 @@ public class RemoveResponse extends Command {
     public void handler(MessageReceivedEvent event, DataCarriage carriage, ThreadManager listener) {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage)) {
             String trigger = carriage.args[1];
-            Collection<MariaCustomResponse> list = carriage.guildEntity.getCustomResponses();
+            Collection<CustomResponseData> list = carriage.guildEntity.getCustomResponses();
             boolean found = false;
-            for (MariaCustomResponse data : list) {
+            for (CustomResponseData data : list) {
                 if (Objects.equals(data.getTrigger(), trigger)) {
                     carriage.guildEntity.removeCustomResponse(data);
                     found = true;

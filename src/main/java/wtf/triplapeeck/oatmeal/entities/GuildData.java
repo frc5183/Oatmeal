@@ -25,10 +25,10 @@ public abstract class GuildData extends AccessibleEntity implements DataID {
     @Nullable
     public abstract Boolean isTestingEnabled();
     public abstract void setTestingEnabled(@Nullable Boolean testingEnabled);
-    public abstract Collection<MariaCustomResponse> getCustomResponses();
-    public abstract void setCustomResponses(@Nullable Collection<MariaCustomResponse> customResponses);
-    public abstract void addCustomResponse(MariaCustomResponse customResponse);
-    public abstract void removeCustomResponse(MariaCustomResponse customResponse);
+    public abstract Collection<CustomResponseData> getCustomResponses();
+    public abstract void setCustomResponses(Collection<CustomResponseData> customResponses);
+    public abstract void addCustomResponse(CustomResponseData customResponse);
+    public abstract void removeCustomResponse(CustomResponseData customResponse);
     public abstract void load();
 
 }

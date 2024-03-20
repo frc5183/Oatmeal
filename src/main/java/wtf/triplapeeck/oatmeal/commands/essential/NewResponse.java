@@ -21,19 +21,19 @@ public class NewResponse extends Command {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage) && ensureSecondArgument(carriage)) {
             String trigger = carriage.args[1];
             String content = carriage.textAfterSubcommand;
-            Collection<MariaCustomResponse> list = carriage.guildEntity.getCustomResponses();
+            Collection<CustomResponseData> list = carriage.guildEntity.getCustomResponses();
             Config config = Config.getConfig();
             if (list.size()>config.maxResponses) {
                 carriage.channel.sendMessage("You can only have " + config.maxResponses +" custom responses! Search time isn't cheap, after all!").queue();
                 return;
             }
-            for (MariaCustomResponse data : list) {
+            for (CustomResponseData data : list) {
                 if (Objects.equals(data.getTrigger(), trigger)) {
                     carriage.guildEntity.removeCustomResponse(data);
                 }
             }
             CustomResponseData data = Main.dataManager.createCustomResponse(trigger, content, carriage.guildEntity);
-            carriage.guildEntity.addCustomResponse((MariaCustomResponse) data);
+            carriage.guildEntity.addCustomResponse(data);
             carriage.channel.sendMessage("Added Custom Response!").queue();
         }
     }

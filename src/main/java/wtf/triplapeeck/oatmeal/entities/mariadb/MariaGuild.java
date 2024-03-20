@@ -9,8 +9,10 @@ import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import wtf.triplapeeck.oatmeal.Main;
+import wtf.triplapeeck.oatmeal.entities.CustomResponseData;
 import wtf.triplapeeck.oatmeal.entities.GuildData;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -83,6 +85,7 @@ public class MariaGuild extends GuildData  {
         this.currencyEnabled = true;
         this.testingEnabled = false;
         this.starboardLimit=2;
+        this.customResponses = new ArrayList<>();
     }
 
     /**
@@ -179,22 +182,27 @@ public class MariaGuild extends GuildData  {
     }
 
     @Override
-    public Collection<MariaCustomResponse> getCustomResponses() {
-        return customResponses;
+    public Collection<CustomResponseData> getCustomResponses() {
+        ArrayList<CustomResponseData> list = new ArrayList<>(customResponses);
+        return list;
     }
 
     @Override
-    public void setCustomResponses(@Nullable Collection<MariaCustomResponse> customResponses) {
-        this.customResponses = customResponses;
+    public void setCustomResponses(Collection<CustomResponseData> customResponses) {
+        ArrayList<MariaCustomResponse> list = new ArrayList<>();
+        for (CustomResponseData data: customResponses) {
+            list.add((MariaCustomResponse) data);
+        }
+        this.customResponses = list;
     }
 
     @Override
-    public void addCustomResponse(MariaCustomResponse customResponse) {
-        this.customResponses.add(customResponse);
+    public void addCustomResponse(CustomResponseData customResponse) {
+        this.customResponses.add((MariaCustomResponse) customResponse);
     }
 
     @Override
-    public void removeCustomResponse(MariaCustomResponse customResponse) {
-        this.customResponses.remove(customResponse);
+    public void removeCustomResponse(CustomResponseData customResponse) {
+        this.customResponses.remove((MariaCustomResponse) customResponse);
     }
 }
