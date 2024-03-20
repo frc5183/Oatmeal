@@ -162,7 +162,7 @@ public class MariaManager extends DataManager {
         if (user.getClass() == MariaUser.class) {
             return new MariaReminder(unix, text, (MariaUser) user);
         }
-        return null; // This case would only ever occur if MariaManager is being used concurrently with another manager, which should never happen
+        throw new IllegalArgumentException("Unsupported UserData type: " + user.getClass().getName());
     }
 
     @Override
