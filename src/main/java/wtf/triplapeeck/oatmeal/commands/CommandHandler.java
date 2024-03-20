@@ -31,7 +31,7 @@ public class CommandHandler {
     }
     private void HandleResponse(DataCarriage carriage) {
         for (CustomResponseData data : Main.dataManager.getAllCustomResponseData(carriage.guildEntity)) {
-            if (carriage.message.getContentRaw().contains(data.getTrigger())) {
+            if (carriage.message.getContentRaw().toLowerCase().contains(data.getTrigger().toLowerCase())) {
                 carriage.channel.sendMessage(data.getResponse()).queue();
             }
         }
