@@ -160,7 +160,7 @@ public class ORMLiteDatabaseUtil {
         return customResponseDao.queryForAll();
     }
     public static List<MariaCustomResponse> queryAllCustomResponseEntity(MariaGuild data) throws SQLException {
-        return customResponseDao.queryForEq("guild", data);
+        return customResponseDao.queryForEq("guild_id", data);
     }
     public static void updateCustomResponseEntity(@NotNull MariaCustomResponse customResponse) throws SQLException {
         customResponseDao.createOrUpdate(customResponse);
