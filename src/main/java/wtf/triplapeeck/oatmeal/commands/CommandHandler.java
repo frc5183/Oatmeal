@@ -3,6 +3,7 @@ package wtf.triplapeeck.oatmeal.commands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import wtf.triplapeeck.oatmeal.entities.CustomResponseData;
 import wtf.triplapeeck.oatmeal.listeners.ThreadManager;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Logger;
@@ -28,7 +29,13 @@ public class CommandHandler {
     public void addCommand(@NotNull Command command) {
         commandList.put(command.getName(), command);
     }
-
+    private void HandleResponse(DataCarriage carriage) {
+        for (CustomResponseData data : Main.dataManager.getAllCustomResponseData(carriage.guildEntity)) {
+            if (carriage.message.getContentRaw().contains(data.getTrigger())) {
+                carriage.channel.sendMessage(data.getResponse()).queue();
+            }
+        }
+    }
     public void handle(@NotNull MessageReceivedEvent event, @NotNull JDA api, ThreadManager listener) {
         DataCarriage carriage;
         carriage = new DataCarriage();
@@ -65,6 +72,7 @@ public class CommandHandler {
             Clean(carriage);
 
         } else {
+            HandleResponse(carriage);
             Logger.customLog("Listener", "Message Clean");
             Clean(carriage);
         }

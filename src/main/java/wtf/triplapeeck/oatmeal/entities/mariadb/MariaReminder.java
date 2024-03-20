@@ -3,6 +3,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import org.jetbrains.annotations.NotNull;
 import wtf.triplapeeck.oatmeal.entities.ReminderData;
+import wtf.triplapeeck.oatmeal.entities.UserData;
 
 @DatabaseTable(tableName = "oatmeal_reminders")
 public class MariaReminder extends ReminderData {
@@ -19,7 +20,6 @@ public class MariaReminder extends ReminderData {
     private @NotNull Long unix;
 
     public MariaReminder(@NotNull Long unix, @NotNull String text, @NotNull MariaUser user) {
-        super(text, unix, user);
         this.unix = unix;
         this.text = text;
         this.user = user;
@@ -44,7 +44,7 @@ public class MariaReminder extends ReminderData {
 
     @NotNull
     @Override
-    public MariaUser getUser() {
+    public UserData getUser() {
         return user;
     }
 

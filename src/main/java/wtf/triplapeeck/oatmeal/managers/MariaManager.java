@@ -1,7 +1,10 @@
 package wtf.triplapeeck.oatmeal.managers;
 
 import wtf.triplapeeck.oatmeal.cards.Table;
+import wtf.triplapeeck.oatmeal.entities.CustomResponseData;
+import wtf.triplapeeck.oatmeal.entities.GuildData;
 import wtf.triplapeeck.oatmeal.entities.ReminderData;
+import wtf.triplapeeck.oatmeal.entities.UserData;
 import wtf.triplapeeck.oatmeal.entities.mariadb.*;
 import wtf.triplapeeck.oatmeal.errors.UsedTableException;
 import wtf.triplapeeck.oatmeal.util.ORMLiteDatabaseUtil;
@@ -155,8 +158,11 @@ public class MariaManager extends DataManager {
     }
 
     @Override
-    public synchronized ReminderData createReminder(String text, Long unix, MariaUser user) {
-        return new MariaReminder(unix, text, user);
+    public synchronized ReminderData createReminder(String text, Long unix, UserData user) {
+        if (user.getClass() == MariaUser.class) {
+            return new MariaReminder(unix, text, (MariaUser) user);
+        }
+        throw new IllegalArgumentException("Unsupported UserData type: " + user.getClass().getName());
     }
 
     @Override
@@ -168,5 +174,51 @@ public class MariaManager extends DataManager {
         }
     }
 
+    public synchronized void removeCustomResponseData(Long id) {
+        try {
+            ORMLiteDatabaseUtil.deleteCustomResponseEntity(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+
+    public synchronized void removeCustomResponseDatas(Collection<Long> ids) {
+        try {
+            ORMLiteDatabaseUtil.deleteCustomResponseEntities(ids);
+        } catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public synchronized void saveCustomResponseData(CustomResponseData customResponseData) {
+        MariaCustomResponse customResponseEntity = (MariaCustomResponse) customResponseData;
+        try {
+            ORMLiteDatabaseUtil.updateCustomResponseEntity(customResponseEntity);
+        } catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public synchronized CustomResponseData createCustomResponse(String trigger, String response, GuildData guild) {
+        if (guild.getClass()== MariaGuild.class) {
+            return new MariaCustomResponse(trigger, response, (MariaGuild) guild);
+        }
+        return null; // This case would only ever occur if MariaManager is being used concurrently with another manager, which should never happen
+    }
+
+    @Override
+    public synchronized List<? extends CustomResponseData> getAllCustomResponseData(GuildData data) {
+        if (data.getClass() == MariaGuild.class) {
+            MariaGuild guild = (MariaGuild) data;
+            try {
+                return ORMLiteDatabaseUtil.queryAllCustomResponseEntity(guild);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return null;
+    }
 }
