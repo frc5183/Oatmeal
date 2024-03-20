@@ -16,7 +16,6 @@ public class MariaCustomResponse extends CustomResponseData {
     private @NotNull String response;
 
     public MariaCustomResponse(String trigger, String response, MariaGuild guild) {
-        super(trigger, response, guild);
         this.trigger=trigger;
         this.response=response;
         this.guild=guild;
@@ -36,9 +35,6 @@ public class MariaCustomResponse extends CustomResponseData {
         return guild;
     }
 
-    public Long getId() {
-        return id;
-    }
 
     public String getID() {
         return id.toString();

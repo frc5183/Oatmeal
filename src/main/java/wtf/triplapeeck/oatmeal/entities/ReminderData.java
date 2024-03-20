@@ -8,9 +8,6 @@ public abstract class ReminderData {
     public abstract Long getUnix();
     public abstract UserData getUser();
     public abstract Long getId();
-    public ReminderData(String text, Long unix, UserData user) {
-
-    }
     public ReminderData() {}
 
 }

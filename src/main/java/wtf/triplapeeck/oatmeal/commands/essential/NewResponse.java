@@ -3,6 +3,7 @@ package wtf.triplapeeck.oatmeal.commands.essential;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import wtf.triplapeeck.oatmeal.Config;
 import wtf.triplapeeck.oatmeal.DataCarriage;
 import wtf.triplapeeck.oatmeal.Main;
 import wtf.triplapeeck.oatmeal.commands.Command;
@@ -23,15 +24,17 @@ public class NewResponse extends Command {
             for (CustomResponseData data : list) {
                 count++;
             }
-            if (count>10) {
-                carriage.channel.sendMessage("You can only have 10 custom responses! Search time isn't cheap, after all!").queue();
+            Config config = Config.getConfig();
+            if (count>config.maxResponses) {
+                carriage.channel.sendMessage("You can only have " + config.maxResponses +" custom responses! Search time isn't cheap, after all!").queue();
                 return;
             }
             for (CustomResponseData data : list) {
                 if (Objects.equals(data.getTrigger(), trigger)) {
-                    Main.dataManager.removeCustomResponseData(data.getId());
+                    Main.dataManager.removeCustomResponseData(Long.valueOf(data.getID()));
                 }
             }
+            carriage.channel.sendMessage("Added Custom Response!").queue();
             CustomResponseData data = Main.dataManager.createCustomResponse(trigger, content, carriage.guildEntity);
             Main.dataManager.saveCustomResponseData(data);
         }

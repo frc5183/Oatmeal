@@ -18,10 +18,18 @@ public class RemoveResponse extends Command {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage)) {
             String trigger = carriage.args[1];
             List<? extends CustomResponseData> list = Main.dataManager.getAllCustomResponseData(carriage.guildEntity);
+            boolean found = false;
             for (CustomResponseData data : list) {
                 if (Objects.equals(data.getTrigger(), trigger)) {
-                    Main.dataManager.removeCustomResponseData(data.getId());
+                    Main.dataManager.removeCustomResponseData(Long.valueOf(data.getID()));
+                    found = true;
+                    // This should only ever trigger once, but letting it loop helps clean up mistakes.
                 }
+            }
+            if (found) {
+                event.getChannel().sendMessage("Custom response removed successfully.").queue();
+            } else {
+                event.getChannel().sendMessage("No custom response found for the specified trigger.").queue();
             }
         }
     }

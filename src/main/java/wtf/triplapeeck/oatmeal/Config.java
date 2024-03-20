@@ -26,6 +26,7 @@ public class Config {
     public String username = "";
     public String password = "";
     public String database = "";
+    public int maxResponses = 10;
     public int maxConnections = 10;
 
 
