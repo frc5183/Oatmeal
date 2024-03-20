@@ -22,8 +22,10 @@ public class NewResponse extends Command {
             String trigger = carriage.args[1];
             String content = carriage.textAfterSubcommand;
 
-            if (trigger.length() < 3) {
-                carriage.channel.sendMessage("Trigger must be more than 3 characters.").queue();
+            private static final int MIN_TRIGGER_LENGTH = 3;
+
+            if (trigger.length() < MIN_TRIGGER_LENGTH) {
+                carriage.channel.sendMessage("Trigger must be at least " + MIN_TRIGGER_LENGTH + " characters long.").queue();
                 return;
             }
 
