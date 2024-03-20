@@ -21,14 +21,6 @@ public class NewResponse extends Command {
         if (ensureAdministrator(carriage) && ensureFirstArgument(carriage) && ensureSecondArgument(carriage)) {
             String trigger = carriage.args[1];
             String content = carriage.textAfterSubcommand;
-
-            private static final int MIN_TRIGGER_LENGTH = 3;
-
-            if (trigger.length() < MIN_TRIGGER_LENGTH) {
-                carriage.channel.sendMessage("Trigger must be at least " + MIN_TRIGGER_LENGTH + " characters long.").queue();
-                return;
-            }
-
             Collection<CustomResponseData> list = carriage.guildEntity.getCustomResponses();
             Config config = Config.getConfig();
             if (list.size()>config.maxResponses) {
