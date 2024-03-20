@@ -29,7 +29,9 @@ public class NewResponse extends Command {
             }
             for (CustomResponseData data : list) {
                 if (Objects.equals(data.getTrigger(), trigger)) {
-                    carriage.guildEntity.removeCustomResponse(data);
+                    data.setResponse(content);
+                    Main.dataManager.saveCustomResponseData(data);
+                    return;
                 }
             }
             CustomResponseData data = Main.dataManager.createCustomResponse(trigger, content, carriage.guildEntity);
