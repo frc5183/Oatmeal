@@ -1,3 +1,8 @@
+# ⚠️ ARCHIVED ⚠️
+This project has been rewritten by the lead maintainer as a personal project.
+
+[Continuation](https://github.com/Trip-kun/SinonBot)
+
 # Oatmeal
 ![workflow](https://github.com/frc5183/oatmeal/actions/workflows/build-gradle.yml/badge.svg)
 
